@@ -16,7 +16,7 @@ type ProductCardProps = {
 export function ProductCard({ product }: ProductCardProps) {
   return (
     <Card className="overflow-hidden">
-      <div className="relative aspect-[4/3] bg-muted">
+      <div className="relative aspect-4/3 bg-muted">
         <Image
           src={product.image}
           alt={product.name}
