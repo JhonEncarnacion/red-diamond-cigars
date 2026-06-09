@@ -8,7 +8,12 @@ export const inquirySchema = z.object({
 
   email: z.email("Enter a valid email address."),
 
-  phone: z.string().max(30, "Phone number is too long.").optional(),
+  phone: z
+    .string()
+    .trim()
+    .regex(/^[0-9+\-()\s]*$/, "Enter a valid phone number.")
+    .max(30, "Phone number is too long.")
+    .optional(),
 
   location: z
     .string()

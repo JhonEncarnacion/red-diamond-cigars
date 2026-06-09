@@ -104,7 +104,7 @@ export function InquiryForm({ product }: InquiryFormProps) {
         </div>
 
         <div className="grid gap-2">
-          <Label htmlFor="phone">Phone optional</Label>
+          <Label htmlFor="phone">Phone (Optional)</Label>
           <Input
             id="phone"
             placeholder="Phone number"
@@ -132,7 +132,7 @@ export function InquiryForm({ product }: InquiryFormProps) {
         </div>
 
         <div className="grid gap-2">
-          <Label htmlFor="quantity">Desired quantity</Label>
+          <Label htmlFor="quantity">Desired Quantity</Label>
           <Input
             id="quantity"
             type="number"
@@ -148,7 +148,7 @@ export function InquiryForm({ product }: InquiryFormProps) {
         </div>
 
         <div className="grid gap-2">
-          <Label htmlFor="message">Message optional</Label>
+          <Label htmlFor="message">Message (Optional)</Label>
           <Textarea
             id="message"
             placeholder="Ask about availability, pricing, pickup, or contact preference."
