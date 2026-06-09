@@ -1,7 +1,7 @@
 import Image from "next/image";
 import { notFound } from "next/navigation";
-import { Button } from "@/components/ui/button";
 import { sampleProducts } from "@/lib/sample-products";
+import { InquiryForm } from "@/components/site/InquiryForm";
 
 type ProductPageProps = {
   params: Promise<{
@@ -51,14 +51,8 @@ export default async function ProductPage({ params }: ProductPageProps) {
           <Detail label="Available Stock" value={`${product.stock}`} />
         </div>
 
-        <div className="mt-8 rounded-xl border bg-muted/40 p-6">
-          <h2 className="text-xl font-semibold">Request Availability</h2>
-          <p className="mt-2 text-sm text-muted-foreground">
-            Submit an inquiry to let us know you are interested. This is not a
-            purchase and no payment is processed online.
-          </p>
-
-          <Button className="mt-5 w-full sm:w-auto">I&apos;m Interested</Button>
+        <div className="mt-8">
+          <InquiryForm product={product} />
         </div>
       </div>
     </div>
