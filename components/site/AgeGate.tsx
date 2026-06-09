@@ -1,15 +1,16 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Button } from "@/components/ui/button";
 
 export function AgeGate() {
-  const [isVerified, setIsVerified] = useState<boolean | null>(null);
+  const [isVerified, setIsVerified] = useState<boolean>(() => {
+    if (typeof window === "undefined") {
+      return true;
+    }
 
-  useEffect(() => {
-    const verified = localStorage.getItem("age-verified");
-    setIsVerified(verified === "true");
-  }, []);
+    return localStorage.getItem("age-verified") === "true";
+  });
 
   function handleConfirm() {
     localStorage.setItem("age-verified", "true");
@@ -20,7 +21,7 @@ export function AgeGate() {
     window.location.href = "https://www.google.com";
   }
 
-  if (isVerified === null || isVerified) {
+  if (isVerified) {
     return null;
   }
 
