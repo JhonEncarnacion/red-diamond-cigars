@@ -1,16 +1,17 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 
 export function AgeGate() {
-  const [isVerified, setIsVerified] = useState<boolean>(() => {
-    if (typeof window === "undefined") {
-      return true;
-    }
+  const [isVerified, setIsVerified] = useState<boolean | null>(null);
 
-    return localStorage.getItem("age-verified") === "true";
-  });
+  useEffect(() => {
+    const verified = localStorage.getItem("age-verified") === "true";
+
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    setIsVerified(verified);
+  }, []);
 
   function handleConfirm() {
     localStorage.setItem("age-verified", "true");
@@ -21,13 +22,13 @@ export function AgeGate() {
     window.location.href = "https://www.google.com";
   }
 
-  if (isVerified) {
+  if (isVerified === null || isVerified) {
     return null;
   }
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-background/95 px-4 backdrop-blur">
-      <div className="max-w-md rounded-xl border bg-background p-6 shadow-lg">
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-background/80 px-4 backdrop-blur-md">
+      <div className="w-full max-w-md rounded-xl border bg-background p-6 shadow-lg">
         <p className="text-sm font-medium uppercase tracking-widest text-muted-foreground">
           Age Verification Required
         </p>
@@ -41,12 +42,10 @@ export function AgeGate() {
           adults 21 years of age or older.
         </p>
 
-        <div className="mt-6 flex flex-col gap-3 sm:flex-row">
-          <Button onClick={handleConfirm} className="w-full">
-            Yes, I am 21+
-          </Button>
+        <div className="mt-6 grid gap-3 sm:grid-cols-2">
+          <Button onClick={handleConfirm}>Yes, I am 21+</Button>
 
-          <Button onClick={handleDeny} variant="outline" className="w-full">
+          <Button onClick={handleDeny} variant="outline">
             No, exit site
           </Button>
         </div>
