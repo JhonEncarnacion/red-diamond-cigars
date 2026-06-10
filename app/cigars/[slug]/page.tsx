@@ -1,6 +1,6 @@
 import Image from "next/image";
 import { notFound } from "next/navigation";
-import { sampleProducts } from "@/lib/sample-products";
+import { prisma } from "@/lib/prisma";
 import { InquiryForm } from "@/components/site/InquiryForm";
 
 type ProductPageProps = {
@@ -12,7 +12,11 @@ type ProductPageProps = {
 export default async function ProductPage({ params }: ProductPageProps) {
   const { slug } = await params;
 
-  const product = sampleProducts.find((product) => product.slug === slug);
+  const product = await prisma.product.findUnique({
+    where: {
+      slug,
+    },
+  });
 
   if (!product) {
     notFound();
@@ -22,7 +26,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
     <div className="mx-auto grid max-w-6xl gap-10 px-4 py-12 lg:grid-cols-2">
       <div className="relative aspect-square overflow-hidden rounded-xl bg-muted">
         <Image
-          src={product.image}
+          src={product.image ?? "/images/cigar-placeholder.png"}
           alt={product.name}
           fill
           className="object-cover"
@@ -59,11 +63,17 @@ export default async function ProductPage({ params }: ProductPageProps) {
   );
 }
 
-function Detail({ label, value }: { label: string; value?: string }) {
+function Detail({
+  label,
+  value,
+}: {
+  label: string;
+  value?: string | number | null;
+}) {
   return (
     <div>
       <p className="text-sm text-muted-foreground">{label}</p>
-      <p className="font-medium">{value || "Not listed"}</p>
+      <p className="font-medium">{value ?? "Not listed"}</p>
     </div>
   );
 }

@@ -1,11 +1,18 @@
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { ProductCard } from "@/components/site/ProductCard";
-import { sampleProducts } from "@/lib/sample-products";
+import { prisma } from "@/lib/prisma";
 
-export default function HomePage() {
-  const featuredProducts = sampleProducts.slice(0, 3);
-
+export default async function HomePage() {
+const featuredProducts = await prisma.product.findMany({
+  where: {
+    isActive: true,
+  },
+  take: 3,
+  orderBy: {
+    createdAt: "desc",
+  },
+});
   return (
     <div>
       <section className="mx-auto max-w-6xl px-4 py-20">

@@ -1,6 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
-import type { Product } from "@/lib/sample-products";
+import type { Product } from "@/lib/generated/prisma/client";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -18,7 +18,7 @@ export function ProductCard({ product }: ProductCardProps) {
     <Card className="overflow-hidden">
       <div className="relative aspect-4/3 bg-muted">
         <Image
-          src={product.image}
+          src={product.image ?? "/images/cigar-placeholder.png"}
           alt={product.name}
           fill
           className="object-cover"
