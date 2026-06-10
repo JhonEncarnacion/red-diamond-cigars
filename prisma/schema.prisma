@@ -1,0 +1,65 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Get a free hosted Postgres database in seconds: `npx create-db`
+
+generator client {
+  provider = "prisma-client"
+  output   = "../lib/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model Product {
+  id          String   @id @default(cuid())
+  name        String
+  slug        String   @unique
+  description String
+
+  wrapper     String?
+  binder      String?
+  filler      String?
+  origin      String?
+  size        String?
+  strength    String
+  stock       Int      @default(0)
+  image       String?
+
+  isActive    Boolean  @default(true)
+
+  inquiries   Inquiry[]
+
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model Inquiry {
+  id           String        @id @default(cuid())
+
+  fullName     String
+  email        String
+  phone        String?
+  location     String
+  quantity     Int
+  message      String?
+  confirmed21  Boolean
+  inquiryOnly  Boolean
+
+  status       InquiryStatus @default(NEW)
+
+  productId    String
+  product      Product       @relation(fields: [productId], references: [id], onDelete: Cascade)
+
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
+}
+
+enum InquiryStatus {
+  NEW
+  CONTACTED
+  INTERESTED
+  NOT_INTERESTED
+  COMPLETED_MANUALLY
+}
