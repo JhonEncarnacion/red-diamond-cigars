@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { useForm } from "react-hook-form";
+import { useForm, useWatch } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
@@ -33,6 +33,16 @@ export function InquiryForm({ product }: InquiryFormProps) {
       confirmed21: false,
       inquiryOnly: false,
     },
+  });
+
+  const confirmed21 = useWatch({
+    control: form.control,
+    name: "confirmed21",
+  });
+
+  const inquiryOnly = useWatch({
+    control: form.control,
+    name: "inquiryOnly",
   });
 
   function onSubmit(values: InquiryFormValues) {
@@ -165,7 +175,7 @@ export function InquiryForm({ product }: InquiryFormProps) {
           <div className="flex items-start gap-3">
             <Checkbox
               id="confirmed21"
-              checked={form.watch("confirmed21")}
+              checked={confirmed21}
               onCheckedChange={(checked) =>
                 form.setValue("confirmed21", checked === true, {
                   shouldValidate: true,
@@ -187,7 +197,7 @@ export function InquiryForm({ product }: InquiryFormProps) {
           <div className="flex items-start gap-3">
             <Checkbox
               id="inquiryOnly"
-              checked={form.watch("inquiryOnly")}
+              checked={inquiryOnly}
               onCheckedChange={(checked) =>
                 form.setValue("inquiryOnly", checked === true, {
                   shouldValidate: true,
