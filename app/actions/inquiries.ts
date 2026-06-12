@@ -1,6 +1,7 @@
 "use server";
 
 import { prisma } from "@/lib/prisma";
+import { resend } from "@/lib/resend";
 import { inquirySchema, type InquiryFormInput } from "@/lib/validators";
 
 type CreateInquiryResult = {
@@ -34,7 +35,7 @@ export async function createInquiry(
     };
   }
 
-  await prisma.inquiry.create({
+  const inquiry = await prisma.inquiry.create({
     data: {
       productId: product.id,
       fullName: validatedFields.data.fullName,
@@ -47,6 +48,37 @@ export async function createInquiry(
       inquiryOnly: validatedFields.data.inquiryOnly,
     },
   });
+
+  try {
+    await resend.emails.send({
+      from: "Cigar Site <onboarding@resend.dev>",
+      to: process.env.ADMIN_EMAIL!,
+      replyTo: validatedFields.data.email,
+      subject: `New cigar inquiry: ${product.name}`,
+      text: `
+New cigar inquiry received.
+
+Product: ${product.name}
+Inquiry ID: ${inquiry.id}
+
+Customer:
+${validatedFields.data.fullName}
+${validatedFields.data.email}
+${validatedFields.data.phone || "No phone provided"}
+${validatedFields.data.location}
+
+Desired quantity: ${validatedFields.data.quantity}
+
+Message:
+${validatedFields.data.message || "No message provided."}
+
+Confirmed 21+: ${validatedFields.data.confirmed21 ? "Yes" : "No"}
+Inquiry only confirmation: ${validatedFields.data.inquiryOnly ? "Yes" : "No"}
+    `,
+    });
+  } catch (error) {
+    console.error("Failed to send inquiry email:", error);
+  }
 
   return {
     success: true,
