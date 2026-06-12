@@ -1,4 +1,6 @@
+import Link from "next/link";
 import { prisma } from "@/lib/prisma";
+import { Badge } from "@/components/ui/badge";
 import {
   Table,
   TableBody,
@@ -7,7 +9,6 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { Badge } from "@/components/ui/badge";
 
 export default async function AdminInquiriesPage() {
   const inquiries = await prisma.inquiry.findMany({
@@ -25,9 +26,11 @@ export default async function AdminInquiriesPage() {
         <p className="text-sm font-medium uppercase tracking-widest text-muted-foreground">
           Admin
         </p>
+
         <h1 className="mt-3 text-4xl font-bold tracking-tight">
           Cigar Inquiries
         </h1>
+
         <p className="mt-4 text-muted-foreground">
           View customer interest requests submitted through the cigar catalog.
         </p>
@@ -43,6 +46,7 @@ export default async function AdminInquiriesPage() {
               <TableHead>Location</TableHead>
               <TableHead>Status</TableHead>
               <TableHead>Submitted</TableHead>
+              <TableHead className="text-right">Action</TableHead>
             </TableRow>
           </TableHeader>
 
@@ -50,7 +54,7 @@ export default async function AdminInquiriesPage() {
             {inquiries.length === 0 ? (
               <TableRow>
                 <TableCell
-                  colSpan={6}
+                  colSpan={7}
                   className="py-8 text-center text-muted-foreground"
                 >
                   No inquiries yet.
@@ -62,9 +66,11 @@ export default async function AdminInquiriesPage() {
                   <TableCell>
                     <div>
                       <p className="font-medium">{inquiry.fullName}</p>
+
                       <p className="text-sm text-muted-foreground">
                         {inquiry.email}
                       </p>
+
                       {inquiry.phone && (
                         <p className="text-sm text-muted-foreground">
                           {inquiry.phone}
@@ -89,6 +95,15 @@ export default async function AdminInquiriesPage() {
                       day: "numeric",
                       year: "numeric",
                     }).format(inquiry.createdAt)}
+                  </TableCell>
+
+                  <TableCell className="text-right">
+                    <Link
+                      href={`/admin/inquiries/${inquiry.id}`}
+                      className="text-sm font-medium underline-offset-4 hover:underline"
+                    >
+                      View
+                    </Link>
                   </TableCell>
                 </TableRow>
               ))
