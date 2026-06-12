@@ -14,6 +14,7 @@ import {
   type InquiryFormInput,
   type InquiryFormValues,
 } from "@/lib/validators";
+import { createInquiry } from "@/app/actions/inquiries";
 type InquiryFormProps = {
   product: Product;
 };
@@ -45,15 +46,17 @@ export function InquiryForm({ product }: InquiryFormProps) {
     name: "inquiryOnly",
   });
 
-  function onSubmit(values: InquiryFormValues) {
-    console.log({
-      product: product.name,
-      productSlug: product.slug,
-      ...values,
-    });
+  async function onSubmit(values: InquiryFormValues) {
+    const result = await createInquiry(product.id, values);
 
-    // Temporary frontend-only behavior.
-    // Later this will save to the database and send an email.
+    if (!result.success) {
+      form.setError("root", {
+        message: result.message,
+      });
+
+      return;
+    }
+
     setSubmitted(true);
   }
 
@@ -216,8 +219,18 @@ export function InquiryForm({ product }: InquiryFormProps) {
           )}
         </div>
 
-        <Button type="submit" className="mt-2">
-          Submit Inquiry
+        {form.formState.errors.root && (
+          <p className="text-sm text-destructive">
+            {form.formState.errors.root.message}
+          </p>
+        )}
+
+        <Button
+          type="submit"
+          className="mt-2"
+          disabled={form.formState.isSubmitting}
+        >
+          {form.formState.isSubmitting ? "Submitting..." : "Submit Inquiry"}
         </Button>
       </div>
     </form>
