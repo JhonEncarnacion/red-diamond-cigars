@@ -8,6 +8,13 @@ export function Navbar() {
           Red Diamond Cigars
         </Link>
 
+        <Link
+          href="/admin/inquiries"
+          className="text-muted-foreground hover:text-foreground"
+        >
+          Admin
+        </Link>
+
         <nav className="flex items-center gap-6 text-sm">
           <Link
             href="/cigars"
