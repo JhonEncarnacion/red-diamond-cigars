@@ -9,7 +9,7 @@ export function Navbar() {
         </Link>
 
         <Link
-          href="/admin/inquiries"
+          href="/admin"
           className="text-muted-foreground hover:text-foreground"
         >
           Admin
