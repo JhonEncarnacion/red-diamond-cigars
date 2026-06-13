@@ -125,8 +125,9 @@ export default async function AdminDashboardPage() {
                   {mostRequestedProduct.name}
                 </p>
                 <p className="mt-2 text-sm text-muted-foreground">
-                  {mostRequestedCount} inquiry
-                  {mostRequestedCount === 1 ? "" : "ies"} submitted.
+                  {mostRequestedCount}{" "}
+                  {mostRequestedCount === 1 ? "inquiry" : "inquiries"}{" "}
+                  submitted.
                 </p>
               </div>
             ) : (
