@@ -2,7 +2,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { prisma } from "@/lib/prisma";
 import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
+import { InquiryStatusSelect } from "@/components/admin/InquiryStatusSelect";
 
 type InquiryDetailPageProps = {
   params: Promise<{
@@ -46,7 +46,12 @@ export default async function InquiryDetailPage({
             {inquiry.fullName}
           </h1>
 
-          <Badge variant="outline">{inquiry.status}</Badge>
+          <div className="w-full sm:w-64">
+            <InquiryStatusSelect
+              inquiryId={inquiry.id}
+              currentStatus={inquiry.status}
+            />
+          </div>
         </div>
 
         <p className="mt-4 text-muted-foreground">

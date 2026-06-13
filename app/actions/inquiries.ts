@@ -85,3 +85,40 @@ Inquiry only confirmation: ${validatedFields.data.inquiryOnly ? "Yes" : "No"}
     message: "Inquiry submitted successfully.",
   };
 }
+
+export async function updateInquiryStatus(
+  inquiryId: string,
+  status:
+    | "NEW"
+    | "CONTACTED"
+    | "INTERESTED"
+    | "NOT_INTERESTED"
+    | "COMPLETED",
+) {
+  const inquiry = await prisma.inquiry.findUnique({
+    where: {
+      id: inquiryId,
+    },
+  });
+
+  if (!inquiry) {
+    return {
+      success: false,
+      message: "Inquiry could not be found.",
+    };
+  }
+
+  await prisma.inquiry.update({
+    where: {
+      id: inquiryId,
+    },
+    data: {
+      status,
+    },
+  });
+
+  return {
+    success: true,
+    message: "Inquiry status updated.",
+  };
+}
