@@ -94,9 +94,15 @@ export default async function AdminDashboardPage() {
           </p>
         </div>
 
-        <Button asChild>
-          <Link href="/admin/inquiries">View all inquiries</Link>
-        </Button>
+        <div className="flex gap-3">
+          <Button asChild variant="outline">
+            <Link href="/admin/products">View products</Link>
+          </Button>
+
+          <Button asChild>
+            <Link href="/admin/inquiries">View all inquiries</Link>
+          </Button>
+        </div>
       </div>
 
       <div className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
