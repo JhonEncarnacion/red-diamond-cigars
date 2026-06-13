@@ -42,3 +42,59 @@ export const inquirySchema = z.object({
 
 export type InquiryFormInput = z.input<typeof inquirySchema>;
 export type InquiryFormValues = z.output<typeof inquirySchema>;
+
+export const productSchema = z.object({
+  name: z
+    .string()
+    .min(2, "Product name must be at least 2 characters.")
+    .max(100, "Product name must be less than 100 characters."),
+
+  slug: z
+    .string()
+    .min(2, "Slug must be at least 2 characters.")
+    .max(120, "Slug must be less than 120 characters.")
+    .regex(
+      /^[a-z0-9]+(?:-[a-z0-9]+)*$/,
+      "Slug must use lowercase letters, numbers, and hyphens only.",
+    ),
+
+  description: z
+    .string()
+    .min(10, "Description must be at least 10 characters.")
+    .max(1000, "Description must be less than 1000 characters."),
+
+  wrapper: z
+    .string()
+    .max(80, "Wrapper must be less than 80 characters.")
+    .optional(),
+  binder: z
+    .string()
+    .max(80, "Binder must be less than 80 characters.")
+    .optional(),
+  filler: z
+    .string()
+    .max(120, "Filler must be less than 120 characters.")
+    .optional(),
+  origin: z
+    .string()
+    .max(100, "Origin must be less than 100 characters.")
+    .optional(),
+  size: z.string().max(80, "Size must be less than 80 characters.").optional(),
+
+  strength: z
+    .string()
+    .min(1, "Strength is required.")
+    .max(40, "Strength must be less than 40 characters."),
+
+  image: z.string().max(300, "Image path is too long.").optional(),
+
+  stock: z.coerce
+    .number()
+    .int("Stock must be a whole number.")
+    .min(0, "Stock cannot be negative."),
+
+  isActive: z.boolean(),
+});
+
+export type ProductFormInput = z.input<typeof productSchema>;
+export type ProductFormValues = z.output<typeof productSchema>;

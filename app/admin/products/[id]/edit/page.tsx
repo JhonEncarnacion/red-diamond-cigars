@@ -3,7 +3,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { prisma } from "@/lib/prisma";
 import { Button } from "@/components/ui/button";
-import { ProductAvailabilityForm } from "@/components/admin/ProductAvailabilityForm";
+import { ProductForm } from "@/components/admin/ProductForm";
 
 type EditProductPageProps = {
   params: Promise<{
@@ -62,13 +62,7 @@ export default async function EditProductPage({
           <p className="mt-4 text-muted-foreground">{product.description}</p>
 
           <div className="mt-8">
-            <ProductAvailabilityForm
-              product={{
-                id: product.id,
-                stock: product.stock,
-                isActive: product.isActive,
-              }}
-            />
+            <ProductForm product={product} />
           </div>
         </div>
       </div>

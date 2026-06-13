@@ -2,57 +2,82 @@
 
 import { revalidatePath } from "next/cache";
 import { prisma } from "@/lib/prisma";
+import { productSchema, type ProductFormInput } from "@/lib/validators";
 
-type UpdateProductAvailabilityResult = {
+type UpdateProductResult = {
   success: boolean;
   message: string;
 };
 
-export async function updateProductAvailability(
+export async function updateProduct(
   productId: string,
-  values: {
-    stock: number;
-    isActive: boolean;
-  },
-): Promise<UpdateProductAvailabilityResult> {
-  if (!Number.isInteger(values.stock) || values.stock < 0) {
+  values: ProductFormInput,
+): Promise<UpdateProductResult> {
+  const validatedFields = productSchema.safeParse(values);
+
+  if (!validatedFields.success) {
     return {
       success: false,
-      message: "Stock must be a whole number of 0 or more.",
+      message: "Please check the product form and try again.",
     };
   }
 
-  const product = await prisma.product.findUnique({
+  const existingProduct = await prisma.product.findUnique({
     where: {
       id: productId,
     },
   });
 
-  if (!product) {
+  if (!existingProduct) {
     return {
       success: false,
       message: "Product could not be found.",
     };
   }
 
-  await prisma.product.update({
+  const slugOwner = await prisma.product.findUnique({
+    where: {
+      slug: validatedFields.data.slug,
+    },
+  });
+
+  if (slugOwner && slugOwner.id !== productId) {
+    return {
+      success: false,
+      message: "Another product already uses this slug.",
+    };
+  }
+
+  const updatedProduct = await prisma.product.update({
     where: {
       id: productId,
     },
     data: {
-      stock: values.stock,
-      isActive: values.isActive,
+      name: validatedFields.data.name,
+      slug: validatedFields.data.slug,
+      description: validatedFields.data.description,
+      wrapper: validatedFields.data.wrapper || null,
+      binder: validatedFields.data.binder || null,
+      filler: validatedFields.data.filler || null,
+      origin: validatedFields.data.origin || null,
+      size: validatedFields.data.size || null,
+      strength: validatedFields.data.strength,
+      image: validatedFields.data.image || null,
+      stock: validatedFields.data.stock,
+      isActive: validatedFields.data.isActive,
     },
   });
 
+  revalidatePath("/");
+  revalidatePath("/cigars");
+  revalidatePath(`/cigars/${existingProduct.slug}`);
+  revalidatePath(`/cigars/${updatedProduct.slug}`);
+  revalidatePath("/admin");
   revalidatePath("/admin/products");
   revalidatePath(`/admin/products/${productId}/edit`);
-  revalidatePath("/cigars");
-  revalidatePath(`/cigars/${product.slug}`);
-  revalidatePath("/");
 
   return {
     success: true,
-    message: "Product availability updated.",
+    message: "Product updated successfully.",
   };
 }
