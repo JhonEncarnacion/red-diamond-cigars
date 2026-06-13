@@ -102,12 +102,21 @@ export default async function AdminProductsPage() {
                   </TableCell>
 
                   <TableCell className="text-right">
-                    <Link
-                      href={`/cigars/${product.slug}`}
-                      className="text-sm font-medium underline-offset-4 hover:underline"
-                    >
-                      View
-                    </Link>
+                    <div className="flex justify-end gap-4">
+                      <Link
+                        href={`/cigars/${product.slug}`}
+                        className="text-sm font-medium underline-offset-4 hover:underline"
+                      >
+                        View
+                      </Link>
+
+                      <Link
+                        href={`/admin/products/${product.id}/edit`}
+                        className="text-sm font-medium underline-offset-4 hover:underline"
+                      >
+                        Edit
+                      </Link>
+                    </div>
                   </TableCell>
                 </TableRow>
               ))
