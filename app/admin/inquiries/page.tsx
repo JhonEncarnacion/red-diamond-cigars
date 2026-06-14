@@ -10,14 +10,80 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { requireAdmin } from "@/lib/admin-auth";
+import { InquiryFilters } from "@/components/admin/InquiryFilters";
 
-export default async function AdminInquiriesPage() {
+type AdminInquiriesPageProps = {
+  searchParams: Promise<{
+    status?: string;
+    search?: string;
+  }>;
+};
+
+export default async function AdminInquiriesPage({
+  searchParams,
+}: AdminInquiriesPageProps) {
   await requireAdmin();
 
+  const { status, search } = await searchParams;
+
   const inquiries = await prisma.inquiry.findMany({
+    where: {
+      ...(status && status !== "ALL"
+        ? {
+            status: status as
+              | "NEW"
+              | "CONTACTED"
+              | "INTERESTED"
+              | "NOT_INTERESTED"
+              | "COMPLETED",
+          }
+        : {}),
+
+      ...(search
+        ? {
+            OR: [
+              {
+                fullName: {
+                  contains: search,
+
+                  mode: "insensitive",
+                },
+              },
+
+              {
+                email: {
+                  contains: search,
+
+                  mode: "insensitive",
+                },
+              },
+
+              {
+                location: {
+                  contains: search,
+
+                  mode: "insensitive",
+                },
+              },
+
+              {
+                product: {
+                  name: {
+                    contains: search,
+
+                    mode: "insensitive",
+                  },
+                },
+              },
+            ],
+          }
+        : {}),
+    },
+
     include: {
       product: true,
     },
+
     orderBy: {
       createdAt: "desc",
     },
@@ -39,7 +105,9 @@ export default async function AdminInquiriesPage() {
         </p>
       </div>
 
-      <div className="mt-10 rounded-xl border">
+      <InquiryFilters />
+
+      <div className="mt-6 rounded-xl border">
         <Table>
           <TableHeader>
             <TableRow>
