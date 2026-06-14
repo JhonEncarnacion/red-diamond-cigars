@@ -11,6 +11,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { ProductArchiveButton } from "@/components/admin/ProductArchiveButton";
 
 export default async function AdminProductsPage() {
   const products = await prisma.product.findMany({
@@ -104,7 +105,7 @@ export default async function AdminProductsPage() {
                   </TableCell>
 
                   <TableCell className="text-right">
-                    <div className="flex justify-end gap-4">
+                    <div className="flex items-center justify-end gap-3">
                       <Link
                         href={`/cigars/${product.slug}`}
                         className="text-sm font-medium underline-offset-4 hover:underline"
@@ -118,6 +119,11 @@ export default async function AdminProductsPage() {
                       >
                         Edit
                       </Link>
+
+                      <ProductArchiveButton
+                        productId={product.id}
+                        isActive={product.isActive}
+                      />
                     </div>
                   </TableCell>
                 </TableRow>

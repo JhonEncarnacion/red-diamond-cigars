@@ -135,3 +135,73 @@ export async function createProduct(
     message: "Product created successfully.",
   };
 }
+
+export async function archiveProduct(productId: string) {
+  const product = await prisma.product.findUnique({
+    where: {
+      id: productId,
+    },
+  });
+
+  if (!product) {
+    return {
+      success: false,
+      message: "Product could not be found.",
+    };
+  }
+
+  await prisma.product.update({
+    where: {
+      id: productId,
+    },
+    data: {
+      isActive: false,
+    },
+  });
+
+  revalidatePath("/");
+  revalidatePath("/cigars");
+  revalidatePath(`/cigars/${product.slug}`);
+  revalidatePath("/admin");
+  revalidatePath("/admin/products");
+
+  return {
+    success: true,
+    message: "Product archived.",
+  };
+}
+
+export async function restoreProduct(productId: string) {
+  const product = await prisma.product.findUnique({
+    where: {
+      id: productId,
+    },
+  });
+
+  if (!product) {
+    return {
+      success: false,
+      message: "Product could not be found.",
+    };
+  }
+
+  await prisma.product.update({
+    where: {
+      id: productId,
+    },
+    data: {
+      isActive: true,
+    },
+  });
+
+  revalidatePath("/");
+  revalidatePath("/cigars");
+  revalidatePath(`/cigars/${product.slug}`);
+  revalidatePath("/admin");
+  revalidatePath("/admin/products");
+
+  return {
+    success: true,
+    message: "Product restored.",
+  };
+}
