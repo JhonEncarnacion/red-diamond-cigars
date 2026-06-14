@@ -78,6 +78,55 @@ Confirmed 21+: ${validatedFields.data.confirmed21 ? "Yes" : "No"}
 Inquiry only confirmation: ${validatedFields.data.inquiryOnly ? "Yes" : "No"}
     `,
     });
+    
+    await resend.emails.send({
+      from: "Red Diamond Cigars <onboarding@resend.dev>",
+      to: validatedFields.data.email,
+      subject: "We received your cigar inquiry",
+      html: `
+    <div style="font-family: Arial, sans-serif; line-height: 1.6; color: #111;">
+      <h2>We received your inquiry</h2>
+
+      <p>Hi ${validatedFields.data.fullName},</p>
+
+      <p>
+        Thank you for reaching out to Red Diamond Cigars. We received your inquiry
+        for <strong>${product.name}</strong>.
+      </p>
+
+      <p>
+        Someone from Red Diamond Cigars will contact you soon using the information
+        you provided.
+      </p>
+
+      <hr />
+
+      <h3>Inquiry details</h3>
+
+      <p><strong>Cigar:</strong> ${product.name}</p>
+      <p><strong>Desired quantity:</strong> ${validatedFields.data.quantity}</p>
+      <p><strong>Location:</strong> ${validatedFields.data.location}</p>
+
+      ${
+        validatedFields.data.message
+          ? `<p><strong>Your message:</strong> ${validatedFields.data.message}</p>`
+          : ""
+      }
+
+      <hr />
+
+      <p style="font-size: 13px; color: #555;">
+        This email confirms that your inquiry was received. It is not a purchase,
+        order confirmation, payment confirmation, shipping confirmation, or guarantee
+        of product availability.
+      </p>
+
+      <p style="font-size: 13px; color: #555;">
+        Red Diamond Cigars products are intended only for adults 21 and older.
+      </p>
+    </div>
+  `,
+    });
   } catch (error) {
     console.error("Failed to send inquiry email:", error);
   }
