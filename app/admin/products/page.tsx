@@ -13,11 +13,88 @@ import {
 } from "@/components/ui/table";
 import { ProductArchiveButton } from "@/components/admin/ProductArchiveButton";
 import { requireAdmin } from "@/lib/admin-auth";
+import { ProductFilters } from "@/components/admin/ProductFilters";
 
-export default async function AdminProductsPage() {
+type AdminProductsPageProps = {
+  searchParams: Promise<{
+    search?: string;
+
+    status?: string;
+
+    stock?: string;
+  }>;
+};
+
+export default async function AdminProductsPage({
+  searchParams,
+}: AdminProductsPageProps) {
   await requireAdmin();
 
+  const { search, status, stock } = await searchParams;
+
   const products = await prisma.product.findMany({
+    where: {
+      ...(status === "ACTIVE"
+        ? { isActive: true }
+        : status === "INACTIVE"
+          ? { isActive: false }
+          : {}),
+
+      ...(stock === "LOW_STOCK"
+        ? {
+            stock: {
+              lte: 10,
+            },
+          }
+        : {}),
+
+      ...(search
+        ? {
+            OR: [
+              {
+                name: {
+                  contains: search,
+
+                  mode: "insensitive",
+                },
+              },
+
+              {
+                origin: {
+                  contains: search,
+
+                  mode: "insensitive",
+                },
+              },
+
+              {
+                wrapper: {
+                  contains: search,
+
+                  mode: "insensitive",
+                },
+              },
+
+              {
+                size: {
+                  contains: search,
+
+                  mode: "insensitive",
+                },
+              },
+
+              {
+                strength: {
+                  contains: search,
+
+                  mode: "insensitive",
+                },
+              },
+            ],
+          }
+        : {}),
+    },
+
     orderBy: {
       createdAt: "desc",
     },
@@ -43,7 +120,9 @@ export default async function AdminProductsPage() {
         </Button>
       </div>
 
-      <div className="mt-10 rounded-xl border">
+      <ProductFilters />
+
+      <div className="mt-6 rounded-xl border">
         <Table>
           <TableHeader>
             <TableRow>
