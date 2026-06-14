@@ -51,34 +51,40 @@ export async function createInquiry(
     },
   });
 
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000";
+
+  const adminInquiryUrl = `${siteUrl}/admin/inquiries/${inquiry.id}`;
+
   try {
     await resend.emails.send({
       from: "Cigar Site <onboarding@resend.dev>",
       to: process.env.ADMIN_EMAIL!,
       replyTo: validatedFields.data.email,
       subject: `New cigar inquiry: ${product.name}`,
-      text: `
-New cigar inquiry received.
+      html: `
+    <div style="font-family: Arial, sans-serif; line-height: 1.6; color: #111;">
+      <h2>New cigar inquiry</h2>
 
-Product: ${product.name}
-Inquiry ID: ${inquiry.id}
+      <p>
+        <a
+          href="${adminInquiryUrl}"
+          style="display: inline-block; background: #111; color: white; padding: 10px 14px; text-decoration: none; border-radius: 6px;"
+        >
+          View inquiry in admin
+        </a>
+      </p>
 
-Customer:
-${validatedFields.data.fullName}
-${validatedFields.data.email}
-${validatedFields.data.phone || "No phone provided"}
-${validatedFields.data.location}
-
-Desired quantity: ${validatedFields.data.quantity}
-
-Message:
-${validatedFields.data.message || "No message provided."}
-
-Confirmed 21+: ${validatedFields.data.confirmed21 ? "Yes" : "No"}
-Inquiry only confirmation: ${validatedFields.data.inquiryOnly ? "Yes" : "No"}
-    `,
+      <p><strong>Cigar:</strong> ${product.name}</p>
+      <p><strong>Name:</strong> ${validatedFields.data.fullName}</p>
+      <p><strong>Email:</strong> ${validatedFields.data.email}</p>
+      <p><strong>Phone:</strong> ${validatedFields.data.phone || "Not provided"}</p>
+      <p><strong>Location:</strong> ${validatedFields.data.location}</p>
+      <p><strong>Desired quantity:</strong> ${validatedFields.data.quantity}</p>
+      <p><strong>Message:</strong> ${validatedFields.data.message || "No message provided"}</p>
+    </div>
+  `,
     });
-    
+
     await resend.emails.send({
       from: "Red Diamond Cigars <onboarding@resend.dev>",
       to: validatedFields.data.email,
