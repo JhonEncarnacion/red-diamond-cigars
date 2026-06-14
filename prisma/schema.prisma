@@ -47,6 +47,8 @@ model Inquiry {
   confirmed21  Boolean
   inquiryOnly  Boolean
 
+  adminNotes String?
+
   status       InquiryStatus @default(NEW)
 
   productId    String

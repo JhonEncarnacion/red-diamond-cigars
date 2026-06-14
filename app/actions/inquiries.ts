@@ -4,6 +4,7 @@ import { requireAdmin } from "@/lib/admin-auth";
 import { prisma } from "@/lib/prisma";
 import { resend } from "@/lib/resend";
 import { inquirySchema, type InquiryFormInput } from "@/lib/validators";
+import { revalidatePath } from "next/cache";
 
 type CreateInquiryResult = {
   success: boolean;
@@ -118,5 +119,43 @@ export async function updateInquiryStatus(
   return {
     success: true,
     message: "Inquiry status updated.",
+  };
+}
+
+export async function updateInquiryAdminNotes(
+  inquiryId: string,
+  adminNotes: string,
+) {
+  await requireAdmin();
+
+  const inquiry = await prisma.inquiry.findUnique({
+    where: {
+      id: inquiryId,
+    },
+  });
+
+  if (!inquiry) {
+    return {
+      success: false,
+      message: "Inquiry could not be found.",
+    };
+  }
+
+  await prisma.inquiry.update({
+    where: {
+      id: inquiryId,
+    },
+    data: {
+      adminNotes: adminNotes.trim() || null,
+    },
+  });
+
+  revalidatePath("/admin");
+  revalidatePath("/admin/inquiries");
+  revalidatePath(`/admin/inquiries/${inquiryId}`);
+
+  return {
+    success: true,
+    message: "Admin notes updated.",
   };
 }

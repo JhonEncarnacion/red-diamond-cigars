@@ -4,6 +4,7 @@ import { prisma } from "@/lib/prisma";
 import { Button } from "@/components/ui/button";
 import { InquiryStatusSelect } from "@/components/admin/InquiryStatusSelect";
 import { requireAdmin } from "@/lib/admin-auth";
+import { InquiryAdminNotesForm } from "@/components/admin/InquiryAdminNotesForm";
 
 type InquiryDetailPageProps = {
   params: Promise<{
@@ -101,6 +102,11 @@ export default async function InquiryDetailPage({
             {inquiry.message || "No message provided."}
           </p>
         </section>
+
+        <InquiryAdminNotesForm
+          inquiryId={inquiry.id}
+          initialNotes={inquiry.adminNotes}
+        />
 
         <section className="rounded-xl border p-6">
           <h2 className="text-xl font-semibold">Confirmations</h2>
