@@ -3,6 +3,7 @@
 import { revalidatePath } from "next/cache";
 import { prisma } from "@/lib/prisma";
 import { productSchema, type ProductFormInput } from "@/lib/validators";
+import { requireAdmin } from "@/lib/admin-auth";
 
 type UpdateProductResult = {
   success: boolean;
@@ -13,6 +14,8 @@ export async function updateProduct(
   productId: string,
   values: ProductFormInput,
 ): Promise<UpdateProductResult> {
+  await requireAdmin();
+
   const validatedFields = productSchema.safeParse(values);
 
   if (!validatedFields.success) {
@@ -85,6 +88,8 @@ export async function updateProduct(
 export async function createProduct(
   values: ProductFormInput,
 ): Promise<UpdateProductResult> {
+  await requireAdmin();
+
   const validatedFields = productSchema.safeParse(values);
 
   if (!validatedFields.success) {
@@ -137,6 +142,8 @@ export async function createProduct(
 }
 
 export async function archiveProduct(productId: string) {
+  await requireAdmin();
+
   const product = await prisma.product.findUnique({
     where: {
       id: productId,
@@ -172,6 +179,8 @@ export async function archiveProduct(productId: string) {
 }
 
 export async function restoreProduct(productId: string) {
+  await requireAdmin();
+
   const product = await prisma.product.findUnique({
     where: {
       id: productId,

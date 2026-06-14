@@ -12,8 +12,11 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { ProductArchiveButton } from "@/components/admin/ProductArchiveButton";
+import { requireAdmin } from "@/lib/admin-auth";
 
 export default async function AdminProductsPage() {
+  await requireAdmin();
+
   const products = await prisma.product.findMany({
     orderBy: {
       createdAt: "desc",

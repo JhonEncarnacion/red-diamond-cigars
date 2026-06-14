@@ -1,5 +1,6 @@
 "use server";
 
+import { requireAdmin } from "@/lib/admin-auth";
 import { prisma } from "@/lib/prisma";
 import { resend } from "@/lib/resend";
 import { inquirySchema, type InquiryFormInput } from "@/lib/validators";
@@ -88,13 +89,10 @@ Inquiry only confirmation: ${validatedFields.data.inquiryOnly ? "Yes" : "No"}
 
 export async function updateInquiryStatus(
   inquiryId: string,
-  status:
-    | "NEW"
-    | "CONTACTED"
-    | "INTERESTED"
-    | "NOT_INTERESTED"
-    | "COMPLETED",
+  status: "NEW" | "CONTACTED" | "INTERESTED" | "NOT_INTERESTED" | "COMPLETED",
 ) {
+  await requireAdmin();
+
   const inquiry = await prisma.inquiry.findUnique({
     where: {
       id: inquiryId,

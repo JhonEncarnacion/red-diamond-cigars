@@ -9,8 +9,11 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { requireAdmin } from "@/lib/admin-auth";
 
 export default async function AdminInquiriesPage() {
+  await requireAdmin();
+
   const inquiries = await prisma.inquiry.findMany({
     include: {
       product: true,

@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import { prisma } from "@/lib/prisma";
 import { Button } from "@/components/ui/button";
 import { InquiryStatusSelect } from "@/components/admin/InquiryStatusSelect";
+import { requireAdmin } from "@/lib/admin-auth";
 
 type InquiryDetailPageProps = {
   params: Promise<{
@@ -13,6 +14,8 @@ type InquiryDetailPageProps = {
 export default async function InquiryDetailPage({
   params,
 }: InquiryDetailPageProps) {
+  await requireAdmin();
+
   const { id } = await params;
 
   const inquiry = await prisma.inquiry.findUnique({

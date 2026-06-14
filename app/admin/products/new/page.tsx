@@ -1,8 +1,11 @@
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { ProductForm } from "@/components/admin/ProductForm";
+import { requireAdmin } from "@/lib/admin-auth";
 
-export default function NewProductPage() {
+export default async function NewProductPage() {
+  await requireAdmin();
+
   return (
     <div className="mx-auto max-w-4xl px-4 py-12">
       <div className="mb-8">
