@@ -2,7 +2,7 @@
 
 import { useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
-import { updateProduct } from "@/app/actions/products";
+import { createProduct, updateProduct } from "@/app/actions/products";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Input } from "@/components/ui/input";
@@ -11,7 +11,7 @@ import { Textarea } from "@/components/ui/textarea";
 import type { ProductFormInput } from "@/lib/validators";
 
 type ProductFormProps = {
-  product: {
+  product?: {
     id: string;
     name: string;
     slug: string;
@@ -32,9 +32,9 @@ export function ProductForm({ product }: ProductFormProps) {
   const router = useRouter();
   const [isPending, startTransition] = useTransition();
   const [message, setMessage] = useState<string | null>(null);
-  const [isActive, setIsActive] = useState(product.isActive);
+  const [isActive, setIsActive] = useState(product?.isActive ?? true);
 
-  function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
+  function handleSubmit(event: React.SyntheticEvent<HTMLFormElement>) {
     event.preventDefault();
     setMessage(null);
 
@@ -56,11 +56,17 @@ export function ProductForm({ product }: ProductFormProps) {
     };
 
     startTransition(async () => {
-      const result = await updateProduct(product.id, values);
+      const result = product
+        ? await updateProduct(product?.id, values)
+        : await createProduct(values);
       setMessage(result.message);
 
       if (result.success) {
         router.refresh();
+
+        if (!product) {
+          router.push("/admin/products");
+        }
       }
     });
   }
@@ -68,7 +74,9 @@ export function ProductForm({ product }: ProductFormProps) {
   return (
     <form onSubmit={handleSubmit} className="rounded-xl border p-6">
       <div>
-        <h2 className="text-xl font-semibold">Product Details</h2>
+        <h2 className="text-xl font-semibold">
+          {product ? "Product Details" : "New Product"}
+        </h2>{" "}
         <p className="mt-2 text-sm text-muted-foreground">
           Update the cigar information shown in the public catalog.
         </p>
@@ -77,12 +85,12 @@ export function ProductForm({ product }: ProductFormProps) {
       <div className="mt-6 grid gap-5">
         <div className="grid gap-2">
           <Label htmlFor="name">Product name</Label>
-          <Input id="name" name="name" defaultValue={product.name} required />
+          <Input id="name" name="name" defaultValue={product?.name} required />
         </div>
 
         <div className="grid gap-2">
           <Label htmlFor="slug">Slug</Label>
-          <Input id="slug" name="slug" defaultValue={product.slug} required />
+          <Input id="slug" name="slug" defaultValue={product?.slug} required />
           <p className="text-xs text-muted-foreground">
             Example: reserva-especial-robusto
           </p>
@@ -93,7 +101,7 @@ export function ProductForm({ product }: ProductFormProps) {
           <Textarea
             id="description"
             name="description"
-            defaultValue={product.description}
+            defaultValue={product?.description}
             required
           />
         </div>
@@ -104,7 +112,7 @@ export function ProductForm({ product }: ProductFormProps) {
             <Input
               id="wrapper"
               name="wrapper"
-              defaultValue={product.wrapper ?? ""}
+              defaultValue={product?.wrapper ?? ""}
               placeholder="Habano, Maduro, Connecticut..."
             />
           </div>
@@ -114,7 +122,7 @@ export function ProductForm({ product }: ProductFormProps) {
             <Input
               id="binder"
               name="binder"
-              defaultValue={product.binder ?? ""}
+              defaultValue={product?.binder ?? ""}
               placeholder="Dominican, Nicaraguan..."
             />
           </div>
@@ -124,7 +132,7 @@ export function ProductForm({ product }: ProductFormProps) {
             <Input
               id="filler"
               name="filler"
-              defaultValue={product.filler ?? ""}
+              defaultValue={product?.filler ?? ""}
               placeholder="Dominican blend..."
             />
           </div>
@@ -134,7 +142,7 @@ export function ProductForm({ product }: ProductFormProps) {
             <Input
               id="origin"
               name="origin"
-              defaultValue={product.origin ?? ""}
+              defaultValue={product?.origin ?? ""}
               placeholder="Dominican Republic"
             />
           </div>
@@ -144,7 +152,7 @@ export function ProductForm({ product }: ProductFormProps) {
             <Input
               id="size"
               name="size"
-              defaultValue={product.size ?? ""}
+              defaultValue={product?.size ?? ""}
               placeholder="Robusto, Toro, Churchill..."
             />
           </div>
@@ -154,7 +162,7 @@ export function ProductForm({ product }: ProductFormProps) {
             <Input
               id="strength"
               name="strength"
-              defaultValue={product.strength}
+              defaultValue={product?.strength}
               placeholder="Mild, Medium, Full"
               required
             />
@@ -166,7 +174,7 @@ export function ProductForm({ product }: ProductFormProps) {
           <Input
             id="image"
             name="image"
-            defaultValue={product.image ?? ""}
+            defaultValue={product?.image ?? ""}
             placeholder="/images/cigar-placeholder.png"
           />
           <p className="text-xs text-muted-foreground">
@@ -182,7 +190,7 @@ export function ProductForm({ product }: ProductFormProps) {
             name="stock"
             type="number"
             min="0"
-            defaultValue={product.stock}
+            defaultValue={product?.stock}
             required
           />
         </div>
@@ -206,7 +214,11 @@ export function ProductForm({ product }: ProductFormProps) {
         {message && <p className="text-sm text-muted-foreground">{message}</p>}
 
         <Button type="submit" disabled={isPending}>
-          {isPending ? "Saving..." : "Save product"}
+          {isPending
+            ? "Saving..."
+            : product
+              ? "Save product"
+              : "Create product"}{" "}
         </Button>
       </div>
     </form>

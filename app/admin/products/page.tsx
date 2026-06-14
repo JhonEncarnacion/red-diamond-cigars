@@ -34,7 +34,9 @@ export default async function AdminProductsPage() {
           </p>
         </div>
 
-        <Button disabled>Add product</Button>
+        <Button asChild>
+          <Link href="/admin/products/new">Add product</Link>
+        </Button>
       </div>
 
       <div className="mt-10 rounded-xl border">
