@@ -29,6 +29,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
           src={product.image ?? "/images/cigar-placeholder.png"}
           alt={product.name}
           fill
+          sizes="(max-width: 1024px) 100vw, 50vw"
           className="object-cover"
         />
       </div>

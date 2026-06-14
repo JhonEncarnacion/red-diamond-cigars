@@ -41,6 +41,7 @@ export default async function EditProductPage({
               src={product.image ?? "/images/cigar-placeholder.png"}
               alt={product.name}
               fill
+              sizes="(max-width: 1024px) 100vw, 280px"
               className="object-cover"
             />
           </div>

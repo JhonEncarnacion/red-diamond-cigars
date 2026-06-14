@@ -73,6 +73,7 @@ export default async function AdminProductsPage() {
                           src={product.image ?? "/images/cigar-placeholder.png"}
                           alt={product.name}
                           fill
+                          sizes="56px"
                           className="object-cover"
                         />
                       </div>

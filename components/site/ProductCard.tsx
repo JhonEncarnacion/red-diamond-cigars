@@ -21,6 +21,7 @@ export function ProductCard({ product }: ProductCardProps) {
           src={product.image ?? "/images/cigar-placeholder.png"}
           alt={product.name}
           fill
+          sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
           className="object-cover"
         />
       </div>
