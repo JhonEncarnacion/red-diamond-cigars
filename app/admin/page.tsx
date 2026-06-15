@@ -14,38 +14,64 @@ export default async function AdminDashboardPage() {
     contactedInquiries,
     completedInquiries,
     lowStockProducts,
+    outOfStockProducts,
     recentInquiries,
     productInquiryCounts,
   ] = await Promise.all([
-    prisma.inquiry.count(),
     prisma.inquiry.count({
       where: {
+        isArchived: false,
+      },
+    }),
+
+    prisma.inquiry.count({
+      where: {
+        isArchived: false,
         status: "NEW",
       },
     }),
+
     prisma.inquiry.count({
       where: {
+        isArchived: false,
         status: "CONTACTED",
       },
     }),
+
     prisma.inquiry.count({
       where: {
+        isArchived: false,
         status: "COMPLETED",
       },
     }),
+
     prisma.product.findMany({
       where: {
         stock: {
+          gt: 0,
           lte: 10,
         },
-        isActive: true,
       },
       orderBy: {
         stock: "asc",
       },
       take: 5,
     }),
+
+    prisma.product.findMany({
+      where: {
+        stock: 0,
+      },
+      orderBy: {
+        updatedAt: "desc",
+      },
+      take: 5,
+    }),
+
     prisma.inquiry.findMany({
+      where: {
+        isArchived: false,
+      },
       include: {
         product: true,
       },
@@ -54,8 +80,12 @@ export default async function AdminDashboardPage() {
       },
       take: 5,
     }),
+
     prisma.inquiry.groupBy({
       by: ["productId"],
+      where: {
+        isArchived: false,
+      },
       _count: {
         productId: true,
       },
@@ -115,7 +145,7 @@ export default async function AdminDashboardPage() {
         <StatCard title="Completed" value={completedInquiries} />
       </div>
 
-      <div className="mt-6 grid gap-6 lg:grid-cols-2">
+      <div className="mt-6 grid gap-6 lg:grid-cols-3">
         <Card>
           <CardHeader>
             <CardTitle>Most requested cigar</CardTitle>
@@ -142,34 +172,102 @@ export default async function AdminDashboardPage() {
         </Card>
 
         <Card>
-          <CardHeader>
-            <CardTitle>Low stock cigars</CardTitle>
+          <CardHeader className="flex flex-row items-start justify-between gap-4">
+            <div>
+              <CardTitle>Low Stock</CardTitle>
+              <p className="mt-2 text-sm text-muted-foreground">
+                Cigars with 10 or fewer units remaining.
+              </p>
+            </div>
+
+            <Link
+              href="/admin/products?stock=LOW_STOCK"
+              className="whitespace-nowrap text-sm font-medium underline underline-offset-4"
+            >
+              View products
+            </Link>
           </CardHeader>
 
           <CardContent>
-            {lowStockProducts.length === 0 ? (
-              <p className="text-sm text-muted-foreground">
-                No low stock products.
-              </p>
-            ) : (
-              <div className="grid gap-4">
-                {lowStockProducts.map((product) => (
+            <div className="space-y-4">
+              {lowStockProducts.length > 0 ? (
+                lowStockProducts.map((product) => (
                   <div
                     key={product.id}
-                    className="flex items-center justify-between gap-4"
+                    className="flex items-center justify-between gap-4 border-b pb-3 last:border-0 last:pb-0"
                   >
                     <div>
                       <p className="font-medium">{product.name}</p>
                       <p className="text-sm text-muted-foreground">
-                        {product.size ?? "Size not listed"}
+                        {product.stock} left ·{" "}
+                        {product.origin ?? "Unknown origin"}
                       </p>
                     </div>
 
-                    <Badge variant="outline">{product.stock} left</Badge>
+                    <Link
+                      href={`/admin/products/${product.id}/edit`}
+                      className="text-sm font-medium underline underline-offset-4"
+                    >
+                      Edit
+                    </Link>
                   </div>
-                ))}
-              </div>
-            )}
+                ))
+              ) : (
+                <p className="text-sm text-muted-foreground">
+                  No cigars are currently low on stock.
+                </p>
+              )}
+            </div>
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardHeader className="flex flex-row items-start justify-between gap-4">
+            <div>
+              <CardTitle>Out of Stock</CardTitle>
+              <p className="mt-2 text-sm text-muted-foreground">
+                Cigars that currently have no stock.
+              </p>
+            </div>
+
+            <Link
+              href="/admin/products?stock=LOW_STOCK"
+              className="whitespace-nowrap text-sm font-medium underline underline-offset-4"
+            >
+              View products
+            </Link>
+          </CardHeader>
+
+          <CardContent>
+            <div className="space-y-4">
+              {outOfStockProducts.length > 0 ? (
+                outOfStockProducts.map((product) => (
+                  <div
+                    key={product.id}
+                    className="flex items-center justify-between gap-4 border-b pb-3 last:border-0 last:pb-0"
+                  >
+                    <div>
+                      <p className="font-medium">{product.name}</p>
+                      <p className="text-sm text-muted-foreground">
+                        {product.origin ?? "Unknown origin"} ·{" "}
+                        {product.size ?? "Unknown size"}
+                      </p>
+                    </div>
+
+                    <Link
+                      href={`/admin/products/${product.id}/edit`}
+                      className="text-sm font-medium underline underline-offset-4"
+                    >
+                      Edit
+                    </Link>
+                  </div>
+                ))
+              ) : (
+                <p className="text-sm text-muted-foreground">
+                  No cigars are currently out of stock.
+                </p>
+              )}
+            </div>
           </CardContent>
         </Card>
       </div>
