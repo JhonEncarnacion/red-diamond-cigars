@@ -1,6 +1,5 @@
 import Link from "next/link";
 import { prisma } from "@/lib/prisma";
-import { Badge } from "@/components/ui/badge";
 import {
   Table,
   TableBody,
@@ -11,6 +10,7 @@ import {
 } from "@/components/ui/table";
 import { requireAdmin } from "@/lib/admin-auth";
 import { InquiryFilters } from "@/components/admin/InquiryFilters";
+import { InquiryStatusSelect } from "@/components/admin/InquiryStatusSelect";
 
 type AdminInquiriesPageProps = {
   searchParams: Promise<{
@@ -157,7 +157,10 @@ export default async function AdminInquiriesPage({
                   <TableCell>{inquiry.location}</TableCell>
 
                   <TableCell>
-                    <Badge variant="outline">{inquiry.status}</Badge>
+                    <InquiryStatusSelect
+                      inquiryId={inquiry.id}
+                      currentStatus={inquiry.status}
+                    />
                   </TableCell>
 
                   <TableCell>
