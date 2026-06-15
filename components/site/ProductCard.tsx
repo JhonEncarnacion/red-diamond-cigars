@@ -45,6 +45,12 @@ export function ProductCard({ product }: ProductCardProps) {
         <p className="line-clamp-3 text-sm text-muted-foreground">
           {product.description}
         </p>
+
+        {product.stock === 0 ? (
+          <p className="text-sm font-medium text-destructive">Out of stock</p>
+        ) : product.stock <= 10 ? (
+          <p className="text-sm text-muted-foreground">Limited availability</p>
+        ) : null}
       </CardContent>
 
       <CardFooter>

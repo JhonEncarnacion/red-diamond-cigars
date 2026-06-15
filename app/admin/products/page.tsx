@@ -174,11 +174,15 @@ export default async function AdminProductsPage({
                   <TableCell>{product.size ?? "Not listed"}</TableCell>
 
                   <TableCell>
-                    <Badge
-                      variant={product.stock <= 10 ? "destructive" : "outline"}
-                    >
-                      {product.stock} left
-                    </Badge>
+                    <div className="flex items-center gap-2">
+                      <span>{product.stock}</span>
+
+                      {product.stock === 0 ? (
+                        <Badge variant="destructive">Out of stock</Badge>
+                      ) : product.stock <= 10 ? (
+                        <Badge variant="secondary">Low stock</Badge>
+                      ) : null}
+                    </div>
                   </TableCell>
 
                   <TableCell>

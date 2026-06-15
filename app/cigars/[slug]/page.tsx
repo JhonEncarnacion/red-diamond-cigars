@@ -56,6 +56,26 @@ export default async function ProductPage({ params }: ProductPageProps) {
           <Detail label="Available Stock" value={`${product.stock}`} />
         </div>
 
+        <div className="mt-8 rounded-xl border p-4">
+          <p className="text-sm font-medium">Availability</p>
+
+          {product.stock === 0 ? (
+            <p className="mt-1 text-sm text-destructive">
+              This cigar is currently out of stock. You can still send an
+              inquiry to ask about future availability.
+            </p>
+          ) : product.stock <= 10 ? (
+            <p className="mt-1 text-sm text-muted-foreground">
+              Limited availability. Send an inquiry to confirm current stock.
+            </p>
+          ) : (
+            <p className="mt-1 text-sm text-muted-foreground">
+              Available for inquiry. Send a request to confirm quantity and
+              availability.
+            </p>
+          )}
+        </div>
+
         <div className="mt-8">
           <InquiryForm product={product} />
         </div>
