@@ -29,6 +29,47 @@ export default async function AdminInquiriesPage({
 
   const { status, search, archive } = await searchParams;
 
+  const [
+    activeInquiryCount,
+    archivedInquiryCount,
+    newInquiryCount,
+    contactedInquiryCount,
+    completedInquiryCount,
+  ] = await Promise.all([
+    prisma.inquiry.count({
+      where: {
+        isArchived: false,
+      },
+    }),
+
+    prisma.inquiry.count({
+      where: {
+        isArchived: true,
+      },
+    }),
+
+    prisma.inquiry.count({
+      where: {
+        isArchived: false,
+        status: "NEW",
+      },
+    }),
+
+    prisma.inquiry.count({
+      where: {
+        isArchived: false,
+        status: "CONTACTED",
+      },
+    }),
+
+    prisma.inquiry.count({
+      where: {
+        isArchived: false,
+        status: "COMPLETED",
+      },
+    }),
+  ]);
+
   const inquiries = await prisma.inquiry.findMany({
     where: {
       ...(status && status !== "ALL"
@@ -114,7 +155,39 @@ export default async function AdminInquiriesPage({
         </p>
       </div>
 
+      <div className="mt-8 grid gap-4 md:grid-cols-2 lg:grid-cols-5">
+        <div className="rounded-xl border p-4">
+          <p className="text-sm text-muted-foreground">Active</p>
+          <p className="mt-2 text-2xl font-semibold">{activeInquiryCount}</p>
+        </div>
+
+        <div className="rounded-xl border p-4">
+          <p className="text-sm text-muted-foreground">Archived</p>
+          <p className="mt-2 text-2xl font-semibold">{archivedInquiryCount}</p>
+        </div>
+
+        <div className="rounded-xl border p-4">
+          <p className="text-sm text-muted-foreground">New</p>
+          <p className="mt-2 text-2xl font-semibold">{newInquiryCount}</p>
+        </div>
+
+        <div className="rounded-xl border p-4">
+          <p className="text-sm text-muted-foreground">Contacted</p>
+          <p className="mt-2 text-2xl font-semibold">{contactedInquiryCount}</p>
+        </div>
+
+        <div className="rounded-xl border p-4">
+          <p className="text-sm text-muted-foreground">Completed</p>
+          <p className="mt-2 text-2xl font-semibold">{completedInquiryCount}</p>
+        </div>
+      </div>
+
       <InquiryFilters />
+
+      <p className="mt-6 text-sm text-muted-foreground">
+        Showing {inquiries.length}{" "}
+        {inquiries.length === 1 ? "inquiry" : "inquiries"}.
+      </p>
 
       <div className="mt-6 rounded-xl border">
         <Table>
