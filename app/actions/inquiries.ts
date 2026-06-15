@@ -214,3 +214,73 @@ export async function updateInquiryAdminNotes(
     message: "Admin notes updated.",
   };
 }
+
+export async function archiveInquiry(inquiryId: string) {
+  await requireAdmin();
+
+  const inquiry = await prisma.inquiry.findUnique({
+    where: {
+      id: inquiryId,
+    },
+  });
+
+  if (!inquiry) {
+    return {
+      success: false,
+      message: "Inquiry could not be found.",
+    };
+  }
+
+  await prisma.inquiry.update({
+    where: {
+      id: inquiryId,
+    },
+    data: {
+      isArchived: true,
+    },
+  });
+
+  revalidatePath("/admin");
+  revalidatePath("/admin/inquiries");
+  revalidatePath(`/admin/inquiries/${inquiryId}`);
+
+  return {
+    success: true,
+    message: "Inquiry archived.",
+  };
+}
+
+export async function restoreInquiry(inquiryId: string) {
+  await requireAdmin();
+
+  const inquiry = await prisma.inquiry.findUnique({
+    where: {
+      id: inquiryId,
+    },
+  });
+
+  if (!inquiry) {
+    return {
+      success: false,
+      message: "Inquiry could not be found.",
+    };
+  }
+
+  await prisma.inquiry.update({
+    where: {
+      id: inquiryId,
+    },
+    data: {
+      isArchived: false,
+    },
+  });
+
+  revalidatePath("/admin");
+  revalidatePath("/admin/inquiries");
+  revalidatePath(`/admin/inquiries/${inquiryId}`);
+
+  return {
+    success: true,
+    message: "Inquiry restored.",
+  };
+}

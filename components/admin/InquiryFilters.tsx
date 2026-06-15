@@ -21,6 +21,12 @@ const statuses = [
   { label: "Completed", value: "COMPLETED" },
 ];
 
+const archiveOptions = [
+  { label: "Active inquiries", value: "ACTIVE" },
+  { label: "Archived inquiries", value: "ARCHIVED" },
+  { label: "All inquiries", value: "ALL" },
+];
+
 export function InquiryFilters() {
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -29,7 +35,15 @@ export function InquiryFilters() {
   const [search, setSearch] = useState(searchParams.get("search") ?? "");
   const [status, setStatus] = useState(searchParams.get("status") ?? "ALL");
 
-  function updateFilters(nextStatus = status, nextSearch = search) {
+  const [archive, setArchive] = useState(
+    searchParams.get("archive") ?? "ACTIVE",
+  );
+
+  function updateFilters(
+    nextStatus = status,
+    nextSearch = search,
+    nextArchive = archive,
+  ) {
     const params = new URLSearchParams();
 
     if (nextStatus !== "ALL") {
@@ -40,6 +54,10 @@ export function InquiryFilters() {
       params.set("search", nextSearch.trim());
     }
 
+    if (nextArchive !== "ACTIVE") {
+      params.set("archive", nextArchive);
+    }
+
     const queryString = params.toString();
 
     startTransition(() => {
@@ -47,6 +65,11 @@ export function InquiryFilters() {
         queryString ? `/admin/inquiries?${queryString}` : "/admin/inquiries",
       );
     });
+  }
+
+  function handleArchiveChange(value: string) {
+    setArchive(value);
+    updateFilters(status, search, value);
   }
 
   function handleSubmit(event: React.SyntheticEvent<HTMLFormElement>) {
@@ -62,6 +85,7 @@ export function InquiryFilters() {
   function handleClear() {
     setSearch("");
     setStatus("ALL");
+    setArchive("ACTIVE");
 
     startTransition(() => {
       router.push("/admin/inquiries");
@@ -71,7 +95,7 @@ export function InquiryFilters() {
   return (
     <form
       onSubmit={handleSubmit}
-      className="mt-8 grid gap-3 rounded-xl border p-4 md:grid-cols-[1fr_220px_auto_auto]"
+      className="mt-8 grid gap-3 rounded-xl border p-4 lg:grid-cols-[1fr_200px_200px_auto_auto]"
     >
       <Input
         value={search}
@@ -88,6 +112,20 @@ export function InquiryFilters() {
           {statuses.map((status) => (
             <SelectItem key={status.value} value={status.value}>
               {status.label}
+            </SelectItem>
+          ))}
+        </SelectContent>
+      </Select>
+
+      <Select value={archive} onValueChange={handleArchiveChange}>
+        <SelectTrigger>
+          <SelectValue placeholder="Archive status" />
+        </SelectTrigger>
+
+        <SelectContent>
+          {archiveOptions.map((option) => (
+            <SelectItem key={option.value} value={option.value}>
+              {option.label}
             </SelectItem>
           ))}
         </SelectContent>

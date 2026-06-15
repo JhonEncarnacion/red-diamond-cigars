@@ -48,6 +48,7 @@ model Inquiry {
   inquiryOnly  Boolean
 
   adminNotes String?
+  isArchived Boolean @default(false)
 
   status       InquiryStatus @default(NEW)
 

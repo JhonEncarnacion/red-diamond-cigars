@@ -11,11 +11,14 @@ import {
 import { requireAdmin } from "@/lib/admin-auth";
 import { InquiryFilters } from "@/components/admin/InquiryFilters";
 import { InquiryStatusSelect } from "@/components/admin/InquiryStatusSelect";
+import { InquiryArchiveButton } from "@/components/admin/InquiryArchiveButton";
+import { Button } from "@/components/ui/button";
 
 type AdminInquiriesPageProps = {
   searchParams: Promise<{
     status?: string;
     search?: string;
+    archive?: string;
   }>;
 };
 
@@ -24,7 +27,7 @@ export default async function AdminInquiriesPage({
 }: AdminInquiriesPageProps) {
   await requireAdmin();
 
-  const { status, search } = await searchParams;
+  const { status, search, archive } = await searchParams;
 
   const inquiries = await prisma.inquiry.findMany({
     where: {
@@ -78,6 +81,12 @@ export default async function AdminInquiriesPage({
             ],
           }
         : {}),
+
+      ...(archive === "ARCHIVED"
+        ? { isArchived: true }
+        : archive === "ALL"
+          ? {}
+          : { isArchived: false }),
     },
 
     include: {
@@ -172,12 +181,18 @@ export default async function AdminInquiriesPage({
                   </TableCell>
 
                   <TableCell className="text-right">
-                    <Link
-                      href={`/admin/inquiries/${inquiry.id}`}
-                      className="text-sm font-medium underline-offset-4 hover:underline"
-                    >
-                      View
-                    </Link>
+                    <div className="flex justify-end gap-2">
+                      <InquiryArchiveButton
+                        inquiryId={inquiry.id}
+                        isArchived={inquiry.isArchived}
+                      />
+
+                      <Button asChild variant="outline" size="sm">
+                        <Link href={`/admin/inquiries/${inquiry.id}`}>
+                          View
+                        </Link>
+                      </Button>
+                    </div>
                   </TableCell>
                 </TableRow>
               ))
