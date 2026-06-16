@@ -2,6 +2,8 @@ import Image from "next/image";
 import { notFound } from "next/navigation";
 import { prisma } from "@/lib/prisma";
 import { InquiryForm } from "@/components/site/InquiryForm";
+import { siteConfig } from "@/lib/site";
+import { Metadata } from "next";
 
 type ProductPageProps = {
   params: Promise<{
@@ -82,6 +84,40 @@ export default async function ProductPage({ params }: ProductPageProps) {
       </div>
     </div>
   );
+}
+
+export async function generateMetadata({
+  params,
+}: ProductPageProps): Promise<Metadata> {
+  const { slug } = await params;
+
+  const product = await prisma.product.findUnique({
+    where: {
+      slug,
+    },
+  });
+
+  if (!product) {
+    return {
+      title: "Cigar Not Found",
+    };
+  }
+
+  return {
+    title: product.name,
+
+    description: product.description,
+
+    openGraph: {
+      title: `${product.name} | ${siteConfig.name}`,
+
+      description: product.description,
+
+      url: `${siteConfig.url}/cigars/${product.slug}`,
+
+      images: product.image ? [product.image] : undefined,
+    },
+  };
 }
 
 function Detail({

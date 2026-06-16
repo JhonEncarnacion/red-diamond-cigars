@@ -1,10 +1,11 @@
-import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { Navbar } from "@/components/site/Navbar";
 import { Footer } from "@/components/site/Footer";
 import { AgeGate } from "@/components/site/AgeGate";
 import { ClerkProvider } from "@clerk/nextjs";
+import { siteConfig } from "@/lib/site";
+import { Metadata } from "next";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -17,9 +18,11 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Red Diamond Cigars",
-  description:
-    "Luxury handmade cigars crafted with passion and precision. Explore our curated selection of premium cigars, each offering a unique blend of flavor and character. Experience the art of cigar smoking with Red Diamond Cigars.",
+  title: {
+    default: siteConfig.name,
+    template: `%s | ${siteConfig.name}`,
+  },
+  description: siteConfig.description,
 };
 
 export default function RootLayout({

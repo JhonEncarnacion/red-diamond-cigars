@@ -3,6 +3,7 @@
 import { requireAdmin } from "@/lib/admin-auth";
 import { prisma } from "@/lib/prisma";
 import { resend } from "@/lib/resend";
+import { siteConfig } from "@/lib/site";
 import { inquirySchema, type InquiryFormInput } from "@/lib/validators";
 import { revalidatePath } from "next/cache";
 
@@ -51,9 +52,7 @@ export async function createInquiry(
     },
   });
 
-  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000";
-
-  const adminInquiryUrl = `${siteUrl}/admin/inquiries/${inquiry.id}`;
+  const adminInquiryUrl = `${siteConfig.url}/admin/inquiries/${inquiry.id}`;
 
   try {
     await resend.emails.send({
