@@ -158,3 +158,69 @@
     box-shadow: 0 0 42px rgba(212, 175, 55, 0.24);
   }
 }
+
+@keyframes luxury-rise {
+  from {
+    opacity: 0;
+    transform: translateY(28px);
+    filter: blur(8px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+    filter: blur(0);
+  }
+}
+
+.animate-luxury-rise {
+  animation: luxury-rise 1.4s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+@keyframes scroll-arrow {
+  0%,
+  100% {
+    opacity: 0.35;
+    transform: translateY(-4px);
+  }
+
+  50% {
+    opacity: 1;
+    transform: translateY(6px);
+  }
+}
+
+.animate-scroll-arrow {
+  animation: scroll-arrow 1.8s ease-in-out infinite;
+}
+
+html {
+  scrollbar-color: rgba(245, 205, 122, 0.45) #050101;
+  scrollbar-width: thin;
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: #050101;
+}
+
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(
+    to bottom,
+    rgba(245, 205, 122, 0.65),
+    rgba(120, 60, 25, 0.5)
+  );
+  border: 2px solid #050101;
+  border-radius: 999px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(
+    to bottom,
+    rgba(245, 205, 122, 0.9),
+    rgba(185, 28, 28, 0.65)
+  );
+}

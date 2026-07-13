@@ -1,61 +1,171 @@
+import Image from "next/image";
 import Link from "next/link";
-import { auth } from "@clerk/nextjs/server";
-import { SignInButton, UserButton } from "@clerk/nextjs";
 
-export async function Navbar() {
-  const { userId } = await auth();
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 
+const publicLinks = [
+  {
+    label: "Cigars",
+    href: "/cigars",
+  },
+  {
+    label: "Story",
+    href: "/#story",
+  },
+  {
+    label: "Contact",
+    href: "/#contact",
+  },
+];
+
+export function Navbar() {
   return (
-    <header className="sticky top-0 z-50 border-b border-red-950/60 bg-black/75 backdrop-blur-xl">
-      <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-4">
-        <Link href="/" className="group flex items-center gap-2">
-          <span className="h-2 w-2 rounded-full bg-red-700 shadow-[0_0_18px_rgba(185,28,28,0.9)]" />
-          <span className="text-xl font-bold tracking-tight">
-            Red Diamond <span className="gold-text">Cigars</span>
-          </span>
-        </Link>
-
-        <nav className="flex items-center gap-6 text-sm">
-          <Link
-            href="/cigars"
-            className="text-muted-foreground transition-colors hover:text-amber-300"
-          >
-            Cigars
-          </Link>
-
-          <Link
-            href="/#story"
-            className="text-muted-foreground transition-colors hover:text-amber-300"
-          >
-            Story
-          </Link>
-
-          <Link
-            href="/#contact"
-            className="text-muted-foreground transition-colors hover:text-amber-300"
-          >
-            Contact
-          </Link>
-
-          {userId && (
-            <Link
-              href="/admin"
-              className="text-muted-foreground transition-colors hover:text-amber-300"
+    <header
+      style={{
+        position: "fixed",
+        top: 0,
+        left: 0,
+        width: "100%",
+        height: "112px",
+        zIndex: 50,
+        background:
+          "linear-gradient(to bottom, rgba(0,0,0,0.72), rgba(0,0,0,0.28), transparent)",
+      }}
+    >
+      {/* Left: Menu */}
+      <div
+        style={{
+          position: "absolute",
+          top: "32px",
+          left: "48px",
+        }}
+      >
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <button
+              type="button"
+              aria-label="Open navigation menu"
+              style={{
+                height: "44px",
+                width: "44px",
+                borderRadius: "999px",
+                border: "1px solid rgba(245,205,122,0.35)",
+                background: "rgba(0,0,0,0.25)",
+                color: "#f5cd7a",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                cursor: "pointer",
+              }}
             >
-              Admin
-            </Link>
-          )}
+              <span
+                style={{
+                  display: "flex",
+                  flexDirection: "column",
+                  gap: "5px",
+                }}
+              >
+                <span
+                  style={{
+                    display: "block",
+                    width: "20px",
+                    height: "1px",
+                    background: "currentColor",
+                  }}
+                />
+                <span
+                  style={{
+                    display: "block",
+                    width: "20px",
+                    height: "1px",
+                    background: "currentColor",
+                  }}
+                />
+                <span
+                  style={{
+                    display: "block",
+                    width: "20px",
+                    height: "1px",
+                    background: "currentColor",
+                  }}
+                />
+              </span>
+            </button>
+          </DropdownMenuTrigger>
 
-          {userId ? (
-            <UserButton />
-          ) : (
-            <SignInButton mode="modal">
-              <button className="text-muted-foreground transition-colors hover:text-amber-300">
-                Sign in
-              </button>
-            </SignInButton>
-          )}
-        </nav>
+          <DropdownMenuContent
+            align="start"
+            sideOffset={14}
+            className="z-999 min-w-56 border border-[#f5cd7a]/25 bg-black/90 p-2 text-[#f7efe2] shadow-[0_24px_80px_rgba(0,0,0,0.65)] backdrop-blur-xl"
+          >
+            {publicLinks.map((link) => (
+              <DropdownMenuItem key={link.href} asChild>
+                <Link
+                  href={link.href}
+                  className="cursor-pointer rounded-sm px-4 py-3 text-sm uppercase tracking-[0.22em] text-[#cbbba7] transition-colors duration-300 hover:bg-[#f5cd7a]/10 hover:text-[#f5cd7a]"
+                >
+                  {link.label}
+                </Link>
+              </DropdownMenuItem>
+            ))}
+          </DropdownMenuContent>
+        </DropdownMenu>
+      </div>
+
+      {/* Center: Logo */}
+      <div
+        style={{
+          position: "absolute",
+          top: "28px",
+          left: "50%",
+          transform: "translateX(-50%)",
+        }}
+      >
+        <Link href="/" aria-label="Go to Red Diamond Cigars homepage">
+          <Image
+            src="/images/red-diamond-logo.png"
+            alt="Red Diamond Cigars logo"
+            width={76}
+            height={64}
+            priority
+            className="object-contain drop-shadow-[0_0_22px_rgba(245,205,122,0.35)]"
+          />
+        </Link>
+      </div>
+
+      {/* Right: CTA */}
+      <div
+        style={{
+          position: "absolute",
+          top: "32px",
+          right: "48px",
+        }}
+      >
+        <Link
+          href="/cigars"
+          style={{
+            height: "44px",
+            display: "inline-flex",
+            alignItems: "center",
+            justifyContent: "center",
+            border: "1px solid rgba(245,205,122,0.4)",
+            background: "rgba(0,0,0,0.25)",
+            padding: "0 24px",
+            fontSize: "12px",
+            fontWeight: 500,
+            letterSpacing: "0.22em",
+            textTransform: "uppercase",
+            color: "#f7efe2",
+            textDecoration: "none",
+          }}
+        >
+          Inquire Now
+        </Link>
       </div>
     </header>
   );
