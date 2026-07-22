@@ -175,12 +175,6 @@ export default async function HomePage() {
                 height={650}
                 className="h-[42vh] w-full object-cover transition-transform duration-1600 hover:scale-105 lg:h-[58vh]"
               />
-
-              <div className="absolute bottom-0 left-0 z-20 w-full border-t border-[#f5cd7a]/15 bg-black/45 px-6 py-5 backdrop-blur-md">
-                <p className="text-xs font-medium uppercase tracking-[0.35em] text-[#f5cd7a]">
-                  Tradition. Patience. Craft.
-                </p>
-              </div>
             </div>
           </Reveal>
         </div>
