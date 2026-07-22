@@ -7,7 +7,7 @@ export const metadata: Metadata = {
     "Contact Red Diamond Cigars for cigar availability, inquiries, and direct follow-up.",
 };
 
-const instagramUrl = "https://www.instagram.com/reddiamondcigars";
+const instagramUrl = "https://www.instagram.com/reddiamond001";
 
 const contacts = [
   {
