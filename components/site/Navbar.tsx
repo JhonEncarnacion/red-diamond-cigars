@@ -15,99 +15,54 @@ const publicLinks = [
   },
   {
     label: "Story",
-    href: "/#story",
+    href: "/story",
   },
   {
     label: "Contact",
-    href: "/#contact",
+    href: "/contact",
   },
 ];
 
 export function Navbar() {
   return (
     <header
+      className="pointer-events-none fixed left-0 top-0 z-50 h-28 w-full"
       style={{
-        position: "fixed",
-        top: 0,
-        left: 0,
-        width: "100%",
-        height: "112px",
-        zIndex: 50,
         background:
-          "linear-gradient(to bottom, rgba(0,0,0,0.72), rgba(0,0,0,0.28), transparent)",
+          "linear-gradient(to bottom, rgba(0,0,0,0.96), rgba(0,0,0,0.76), rgba(0,0,0,0.36), transparent)",
       }}
     >
       {/* Left: Menu */}
-      <div
-        style={{
-          position: "absolute",
-          top: "32px",
-          left: "48px",
-        }}
-      >
-        <DropdownMenu>
+      <div className="pointer-events-auto absolute left-[clamp(20px,4vw,48px)] top-8">
+        <DropdownMenu modal={false}>
           <DropdownMenuTrigger asChild>
             <button
               type="button"
               aria-label="Open navigation menu"
-              style={{
-                height: "44px",
-                width: "44px",
-                borderRadius: "999px",
-                border: "1px solid rgba(245,205,122,0.35)",
-                background: "rgba(0,0,0,0.25)",
-                color: "#f5cd7a",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                cursor: "pointer",
-              }}
+              className="group flex h-11 w-11 cursor-pointer items-center justify-center border border-[#f5cd7a]/40 bg-black/30 text-[#f5cd7a] shadow-[0_0_28px_rgba(0,0,0,0.42)] transition-colors duration-300 hover:border-[#f5cd7a]/80 hover:bg-[#f5cd7a]/10 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-[#f5cd7a]/70 data-[state=open]:border-[#f5cd7a]/80 data-[state=open]:bg-[#f5cd7a]/10 data-[state=open]:shadow-[0_0_34px_rgba(245,205,122,0.16)]"
             >
-              <span
-                style={{
-                  display: "flex",
-                  flexDirection: "column",
-                  gap: "5px",
-                }}
-              >
-                <span
-                  style={{
-                    display: "block",
-                    width: "20px",
-                    height: "1px",
-                    background: "currentColor",
-                  }}
-                />
-                <span
-                  style={{
-                    display: "block",
-                    width: "20px",
-                    height: "1px",
-                    background: "currentColor",
-                  }}
-                />
-                <span
-                  style={{
-                    display: "block",
-                    width: "20px",
-                    height: "1px",
-                    background: "currentColor",
-                  }}
-                />
+              <span className="flex flex-col gap-1.25">
+                <span className="block h-px w-5 bg-current transition-transform duration-300 group-data-[state=open]:translate-y-1.5 group-data-[state=open]:rotate-45" />
+                <span className="block h-px w-5 bg-current transition-opacity duration-300 group-data-[state=open]:opacity-0" />
+                <span className="block h-px w-5 bg-current transition-transform duration-300 group-data-[state=open]:-translate-y-1.5 group-data-[state=open]:-rotate-45" />
               </span>
             </button>
           </DropdownMenuTrigger>
 
           <DropdownMenuContent
             align="start"
-            sideOffset={14}
-            className="z-999 min-w-56 border border-[#f5cd7a]/25 bg-black/90 p-2 text-[#f7efe2] shadow-[0_24px_80px_rgba(0,0,0,0.65)] backdrop-blur-xl"
+            sideOffset={8}
+            className="z-999 min-w-56 rounded-none! border border-[#f5cd7a]/25 bg-black/90 p-2 text-[#f7efe2] shadow-[0_24px_80px_rgba(0,0,0,0.65)] backdrop-blur-xl"
           >
             {publicLinks.map((link) => (
-              <DropdownMenuItem key={link.href} asChild>
+              <DropdownMenuItem
+                key={link.href}
+                asChild
+                className="rounded-none! p-0 focus:bg-transparent!"
+              >
                 <Link
                   href={link.href}
-                  className="cursor-pointer rounded-sm px-4 py-3 text-sm uppercase tracking-[0.22em] text-[#cbbba7] transition-colors duration-300 hover:bg-[#f5cd7a]/10 hover:text-[#f5cd7a]"
+                  className="block w-full cursor-pointer rounded-none! border-b border-[#f5cd7a]/10 px-4 py-3 text-sm uppercase tracking-[0.22em] text-[#cbbba7] transition-colors duration-300 last:border-b-0 hover:bg-[#f5cd7a]! hover:text-black! focus:bg-[#f5cd7a]! focus:text-black! data-highlighted:bg-[#f5cd7a]! data-highlighted:text-black!"
                 >
                   {link.label}
                 </Link>
@@ -118,14 +73,7 @@ export function Navbar() {
       </div>
 
       {/* Center: Logo */}
-      <div
-        style={{
-          position: "absolute",
-          top: "28px",
-          left: "50%",
-          transform: "translateX(-50%)",
-        }}
-      >
+      <div className="pointer-events-auto absolute left-1/2 top-7 -translate-x-1/2">
         <Link href="/" aria-label="Go to Red Diamond Cigars homepage">
           <Image
             src="/images/red-diamond-logo.png"
@@ -133,36 +81,16 @@ export function Navbar() {
             width={76}
             height={64}
             priority
-            className="object-contain drop-shadow-[0_0_22px_rgba(245,205,122,0.35)]"
+            className="object-contain drop-shadow-[0_0_22px_rgba(245,205,122,0.35)] transition-transform duration-500 hover:scale-105"
           />
         </Link>
       </div>
 
       {/* Right: CTA */}
-      <div
-        style={{
-          position: "absolute",
-          top: "32px",
-          right: "48px",
-        }}
-      >
+      <div className="pointer-events-auto absolute right-[clamp(20px,4vw,48px)] top-8">
         <Link
           href="/cigars"
-          style={{
-            height: "44px",
-            display: "inline-flex",
-            alignItems: "center",
-            justifyContent: "center",
-            border: "1px solid rgba(245,205,122,0.4)",
-            background: "rgba(0,0,0,0.25)",
-            padding: "0 24px",
-            fontSize: "12px",
-            fontWeight: 500,
-            letterSpacing: "0.22em",
-            textTransform: "uppercase",
-            color: "#f7efe2",
-            textDecoration: "none",
-          }}
+          className="inline-flex h-11 items-center justify-center border border-[#f5cd7a]/40 bg-black/30 px-6 text-xs font-medium uppercase tracking-[0.22em] text-[#f7efe2] no-underline shadow-[0_0_28px_rgba(0,0,0,0.42)] transition-all duration-300 hover:border-[#f5cd7a] hover:bg-[#f5cd7a] hover:text-black hover:shadow-[0_0_38px_rgba(245,205,122,0.2)]"
         >
           Inquire Now
         </Link>

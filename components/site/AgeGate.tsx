@@ -27,30 +27,54 @@ export function AgeGate() {
   }
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-background/80 px-4 backdrop-blur-md">
-      <div className="w-full max-w-md rounded-xl border bg-background p-6 shadow-lg">
-        <p className="text-sm font-medium uppercase tracking-widest text-muted-foreground">
-          Age Verification Required
+    <div className="fixed inset-0 z-9999 flex items-center justify-center overflow-hidden bg-black/90 px-4 backdrop-blur-md">
+      {/* Background glow */}
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(185,28,28,0.24),transparent_34rem),radial-gradient(circle_at_bottom_right,rgba(245,205,122,0.13),transparent_30rem),linear-gradient(to_bottom,#050000,#0b0303)]" />
+
+      {/* Dark vignette */}
+      <div className="absolute inset-0 bg-[linear-gradient(to_bottom,rgba(0,0,0,0.35),rgba(0,0,0,0.78))]" />
+
+      {/* Card */}
+      <div className="relative z-10 w-full max-w-lg border border-[#f5cd7a]/25 bg-[#080202]/95 p-7 text-center shadow-[0_40px_120px_rgba(0,0,0,0.75)] backdrop-blur-xl sm:p-9">
+        <p className="text-xs font-medium uppercase tracking-[0.42em] text-[#f5cd7a]">
+          Red Diamond Cigars
         </p>
 
-        <h2 className="mt-3 text-2xl font-bold tracking-tight">
-          Are you 21 years of age or older?
+        <div className="mx-auto mt-5 h-px w-20 bg-[#f5cd7a]/55" />
+
+        <h2 className="mt-7 font-serif text-4xl font-semibold leading-tight tracking-[0.04em] text-[#f8efe3] sm:text-5xl">
+          Age Verification
         </h2>
 
-        <p className="mt-4 text-sm text-muted-foreground">
+        <p className="mt-5 text-sm font-medium uppercase tracking-[0.22em] text-[#d9cbbb]">
+          Are you 21 years of age or older?
+        </p>
+
+        <p className="mx-auto mt-5 max-w-md text-sm leading-7 text-[#b8a99a]">
           This website contains cigar-related content and is intended only for
           adults 21 years of age or older.
         </p>
 
-        <div className="mt-6 grid gap-3 sm:grid-cols-2">
-          <Button onClick={handleConfirm}>Yes, I am 21+</Button>
+        <div className="mt-8 grid gap-3 sm:grid-cols-2">
+          <Button
+            type="button"
+            onClick={handleConfirm}
+            className="h-12 rounded-none border border-[#f5cd7a]/40 bg-[#f5cd7a] px-6 text-xs font-semibold uppercase tracking-[0.22em] text-black shadow-[0_0_35px_rgba(245,205,122,0.22)] transition-all duration-500 hover:bg-[#ffe3a3] hover:text-black hover:shadow-[0_0_55px_rgba(245,205,122,0.32)]"
+          >
+            Yes, I am 21+
+          </Button>
 
-          <Button onClick={handleDeny} variant="outline">
+          <Button
+            type="button"
+            onClick={handleDeny}
+            variant="outline"
+            className="h-12 rounded-none border-[#f5cd7a]/25 bg-transparent px-6 text-xs font-medium uppercase tracking-[0.22em] text-[#f8efe3] transition-all duration-500 hover:border-[#f5cd7a]/50 hover:bg-[#f5cd7a]/10 hover:text-[#f8efe3]"
+          >
             No, exit site
           </Button>
         </div>
 
-        <p className="mt-4 text-xs text-muted-foreground">
+        <p className="mx-auto mt-6 max-w-md text-xs leading-6 text-[#8f8174]">
           Product inquiries submitted through this site do not constitute a
           purchase, sale, or shipment agreement.
         </p>

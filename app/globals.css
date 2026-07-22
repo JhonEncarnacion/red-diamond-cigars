@@ -23,8 +23,8 @@
   --color-border: var(--border);
   --color-input: var(--input);
   --color-ring: var(--ring);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --font-sans: var(--font-inter);
+  --font-serif: var(--font-cormorant);
   --radius-sm: calc(var(--radius) - 4px);
   --radius-md: calc(var(--radius) - 2px);
   --radius-lg: var(--radius);
@@ -32,6 +32,8 @@
 }
 
 :root {
+  color-scheme: dark;
+
   --radius: 0.875rem;
 
   --background: #050000;
@@ -194,33 +196,164 @@
   animation: scroll-arrow 1.8s ease-in-out infinite;
 }
 
-html {
-  scrollbar-color: rgba(245, 205, 122, 0.45) #050101;
-  scrollbar-width: thin;
+/* Homepage section backgrounds */
+
+.home-bg-experience {
+  background:
+    radial-gradient(
+      circle at 12% 18%,
+      rgba(120, 18, 18, 0.34),
+      transparent 29rem
+    ),
+    radial-gradient(
+      circle at 82% 70%,
+      rgba(245, 205, 122, 0.13),
+      transparent 28rem
+    ),
+    radial-gradient(
+      circle at 90% 16%,
+      rgba(92, 38, 12, 0.22),
+      transparent 27rem
+    ),
+    linear-gradient(135deg, #020000 0%, #0c0201 48%, #030000 100%);
 }
 
-::-webkit-scrollbar {
-  width: 10px;
+.home-bg-story {
+  background:
+    radial-gradient(
+      circle at 78% 18%,
+      rgba(245, 205, 122, 0.13),
+      transparent 28rem
+    ),
+    radial-gradient(
+      circle at 18% 76%,
+      rgba(140, 18, 18, 0.32),
+      transparent 32rem
+    ),
+    radial-gradient(
+      circle at 48% 42%,
+      rgba(80, 32, 12, 0.24),
+      transparent 30rem
+    ),
+    linear-gradient(150deg, #020000 0%, #0b0201 50%, #030000 100%);
 }
 
-::-webkit-scrollbar-track {
-  background: #050101;
+.home-bg-cta {
+  background:
+    radial-gradient(
+      circle at 50% 34%,
+      rgba(140, 18, 18, 0.36),
+      transparent 32rem
+    ),
+    radial-gradient(
+      circle at 82% 82%,
+      rgba(245, 205, 122, 0.14),
+      transparent 28rem
+    ),
+    radial-gradient(
+      circle at 14% 20%,
+      rgba(100, 20, 10, 0.28),
+      transparent 28rem
+    ),
+    linear-gradient(180deg, #020000 0%, #0d0201 52%, #020000 100%);
 }
 
-::-webkit-scrollbar-thumb {
+.home-bg-texture {
   background: linear-gradient(
-    to bottom,
-    rgba(245, 205, 122, 0.65),
-    rgba(120, 60, 25, 0.5)
+    115deg,
+    rgba(255, 255, 255, 0.035),
+    transparent 25%,
+    rgba(245, 205, 122, 0.04),
+    transparent 62%
   );
-  border: 2px solid #050101;
-  border-radius: 999px;
+  opacity: 0.38;
 }
 
-::-webkit-scrollbar-thumb:hover {
-  background: linear-gradient(
-    to bottom,
-    rgba(245, 205, 122, 0.9),
-    rgba(185, 28, 28, 0.65)
-  );
+/* Public page backgrounds */
+
+.page-bg-luxury {
+  background:
+    radial-gradient(
+      circle at 14% 18%,
+      rgba(120, 18, 18, 0.34),
+      transparent 30rem
+    ),
+    radial-gradient(
+      circle at 84% 72%,
+      rgba(245, 205, 122, 0.13),
+      transparent 29rem
+    ),
+    radial-gradient(
+      circle at 88% 16%,
+      rgba(92, 38, 12, 0.24),
+      transparent 27rem
+    ),
+    linear-gradient(
+      135deg,
+      #020000 0%,
+      #0c0201 48%,
+      #030000 100%
+    );
+}
+
+.page-bg-luxury-alt {
+  background:
+    radial-gradient(
+      circle at 78% 18%,
+      rgba(245, 205, 122, 0.13),
+      transparent 28rem
+    ),
+    radial-gradient(
+      circle at 18% 76%,
+      rgba(140, 18, 18, 0.32),
+      transparent 32rem
+    ),
+    radial-gradient(
+      circle at 48% 42%,
+      rgba(80, 32, 12, 0.24),
+      transparent 30rem
+    ),
+    linear-gradient(
+      150deg,
+      #020000 0%,
+      #0b0201 50%,
+      #030000 100%
+    );
+}
+
+.page-bg-luxury-center {
+  background:
+    radial-gradient(
+      circle at 50% 30%,
+      rgba(140, 18, 18, 0.36),
+      transparent 34rem
+    ),
+    radial-gradient(
+      circle at 82% 82%,
+      rgba(245, 205, 122, 0.14),
+      transparent 28rem
+    ),
+    radial-gradient(
+      circle at 14% 20%,
+      rgba(100, 20, 10, 0.28),
+      transparent 28rem
+    ),
+    linear-gradient(
+      180deg,
+      #020000 0%,
+      #0d0201 52%,
+      #020000 100%
+    );
+}
+
+.page-bg-texture {
+  background:
+    linear-gradient(
+      115deg,
+      rgba(255, 255, 255, 0.035),
+      transparent 25%,
+      rgba(245, 205, 122, 0.04),
+      transparent 62%
+    );
+  opacity: 0.38;
 }
