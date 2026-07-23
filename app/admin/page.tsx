@@ -152,7 +152,10 @@ export default async function AdminDashboardPage() {
 
               <p className="mt-3 text-sm leading-6 text-[#b8a99a]">
                 {mostRequestedCount}{" "}
-                {mostRequestedCount === 1 ? "inquiry" : "inquiries"} submitted.
+                {mostRequestedCount === 1
+                  ? "customer inquiry"
+                  : "customer inquiries"}{" "}
+                submitted.
               </p>
             </div>
           ) : (
@@ -293,7 +296,7 @@ export default async function AdminDashboardPage() {
                     </div>
 
                     <div className="flex items-center gap-3">
-                      <Badge className="rounded-none border border-[#f5cd7a]/30 bg-black/30 px-3 py-1 text-xs font-medium uppercase tracking-[0.12em] text-[#f8efe3]">
+                      <Badge className="rounded-none border border-[#f5cd7a]/30 bg-black/30 px-2 py-4 text-xs font-medium uppercase tracking-[0.12em] text-[#f8efe3]">
                         {formatStatus(inquiry.status)}
                       </Badge>
 
@@ -320,7 +323,7 @@ function StatCard({ title, value }: { title: string; value: number }) {
     <AdminCard>
       <p className="text-sm font-medium text-[#b8a99a]">{title}</p>
 
-      <p className="mt-6 font-serif text-5xl font-semibold tracking-[0.04em] text-[#f8efe3]">
+      <p className="mt-6 text-5xl font-semibold tracking-[0.04em] text-[#f8efe3]">
         {value}
       </p>
     </AdminCard>
