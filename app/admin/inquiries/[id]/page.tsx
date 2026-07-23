@@ -1,10 +1,14 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { prisma } from "@/lib/prisma";
-import { Button } from "@/components/ui/button";
 import { InquiryStatusSelect } from "@/components/admin/InquiryStatusSelect";
 import { requireAdmin } from "@/lib/admin-auth";
 import { InquiryAdminNotesForm } from "@/components/admin/InquiryAdminNotesForm";
+import {
+  AdminButtonLink,
+  AdminCard,
+  AdminShell,
+} from "@/components/admin/AdminShell";
 
 type InquiryDetailPageProps = {
   params: Promise<{
@@ -33,97 +37,154 @@ export default async function InquiryDetailPage({
   }
 
   return (
-    <div className="mx-auto max-w-4xl px-4 py-12">
-      <div className="mb-8">
-        <Button asChild variant="outline">
-          <Link href="/admin/inquiries">Back to inquiries</Link>
-        </Button>
-      </div>
+    <AdminShell
+      title={inquiry.fullName}
+      eyebrow="Inquiry Details"
+      description={`Submitted on ${new Intl.DateTimeFormat("en", {
+        month: "long",
+        day: "numeric",
+        year: "numeric",
+        hour: "numeric",
+        minute: "2-digit",
+      }).format(inquiry.createdAt)}`}
+      actions={
+        <>
+          <AdminButtonLink href="/admin/inquiries">
+            Back to Inquiries
+          </AdminButtonLink>
 
-      <div>
-        <p className="text-sm font-medium uppercase tracking-widest text-muted-foreground">
-          Inquiry Details
-        </p>
+          <AdminButtonLink href="/admin">Back to Dashboard</AdminButtonLink>
+        </>
+      }
+    >
+      <div className="grid gap-8 lg:grid-cols-[0.85fr_1.15fr]">
+        {/* Left column */}
+        <aside className="grid gap-6 lg:sticky lg:top-24 lg:h-fit">
+          <AdminCard>
+            <div className="border-b border-[#f5cd7a]/15 pb-6">
+              <p className="text-xs font-medium uppercase tracking-[0.38em] text-[#f5cd7a]">
+                Current Status
+              </p>
 
-        <div className="mt-3 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-          <h1 className="text-4xl font-bold tracking-tight">
-            {inquiry.fullName}
-          </h1>
+              <h2 className="mt-4 text-2xl font-semibold text-[#f8efe3]">
+                Manage Inquiry
+              </h2>
 
-          <div className="w-full sm:w-64">
-            <InquiryStatusSelect
-              inquiryId={inquiry.id}
-              currentStatus={inquiry.status}
-            />
-          </div>
+              <p className="mt-3 text-sm leading-6 text-[#b8a99a]">
+                Update the customer request status as you contact, qualify, or
+                complete the inquiry.
+              </p>
+            </div>
+
+            <div className="mt-6">
+              <InquiryStatusSelect
+                inquiryId={inquiry.id}
+                currentStatus={inquiry.status}
+              />
+            </div>
+          </AdminCard>
+
+          <AdminCard>
+            <div className="border-b border-[#f5cd7a]/15 pb-6">
+              <p className="text-xs font-medium uppercase tracking-[0.38em] text-[#f5cd7a]">
+                Customer
+              </p>
+
+              <h2 className="mt-4 font-serif text-3xl font-semibold tracking-[0.04em] text-[#f8efe3]">
+                {inquiry.fullName}
+              </h2>
+            </div>
+
+            <div className="mt-6 grid gap-4">
+              <Detail label="Email" value={inquiry.email} />
+              <Detail label="Phone" value={inquiry.phone} />
+              <Detail label="Location" value={inquiry.location} />
+            </div>
+
+            <div className="mt-6 grid gap-3 sm:grid-cols-2">
+              <a
+                href={`mailto:${inquiry.email}`}
+                className="inline-flex h-11 items-center justify-center border border-[#f5cd7a]/30 bg-black/25 px-5 text-xs font-medium uppercase tracking-[0.18em] text-[#f8efe3] transition-all duration-500 hover:border-[#f5cd7a] hover:bg-[#f5cd7a] hover:text-black"
+              >
+                Email
+              </a>
+
+              {inquiry.phone ? (
+                <a
+                  href={`tel:${inquiry.phone.replace(/[^0-9+]/g, "")}`}
+                  className="inline-flex h-11 items-center justify-center border border-[#f5cd7a]/30 bg-black/25 px-5 text-xs font-medium uppercase tracking-[0.18em] text-[#f8efe3] transition-all duration-500 hover:border-[#f5cd7a] hover:bg-[#f5cd7a] hover:text-black"
+                >
+                  Call
+                </a>
+              ) : (
+                <span className="inline-flex h-11 items-center justify-center border border-[#f5cd7a]/10 bg-black/15 px-5 text-xs font-medium uppercase tracking-[0.18em] text-[#8f8174]">
+                  No Phone
+                </span>
+              )}
+            </div>
+          </AdminCard>
+        </aside>
+
+        {/* Right column */}
+        <div className="grid gap-6">
+          <AdminCard>
+            <div className="mb-6 border-b border-[#f5cd7a]/15 pb-6">
+              <p className="text-xs font-medium uppercase tracking-[0.38em] text-[#f5cd7a]">
+                Cigar Requested
+              </p>
+
+              <h2 className="mt-4 text-2xl font-semibold text-[#f8efe3]">
+                {inquiry.product.name}
+              </h2>
+
+              <p className="mt-3 text-sm leading-6 text-[#b8a99a]">
+                Customer requested {inquiry.quantity}{" "}
+                {inquiry.quantity === 1 ? "unit" : "units"}.
+              </p>
+            </div>
+
+            <div className="grid gap-x-8 gap-y-5 sm:grid-cols-2">
+              <Detail label="Cigar" value={inquiry.product.name} />
+              <Detail label="Desired quantity" value={inquiry.quantity} />
+              <Detail label="Strength" value={inquiry.product.strength} />
+              <Detail label="Size" value={inquiry.product.size} />
+              <Detail label="Wrapper" value={inquiry.product.wrapper} />
+              <Detail label="Available stock" value={inquiry.product.stock} />
+            </div>
+
+            <div className="mt-6">
+              <Link
+                href={`/cigars/${inquiry.product.slug}`}
+                className="inline-flex h-11 items-center justify-center border border-[#f5cd7a]/30 bg-black/25 px-6 text-xs font-medium uppercase tracking-[0.22em] text-[#f8efe3] transition-all duration-500 hover:border-[#f5cd7a] hover:bg-[#f5cd7a] hover:text-black"
+              >
+                View Product
+              </Link>
+            </div>
+          </AdminCard>
+
+          <AdminCard>
+            <div className="mb-6 border-b border-[#f5cd7a]/15 pb-6">
+              <p className="text-xs font-medium uppercase tracking-[0.38em] text-[#f5cd7a]">
+                Customer Message
+              </p>
+
+              <h2 className="mt-4 text-2xl font-semibold text-[#f8efe3]">
+                Message
+              </h2>
+            </div>
+
+            <p className="whitespace-pre-wrap text-sm leading-7 text-[#b8a99a]">
+              {inquiry.message || "No message provided."}
+            </p>
+          </AdminCard>
+
+          <InquiryAdminNotesForm
+            inquiryId={inquiry.id}
+            initialNotes={inquiry.adminNotes}
+          />
         </div>
-
-        <p className="mt-4 text-muted-foreground">
-          Submitted on{" "}
-          {new Intl.DateTimeFormat("en", {
-            month: "long",
-            day: "numeric",
-            year: "numeric",
-            hour: "numeric",
-            minute: "2-digit",
-          }).format(inquiry.createdAt)}
-        </p>
       </div>
-
-      <div className="mt-10 grid gap-6">
-        <section className="rounded-xl border p-6">
-          <h2 className="text-xl font-semibold">Customer Information</h2>
-
-          <div className="mt-6 grid gap-4 sm:grid-cols-2">
-            <Detail label="Full name" value={inquiry.fullName} />
-            <Detail label="Email" value={inquiry.email} />
-            <Detail label="Phone" value={inquiry.phone} />
-            <Detail label="Location" value={inquiry.location} />
-          </div>
-        </section>
-
-        <section className="rounded-xl border p-6">
-          <h2 className="text-xl font-semibold">Cigar Requested</h2>
-
-          <div className="mt-6 grid gap-4 sm:grid-cols-2">
-            <Detail label="Cigar" value={inquiry.product.name} />
-            <Detail label="Desired quantity" value={inquiry.quantity} />
-            <Detail label="Strength" value={inquiry.product.strength} />
-            <Detail label="Size" value={inquiry.product.size} />
-            <Detail label="Wrapper" value={inquiry.product.wrapper} />
-            <Detail label="Available stock" value={inquiry.product.stock} />
-          </div>
-        </section>
-
-        <section className="rounded-xl border p-6">
-          <h2 className="text-xl font-semibold">Message</h2>
-
-          <p className="mt-4 whitespace-pre-wrap text-muted-foreground">
-            {inquiry.message || "No message provided."}
-          </p>
-        </section>
-
-        <InquiryAdminNotesForm
-          inquiryId={inquiry.id}
-          initialNotes={inquiry.adminNotes}
-        />
-
-        <section className="rounded-xl border p-6">
-          <h2 className="text-xl font-semibold">Confirmations</h2>
-
-          <div className="mt-6 grid gap-4 sm:grid-cols-2">
-            <Detail
-              label="Confirmed 21+"
-              value={inquiry.confirmed21 ? "Yes" : "No"}
-            />
-            <Detail
-              label="Inquiry only"
-              value={inquiry.inquiryOnly ? "Yes" : "No"}
-            />
-          </div>
-        </section>
-      </div>
-    </div>
+    </AdminShell>
   );
 }
 
@@ -135,9 +196,12 @@ function Detail({
   value?: string | number | null;
 }) {
   return (
-    <div>
-      <p className="text-sm text-muted-foreground">{label}</p>
-      <p className="font-medium">{value ?? "Not listed"}</p>
+    <div className="border-b border-[#f5cd7a]/10 pb-3 last:border-b-0 last:pb-0">
+      <p className="text-xs uppercase tracking-[0.24em] text-[#8f8174]">
+        {label}
+      </p>
+
+      <p className="mt-1 font-medium text-[#f8efe3]">{value ?? "Not listed"}</p>
     </div>
   );
 }

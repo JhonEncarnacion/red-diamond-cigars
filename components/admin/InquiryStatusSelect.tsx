@@ -72,27 +72,37 @@ export function InquiryStatusSelect({
   }
 
   return (
-    <div className="grid gap-2">
+    <div className="grid gap-3">
       <Select
         value={status}
         onValueChange={handleStatusChange}
         disabled={isPending}
       >
-        <SelectTrigger>
+        <SelectTrigger className="h-12! min-h-12 w-full rounded-none border-[#f5cd7a]/20 bg-black/35 px-4 text-sm text-[#f8efe3] shadow-none transition-colors duration-300 focus:border-[#f5cd7a]/60 focus:ring-0 focus:ring-offset-0 disabled:cursor-not-allowed disabled:opacity-60 [&>svg]:h-4 [&>svg]:w-4 [&>svg]:text-[#f5cd7a]">
           <SelectValue placeholder="Select status" />
         </SelectTrigger>
 
-        <SelectContent>
+        <SelectContent className="rounded-none border-[#f5cd7a]/20 bg-black text-[#f8efe3]">
           {statuses.map((status) => (
-            <SelectItem key={status.value} value={status.value}>
+            <SelectItem
+              key={status.value}
+              value={status.value}
+              className="rounded-none text-[#d9cbbb] focus:bg-[#f5cd7a] focus:text-black"
+            >
               {status.label}
             </SelectItem>
           ))}
         </SelectContent>
       </Select>
 
-      {isPending && (
-        <p className="text-xs text-muted-foreground">Updating status...</p>
+      {isPending ? (
+        <p className="text-xs uppercase tracking-[0.18em] text-[#f5cd7a]">
+          Updating status...
+        </p>
+      ) : (
+        <p className="text-xs leading-5 text-[#8f8174]">
+          Changes save automatically after selecting a new status.
+        </p>
       )}
     </div>
   );
