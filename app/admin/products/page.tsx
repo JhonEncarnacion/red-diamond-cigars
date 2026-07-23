@@ -91,9 +91,13 @@ export default async function AdminProductsPage({
       title="Products"
       description="Manage the cigar catalog, stock levels, and product visibility."
       actions={
-        <AdminButtonLink href="/admin/products/new" variant="primary">
-          Add Product
-        </AdminButtonLink>
+        <>
+          <AdminButtonLink href="/admin">Back to Dashboard</AdminButtonLink>
+
+          <AdminButtonLink href="/admin/products/new" variant="primary">
+            Add Product
+          </AdminButtonLink>
+        </>
       }
     >
       <div className="mb-6">
@@ -170,7 +174,7 @@ export default async function AdminProductsPage({
                           <div className="relative h-16 w-16 shrink-0 overflow-hidden border border-[#f5cd7a]/15 bg-black/40">
                             <Image
                               src={
-                                product.image ?? "/images/cigar-placeholder.png"
+                                product.image ?? "/images/cigar-placeholder-image.png"
                               }
                               alt={product.name}
                               fill

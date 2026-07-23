@@ -41,7 +41,7 @@ export default async function EditProductPage({
         <div>
           <div className="relative aspect-square overflow-hidden rounded-xl bg-muted">
             <Image
-              src={product.image ?? "/images/cigar-placeholder.png"}
+              src={product.image ?? "/images/cigar-placeholder-image.png"}
               alt={product.name}
               fill
               sizes="(max-width: 1024px) 100vw, 280px"

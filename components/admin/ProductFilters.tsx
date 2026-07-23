@@ -134,20 +134,20 @@ export function ProductFilters() {
         </Select>
 
         <button
-          type="submit"
-          disabled={isPending}
-          className="h-12 w-full border border-[#f5cd7a]/40 bg-[#f5cd7a] px-6 text-xs font-semibold uppercase tracking-[0.22em] text-black shadow-[0_0_35px_rgba(245,205,122,0.16)] transition-all duration-500 hover:bg-[#ffe3a3] hover:shadow-[0_0_55px_rgba(245,205,122,0.26)] disabled:cursor-not-allowed disabled:opacity-60 xl:w-40"
-        >
-          {isPending ? "Searching..." : "Search"}
-        </button>
-
-        <button
           type="button"
           onClick={handleClear}
           disabled={isPending}
           className="h-12 w-full border border-[#f5cd7a]/25 bg-black/25 px-6 text-xs font-medium uppercase tracking-[0.22em] text-[#f8efe3] transition-all duration-500 hover:border-[#f5cd7a] hover:bg-[#f5cd7a] hover:text-black disabled:cursor-not-allowed disabled:opacity-60 xl:w-40"
         >
           Clear
+        </button>
+
+        <button
+          type="submit"
+          disabled={isPending}
+          className="h-12 w-full border border-[#f5cd7a]/40 bg-[#f5cd7a] px-6 text-xs font-semibold uppercase tracking-[0.22em] text-black shadow-[0_0_35px_rgba(245,205,122,0.16)] transition-all duration-500 hover:bg-[#ffe3a3] hover:shadow-[0_0_55px_rgba(245,205,122,0.26)] disabled:cursor-not-allowed disabled:opacity-60 xl:w-40"
+        >
+          {isPending ? "Searching..." : "Search"}
         </button>
       </div>
     </form>

@@ -12,7 +12,7 @@ export const sampleProducts = [
     size: "Robusto",
     strength: "Medium",
     stock: 25,
-    image: "/images/cigar-placeholder.png",
+    image: "/images/cigar-placeholder-image.png",
   },
   {
     id: "2",
@@ -27,7 +27,7 @@ export const sampleProducts = [
     size: "Toro",
     strength: "Full",
     stock: 12,
-    image: "/images/cigar-placeholder.png",
+    image: "/images/cigar-placeholder-image.png",
   },
   {
     id: "3",
@@ -42,7 +42,7 @@ export const sampleProducts = [
     size: "Churchill",
     strength: "Mild",
     stock: 18,
-    image: "/images/cigar-placeholder.png",
+    image: "/images/cigar-placeholder-image.png",
   },
 ];
 

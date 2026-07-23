@@ -28,7 +28,7 @@ export default async function HomePage() {
           muted
           loop
           playsInline
-          poster="/images/cigar-placeholder.png"
+          poster="/images/cigar-placeholder-image.png"
         >
           <source src="/videos/cigar-hero.mp4" type="video/mp4" />
         </video>
@@ -90,7 +90,7 @@ export default async function HomePage() {
               <div className="absolute inset-0 z-10 bg-[linear-gradient(to_bottom,transparent,rgba(0,0,0,0.35))]" />
 
               <Image
-                src={featuredProduct?.image ?? "/images/warm-cigar-image.jpg"}
+                src={featuredProduct?.image ?? "/images/holding-cigar-image.jpg"}
                 alt={featuredProduct?.name ?? "Red Diamond cigar"}
                 width={900}
                 height={650}

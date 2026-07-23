@@ -25,7 +25,7 @@ async function main() {
       size: "Robusto",
       strength: "Medium",
       stock: 25,
-      image: "/images/cigar-placeholder.png",
+      image: "/images/cigar-placeholder-image.png",
     },
   });
 
@@ -44,7 +44,7 @@ async function main() {
       size: "Toro",
       strength: "Full",
       stock: 12,
-      image: "/images/cigar-placeholder.png",
+      image: "/images/cigar-placeholder-image.png",
     },
   });
 
@@ -63,7 +63,7 @@ async function main() {
       size: "Churchill",
       strength: "Mild",
       stock: 18,
-      image: "/images/cigar-placeholder.png",
+      image: "/images/cigar-placeholder-image.png",
     },
   });
 

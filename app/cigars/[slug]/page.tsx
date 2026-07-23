@@ -28,7 +28,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
     <div className="mx-auto grid max-w-6xl gap-10 px-4 py-12 lg:grid-cols-2">
       <div className="relative aspect-square overflow-hidden rounded-xl bg-muted">
         <Image
-          src={product.image ?? "/images/cigar-placeholder.png"}
+          src={product.image ?? "/images/cigar-placeholder-image.png"}
           alt={product.name}
           fill
           sizes="(max-width: 1024px) 100vw, 50vw"

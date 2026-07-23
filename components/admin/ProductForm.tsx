@@ -3,11 +3,7 @@
 import { useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
 import { createProduct, updateProduct } from "@/app/actions/products";
-import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Textarea } from "@/components/ui/textarea";
 import type { ProductFormInput } from "@/lib/validators";
 
 type ProductFormProps = {
@@ -57,8 +53,9 @@ export function ProductForm({ product }: ProductFormProps) {
 
     startTransition(async () => {
       const result = product
-        ? await updateProduct(product?.id, values)
+        ? await updateProduct(product.id, values)
         : await createProduct(values);
+
       setMessage(result.message);
 
       if (result.success) {
@@ -72,154 +69,248 @@ export function ProductForm({ product }: ProductFormProps) {
   }
 
   return (
-    <form onSubmit={handleSubmit} className="rounded-xl border p-6">
-      <div>
-        <h2 className="text-xl font-semibold">
-          {product ? "Product Details" : "New Product"}
-        </h2>{" "}
-        <p className="mt-2 text-sm text-muted-foreground">
-          Update the cigar information shown in the public catalog.
-        </p>
-      </div>
+    <form onSubmit={handleSubmit}>
+      <div className="grid gap-6">
+        <div className="grid gap-5">
+          <div className="grid gap-2">
+            <label
+              htmlFor="name"
+              className="text-sm font-medium text-[#f8efe3]"
+            >
+              Product name
+            </label>
 
-      <div className="mt-6 grid gap-5">
-        <div className="grid gap-2">
-          <Label htmlFor="name">Product name</Label>
-          <Input id="name" name="name" defaultValue={product?.name} required />
-        </div>
+            <input
+              id="name"
+              name="name"
+              defaultValue={product?.name}
+              required
+              className="h-12 border border-[#f5cd7a]/20 bg-black/35 px-4 text-sm text-[#f8efe3] outline-none transition-colors duration-300 placeholder:text-[#8f8174] focus:border-[#f5cd7a]/60"
+            />
+          </div>
 
-        <div className="grid gap-2">
-          <Label htmlFor="slug">Slug</Label>
-          <Input id="slug" name="slug" defaultValue={product?.slug} required />
-          <p className="text-xs text-muted-foreground">
-            Example: reserva-especial-robusto
-          </p>
-        </div>
+          <div className="grid gap-2">
+            <label
+              htmlFor="slug"
+              className="text-sm font-medium text-[#f8efe3]"
+            >
+              Slug
+            </label>
 
-        <div className="grid gap-2">
-          <Label htmlFor="description">Description</Label>
-          <Textarea
-            id="description"
-            name="description"
-            defaultValue={product?.description}
-            required
-          />
+            <input
+              id="slug"
+              name="slug"
+              defaultValue={product?.slug}
+              required
+              className="h-12 border border-[#f5cd7a]/20 bg-black/35 px-4 text-sm text-[#f8efe3] outline-none transition-colors duration-300 placeholder:text-[#8f8174] focus:border-[#f5cd7a]/60"
+            />
+
+            <p className="text-xs leading-5 text-[#8f8174]">
+              Example: reserva-especial-robusto
+            </p>
+          </div>
+
+          <div className="grid gap-2">
+            <label
+              htmlFor="description"
+              className="text-sm font-medium text-[#f8efe3]"
+            >
+              Description
+            </label>
+
+            <textarea
+              id="description"
+              name="description"
+              defaultValue={product?.description}
+              required
+              rows={4}
+              className="min-h-28 resize-y border border-[#f5cd7a]/20 bg-black/35 px-4 py-3 text-sm leading-6 text-[#f8efe3] outline-none transition-colors duration-300 placeholder:text-[#8f8174] focus:border-[#f5cd7a]/60"
+            />
+          </div>
         </div>
 
         <div className="grid gap-4 sm:grid-cols-2">
           <div className="grid gap-2">
-            <Label htmlFor="wrapper">Wrapper</Label>
-            <Input
+            <label
+              htmlFor="wrapper"
+              className="text-sm font-medium text-[#f8efe3]"
+            >
+              Wrapper
+            </label>
+
+            <input
               id="wrapper"
               name="wrapper"
               defaultValue={product?.wrapper ?? ""}
               placeholder="Habano, Maduro, Connecticut..."
+              className="h-12 border border-[#f5cd7a]/20 bg-black/35 px-4 text-sm text-[#f8efe3] outline-none transition-colors duration-300 placeholder:text-[#8f8174] focus:border-[#f5cd7a]/60"
             />
           </div>
 
           <div className="grid gap-2">
-            <Label htmlFor="binder">Binder</Label>
-            <Input
+            <label
+              htmlFor="binder"
+              className="text-sm font-medium text-[#f8efe3]"
+            >
+              Binder
+            </label>
+
+            <input
               id="binder"
               name="binder"
               defaultValue={product?.binder ?? ""}
               placeholder="Dominican, Nicaraguan..."
+              className="h-12 border border-[#f5cd7a]/20 bg-black/35 px-4 text-sm text-[#f8efe3] outline-none transition-colors duration-300 placeholder:text-[#8f8174] focus:border-[#f5cd7a]/60"
             />
           </div>
 
           <div className="grid gap-2">
-            <Label htmlFor="filler">Filler</Label>
-            <Input
+            <label
+              htmlFor="filler"
+              className="text-sm font-medium text-[#f8efe3]"
+            >
+              Filler
+            </label>
+
+            <input
               id="filler"
               name="filler"
               defaultValue={product?.filler ?? ""}
               placeholder="Dominican blend..."
+              className="h-12 border border-[#f5cd7a]/20 bg-black/35 px-4 text-sm text-[#f8efe3] outline-none transition-colors duration-300 placeholder:text-[#8f8174] focus:border-[#f5cd7a]/60"
             />
           </div>
 
           <div className="grid gap-2">
-            <Label htmlFor="origin">Origin</Label>
-            <Input
+            <label
+              htmlFor="origin"
+              className="text-sm font-medium text-[#f8efe3]"
+            >
+              Origin
+            </label>
+
+            <input
               id="origin"
               name="origin"
               defaultValue={product?.origin ?? ""}
               placeholder="Dominican Republic"
+              className="h-12 border border-[#f5cd7a]/20 bg-black/35 px-4 text-sm text-[#f8efe3] outline-none transition-colors duration-300 placeholder:text-[#8f8174] focus:border-[#f5cd7a]/60"
             />
           </div>
 
           <div className="grid gap-2">
-            <Label htmlFor="size">Size / Vitola</Label>
-            <Input
+            <label
+              htmlFor="size"
+              className="text-sm font-medium text-[#f8efe3]"
+            >
+              Size / Vitola
+            </label>
+
+            <input
               id="size"
               name="size"
               defaultValue={product?.size ?? ""}
               placeholder="Robusto, Toro, Churchill..."
+              className="h-12 border border-[#f5cd7a]/20 bg-black/35 px-4 text-sm text-[#f8efe3] outline-none transition-colors duration-300 placeholder:text-[#8f8174] focus:border-[#f5cd7a]/60"
             />
           </div>
 
           <div className="grid gap-2">
-            <Label htmlFor="strength">Strength</Label>
-            <Input
+            <label
+              htmlFor="strength"
+              className="text-sm font-medium text-[#f8efe3]"
+            >
+              Strength
+            </label>
+
+            <input
               id="strength"
               name="strength"
               defaultValue={product?.strength}
               placeholder="Mild, Medium, Full"
               required
+              className="h-12 border border-[#f5cd7a]/20 bg-black/35 px-4 text-sm text-[#f8efe3] outline-none transition-colors duration-300 placeholder:text-[#8f8174] focus:border-[#f5cd7a]/60"
             />
           </div>
         </div>
 
         <div className="grid gap-2">
-          <Label htmlFor="image">Image path</Label>
-          <Input
+          <label htmlFor="image" className="text-sm font-medium text-[#f8efe3]">
+            Image path
+          </label>
+
+          <input
             id="image"
             name="image"
             defaultValue={product?.image ?? ""}
-            placeholder="/images/cigar-placeholder.png"
+            placeholder="/images/cigar-placeholder-image.png"
+            className="h-12 border border-[#f5cd7a]/20 bg-black/35 px-4 text-sm text-[#f8efe3] outline-none transition-colors duration-300 placeholder:text-[#8f8174] focus:border-[#f5cd7a]/60"
           />
-          <p className="text-xs text-muted-foreground">
+
+          <p className="text-xs leading-5 text-[#8f8174]">
             For now, use a path from the public folder. Example:
-            /images/cigar-placeholder.png
+            /images/cigar-placeholder-image.png
           </p>
         </div>
 
         <div className="grid gap-2">
-          <Label htmlFor="stock">Stock</Label>
-          <Input
+          <label htmlFor="stock" className="text-sm font-medium text-[#f8efe3]">
+            Stock
+          </label>
+
+          <input
             id="stock"
             name="stock"
             type="number"
             min="0"
             defaultValue={product?.stock}
             required
+            className="h-12 border border-[#f5cd7a]/20 bg-black/35 px-4 text-sm text-[#f8efe3] outline-none transition-colors duration-300 placeholder:text-[#8f8174] focus:border-[#f5cd7a]/60"
           />
         </div>
 
-        <div className="flex items-start gap-3">
-          <Checkbox
-            id="isActive"
-            checked={isActive}
-            onCheckedChange={(checked) => setIsActive(checked === true)}
-          />
+        <div className="border border-[#f5cd7a]/15 bg-black/25 p-4">
+          <div className="flex items-start gap-3">
+            <Checkbox
+              id="isActive"
+              checked={isActive}
+              onCheckedChange={(checked) => setIsActive(checked === true)}
+              className="mt-1 rounded-none border-[#f5cd7a]/35 data-[state=checked]:border-[#f5cd7a] data-[state=checked]:bg-[#f5cd7a] data-[state=checked]:text-black"
+            />
 
-          <div className="grid gap-1.5 leading-none">
-            <Label htmlFor="isActive">Active product</Label>
-            <p className="text-sm text-muted-foreground">
-              Active cigars appear on the public catalog. Inactive cigars are
-              hidden from customers.
-            </p>
+            <div className="grid gap-1.5 leading-none">
+              <label
+                htmlFor="isActive"
+                className="text-sm font-medium text-[#f8efe3]"
+              >
+                Active product
+              </label>
+
+              <p className="text-sm leading-6 text-[#b8a99a]">
+                Active cigars appear on the public catalog. Inactive cigars are
+                hidden from customers.
+              </p>
+            </div>
           </div>
         </div>
 
-        {message && <p className="text-sm text-muted-foreground">{message}</p>}
+        {message ? (
+          <p className="border border-[#f5cd7a]/15 bg-black/25 px-4 py-3 text-sm leading-6 text-[#b8a99a]">
+            {message}
+          </p>
+        ) : null}
 
-        <Button type="submit" disabled={isPending}>
+        <button
+          type="submit"
+          disabled={isPending}
+          className="h-12 border border-[#f5cd7a]/40 bg-[#f5cd7a] px-8 text-sm font-semibold text-black shadow-[0_0_35px_rgba(245,205,122,0.16)] transition-all duration-500 hover:bg-[#ffe3a3] hover:shadow-[0_0_55px_rgba(245,205,122,0.26)] disabled:cursor-not-allowed disabled:opacity-60"
+        >
           {isPending
             ? "Saving..."
             : product
               ? "Save product"
-              : "Create product"}{" "}
-        </Button>
+              : "Create product"}
+        </button>
       </div>
     </form>
   );

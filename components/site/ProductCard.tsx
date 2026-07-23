@@ -18,7 +18,7 @@ export function ProductCard({ product }: ProductCardProps) {
     <Card className="overflow-hidden">
       <div className="relative aspect-4/3 bg-muted">
         <Image
-          src={product.image ?? "/images/cigar-placeholder.png"}
+          src={product.image ?? "/images/cigar-placeholder-image.png"}
           alt={product.name}
           fill
           sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
