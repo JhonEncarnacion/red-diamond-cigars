@@ -21,6 +21,7 @@ type InquiryStatus =
 type InquiryStatusSelectProps = {
   inquiryId: string;
   currentStatus: InquiryStatus;
+  showHelp?: boolean;
 };
 
 const statuses: { label: string; value: InquiryStatus }[] = [
@@ -49,6 +50,7 @@ const statuses: { label: string; value: InquiryStatus }[] = [
 export function InquiryStatusSelect({
   inquiryId,
   currentStatus,
+  showHelp = true,
 }: InquiryStatusSelectProps) {
   const router = useRouter();
   const [status, setStatus] = useState<InquiryStatus>(currentStatus);
@@ -95,15 +97,17 @@ export function InquiryStatusSelect({
         </SelectContent>
       </Select>
 
-      {isPending ? (
-        <p className="text-xs uppercase tracking-[0.18em] text-[#f5cd7a]">
-          Updating status...
-        </p>
-      ) : (
-        <p className="text-xs leading-5 text-[#8f8174]">
-          Changes save automatically after selecting a new status.
-        </p>
-      )}
+      {showHelp ? (
+        isPending ? (
+          <p className="text-xs uppercase tracking-[0.18em] text-[#f5cd7a]">
+            Updating status...
+          </p>
+        ) : (
+          <p className="text-xs leading-5 text-[#8f8174]">
+            Changes save automatically after selecting a new status.
+          </p>
+        )
+      ) : null}
     </div>
   );
 }

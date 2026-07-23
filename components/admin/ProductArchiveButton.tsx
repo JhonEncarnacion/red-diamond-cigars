@@ -2,6 +2,7 @@
 
 import { useRouter } from "next/navigation";
 import { useTransition } from "react";
+import { Archive, ArchiveRestore } from "lucide-react";
 import { archiveProduct, restoreProduct } from "@/app/actions/products";
 
 type ProductArchiveButtonProps = {
@@ -41,14 +42,18 @@ export function ProductArchiveButton({
     });
   }
 
+  const Icon = isActive ? Archive : ArchiveRestore;
+
   return (
     <button
       type="button"
       onClick={handleClick}
       disabled={isPending}
-      className="inline-flex h-9 items-center justify-center border border-[#f5cd7a]/25 bg-black/25 px-4 text-xs font-medium uppercase tracking-[0.16em] text-[#f8efe3] transition-all duration-300 hover:border-[#f5cd7a] hover:bg-[#f5cd7a] hover:text-black disabled:cursor-not-allowed disabled:opacity-50"
+      aria-label={isActive ? "Archive product" : "Restore product"}
+      title={isActive ? "Archive product" : "Restore product"}
+      className="inline-flex h-9 w-9 items-center justify-center border border-[#f5cd7a]/25 bg-black/25 text-[#f8efe3] transition-all duration-300 hover:border-[#f5cd7a] hover:bg-[#f5cd7a] hover:text-black disabled:cursor-not-allowed disabled:opacity-50"
     >
-      {isPending ? "Saving..." : isActive ? "Archive" : "Restore"}
+      <Icon className="h-4 w-4" />
     </button>
   );
 }

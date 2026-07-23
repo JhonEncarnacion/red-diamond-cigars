@@ -81,9 +81,17 @@ export function AdminButtonLink({
   );
 }
 
-export function AdminCard({ children }: { children: ReactNode }) {
+export function AdminCard({
+  children,
+  className = "",
+}: {
+  children: React.ReactNode;
+  className?: string;
+}) {
   return (
-    <div className="border border-[#f5cd7a]/15 bg-black/35 p-6 shadow-[0_30px_90px_rgba(0,0,0,0.35)] backdrop-blur-md transition-all duration-500 hover:border-[#f5cd7a]/35">
+    <div
+      className={`border border-[#f5cd7a]/15 bg-black/30 p-6 shadow-[0_30px_90px_rgba(0,0,0,0.35)] backdrop-blur-md ${className}`}
+    >
       {children}
     </div>
   );

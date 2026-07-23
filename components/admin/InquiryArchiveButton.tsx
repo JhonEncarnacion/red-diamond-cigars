@@ -1,9 +1,9 @@
 "use client";
 
-import { useTransition } from "react";
 import { useRouter } from "next/navigation";
+import { useTransition } from "react";
+import { Archive, ArchiveRestore } from "lucide-react";
 import { archiveInquiry, restoreInquiry } from "@/app/actions/inquiries";
-import { Button } from "@/components/ui/button";
 
 type InquiryArchiveButtonProps = {
   inquiryId: string;
@@ -20,8 +20,8 @@ export function InquiryArchiveButton({
   function handleClick() {
     const confirmed = window.confirm(
       isArchived
-        ? "Restore this inquiry?"
-        : "Archive this inquiry? You can restore it later.",
+        ? "Restore this inquiry? It will appear in the active inquiries list again."
+        : "Archive this inquiry? It will be hidden from the active inquiries list.",
     );
 
     if (!confirmed) {
@@ -29,25 +29,31 @@ export function InquiryArchiveButton({
     }
 
     startTransition(async () => {
-      if (isArchived) {
-        await restoreInquiry(inquiryId);
-      } else {
-        await archiveInquiry(inquiryId);
+      const result = isArchived
+        ? await restoreInquiry(inquiryId)
+        : await archiveInquiry(inquiryId);
+
+      if (!result.success) {
+        alert(result.message);
+        return;
       }
 
       router.refresh();
     });
   }
 
+  const Icon = isArchived ? ArchiveRestore : Archive;
+
   return (
-    <Button
+    <button
       type="button"
-      variant="outline"
-      size="sm"
       onClick={handleClick}
       disabled={isPending}
+      aria-label={isArchived ? "Restore inquiry" : "Archive inquiry"}
+      title={isArchived ? "Restore inquiry" : "Archive inquiry"}
+      className="inline-flex h-9 w-9 items-center justify-center border border-[#f5cd7a]/25 bg-black/25 text-[#f8efe3] transition-all duration-300 hover:border-[#f5cd7a] hover:bg-[#f5cd7a] hover:text-black disabled:cursor-not-allowed disabled:opacity-50"
     >
-      {isPending ? "Saving..." : isArchived ? "Restore" : "Archive"}
-    </Button>
+      <Icon className="h-4 w-4" />
+    </button>
   );
 }
