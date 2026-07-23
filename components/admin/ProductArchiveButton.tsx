@@ -3,7 +3,6 @@
 import { useRouter } from "next/navigation";
 import { useTransition } from "react";
 import { archiveProduct, restoreProduct } from "@/app/actions/products";
-import { Button } from "@/components/ui/button";
 
 type ProductArchiveButtonProps = {
   productId: string;
@@ -43,14 +42,13 @@ export function ProductArchiveButton({
   }
 
   return (
-    <Button
+    <button
       type="button"
-      variant="outline"
-      size="sm"
       onClick={handleClick}
       disabled={isPending}
+      className="inline-flex h-9 items-center justify-center border border-[#f5cd7a]/25 bg-black/25 px-4 text-xs font-medium uppercase tracking-[0.16em] text-[#f8efe3] transition-all duration-300 hover:border-[#f5cd7a] hover:bg-[#f5cd7a] hover:text-black disabled:cursor-not-allowed disabled:opacity-50"
     >
       {isPending ? "Saving..." : isActive ? "Archive" : "Restore"}
-    </Button>
+    </button>
   );
 }
