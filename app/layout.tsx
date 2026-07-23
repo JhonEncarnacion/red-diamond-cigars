@@ -1,11 +1,11 @@
 import { Cormorant_Garamond, Inter } from "next/font/google";
 import "./globals.css";
-import { Navbar } from "@/components/site/Navbar";
 import { AgeGate } from "@/components/site/AgeGate";
 import { ClerkProvider } from "@clerk/nextjs";
 import { siteConfig } from "@/lib/site";
 import { Metadata } from "next";
 import { AppFooter } from "@/components/site/AppFooter";
+import { AppNavbar } from "@/components/site/AppNavbar";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -39,7 +39,7 @@ export default function RootLayout({
       >
         <body className="min-h-full flex flex-col font-sans">
           <AgeGate />
-          <Navbar />
+          <AppNavbar />
           {children}
           <AppFooter />
         </body>

@@ -1,9 +1,12 @@
 import Link from "next/link";
 import { prisma } from "@/lib/prisma";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
 import { requireAdmin } from "@/lib/admin-auth";
+import {
+  AdminButtonLink,
+  AdminCard,
+  AdminShell,
+} from "@/components/admin/AdminShell";
 
 export default async function AdminDashboardPage() {
   await requireAdmin();
@@ -113,32 +116,22 @@ export default async function AdminDashboardPage() {
       : 0;
 
   return (
-    <div className="mx-auto max-w-6xl px-4 py-12">
-      <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
-        <div>
-          <p className="text-sm font-medium uppercase tracking-widest text-muted-foreground">
-            Admin
-          </p>
+    <AdminShell
+      title="Dashboard"
+      description="Track cigar inquiries, customer interest, and product availability."
+      actions={
+        <>
+          <AdminButtonLink href="/admin/products">
+            View Products
+          </AdminButtonLink>
 
-          <h1 className="mt-3 text-4xl font-bold tracking-tight">Dashboard</h1>
-
-          <p className="mt-4 text-muted-foreground">
-            Track cigar inquiries, customer interest, and product availability.
-          </p>
-        </div>
-
-        <div className="flex gap-3">
-          <Button asChild variant="outline">
-            <Link href="/admin/products">View products</Link>
-          </Button>
-
-          <Button asChild>
-            <Link href="/admin/inquiries">View all inquiries</Link>
-          </Button>
-        </div>
-      </div>
-
-      <div className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+          <AdminButtonLink href="/admin/inquiries" variant="primary">
+            View Inquiries
+          </AdminButtonLink>
+        </>
+      }
+    >
+      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
         <StatCard title="Total inquiries" value={totalInquiries} />
         <StatCard title="New inquiries" value={newInquiries} />
         <StatCard title="Contacted" value={contactedInquiries} />
@@ -146,161 +139,165 @@ export default async function AdminDashboardPage() {
       </div>
 
       <div className="mt-6 grid gap-6 lg:grid-cols-3">
-        <Card>
-          <CardHeader>
-            <CardTitle>Most requested cigar</CardTitle>
-          </CardHeader>
+        <AdminCard>
+          <p className="text-lg font-semibold text-[#f8efe3]">
+            Most requested cigar
+          </p>
 
-          <CardContent>
-            {mostRequestedProduct ? (
-              <div>
-                <p className="text-2xl font-bold">
-                  {mostRequestedProduct.name}
-                </p>
-                <p className="mt-2 text-sm text-muted-foreground">
-                  {mostRequestedCount}{" "}
-                  {mostRequestedCount === 1 ? "inquiry" : "inquiries"}{" "}
-                  submitted.
-                </p>
-              </div>
-            ) : (
-              <p className="text-sm text-muted-foreground">
-                No product inquiries yet.
+          {mostRequestedProduct ? (
+            <div className="mt-6">
+              <p className="font-serif text-4xl font-semibold tracking-[0.04em] text-[#f8efe3]">
+                {mostRequestedProduct.name}
               </p>
-            )}
-          </CardContent>
-        </Card>
 
-        <Card>
-          <CardHeader className="flex flex-row items-start justify-between gap-4">
+              <p className="mt-3 text-sm leading-6 text-[#b8a99a]">
+                {mostRequestedCount}{" "}
+                {mostRequestedCount === 1 ? "inquiry" : "inquiries"} submitted.
+              </p>
+            </div>
+          ) : (
+            <p className="mt-6 text-sm leading-6 text-[#b8a99a]">
+              No product inquiries yet.
+            </p>
+          )}
+        </AdminCard>
+
+        <AdminCard>
+          <div className="flex items-start justify-between gap-4">
             <div>
-              <CardTitle>Low Stock</CardTitle>
-              <p className="mt-2 text-sm text-muted-foreground">
+              <p className="text-lg font-semibold text-[#f8efe3]">Low Stock</p>
+
+              <p className="mt-3 max-w-52 text-sm leading-6 text-[#b8a99a]">
                 Cigars with 10 or fewer units remaining.
               </p>
             </div>
 
             <Link
               href="/admin/products?stock=LOW_STOCK"
-              className="whitespace-nowrap text-sm font-medium underline underline-offset-4"
+              className="whitespace-nowrap text-sm font-medium text-[#f8efe3] underline decoration-[#f5cd7a]/50 underline-offset-4 transition-colors duration-300 hover:text-[#f5cd7a]"
             >
               View products
             </Link>
-          </CardHeader>
+          </div>
 
-          <CardContent>
-            <div className="space-y-4">
-              {lowStockProducts.length > 0 ? (
-                lowStockProducts.map((product) => (
-                  <div
-                    key={product.id}
-                    className="flex items-center justify-between gap-4 border-b pb-3 last:border-0 last:pb-0"
-                  >
-                    <div>
-                      <p className="font-medium">{product.name}</p>
-                      <p className="text-sm text-muted-foreground">
-                        {product.stock} left ·{" "}
-                        {product.origin ?? "Unknown origin"}
-                      </p>
-                    </div>
+          <div className="mt-6 space-y-4">
+            {lowStockProducts.length > 0 ? (
+              lowStockProducts.map((product) => (
+                <div
+                  key={product.id}
+                  className="flex items-center justify-between gap-4 border-b border-[#f5cd7a]/10 pb-4 last:border-0 last:pb-0"
+                >
+                  <div>
+                    <p className="font-medium text-[#f8efe3]">{product.name}</p>
 
-                    <Link
-                      href={`/admin/products/${product.id}/edit`}
-                      className="text-sm font-medium underline underline-offset-4"
-                    >
-                      Edit
-                    </Link>
+                    <p className="mt-1 text-sm text-[#b8a99a]">
+                      {product.stock} left ·{" "}
+                      {product.origin ?? "Unknown origin"}
+                    </p>
                   </div>
-                ))
-              ) : (
-                <p className="text-sm text-muted-foreground">
-                  No cigars are currently low on stock.
-                </p>
-              )}
-            </div>
-          </CardContent>
-        </Card>
 
-        <Card>
-          <CardHeader className="flex flex-row items-start justify-between gap-4">
+                  <Link
+                    href={`/admin/products/${product.id}/edit`}
+                    className="text-sm font-medium text-[#f8efe3] underline decoration-[#f5cd7a]/50 underline-offset-4 transition-colors duration-300 hover:text-[#f5cd7a]"
+                  >
+                    Edit
+                  </Link>
+                </div>
+              ))
+            ) : (
+              <p className="text-sm leading-6 text-[#b8a99a]">
+                No cigars are currently low on stock.
+              </p>
+            )}
+          </div>
+        </AdminCard>
+
+        <AdminCard>
+          <div className="flex items-start justify-between gap-4">
             <div>
-              <CardTitle>Out of Stock</CardTitle>
-              <p className="mt-2 text-sm text-muted-foreground">
+              <p className="text-lg font-semibold text-[#f8efe3]">
+                Out of Stock
+              </p>
+
+              <p className="mt-3 max-w-52 text-sm leading-6 text-[#b8a99a]">
                 Cigars that currently have no stock.
               </p>
             </div>
 
             <Link
               href="/admin/products?stock=LOW_STOCK"
-              className="whitespace-nowrap text-sm font-medium underline underline-offset-4"
+              className="whitespace-nowrap text-sm font-medium text-[#f8efe3] underline decoration-[#f5cd7a]/50 underline-offset-4 transition-colors duration-300 hover:text-[#f5cd7a]"
             >
               View products
             </Link>
-          </CardHeader>
+          </div>
 
-          <CardContent>
-            <div className="space-y-4">
-              {outOfStockProducts.length > 0 ? (
-                outOfStockProducts.map((product) => (
-                  <div
-                    key={product.id}
-                    className="flex items-center justify-between gap-4 border-b pb-3 last:border-0 last:pb-0"
-                  >
-                    <div>
-                      <p className="font-medium">{product.name}</p>
-                      <p className="text-sm text-muted-foreground">
-                        {product.origin ?? "Unknown origin"} ·{" "}
-                        {product.size ?? "Unknown size"}
-                      </p>
-                    </div>
+          <div className="mt-6 space-y-4">
+            {outOfStockProducts.length > 0 ? (
+              outOfStockProducts.map((product) => (
+                <div
+                  key={product.id}
+                  className="flex items-center justify-between gap-4 border-b border-[#f5cd7a]/10 pb-4 last:border-0 last:pb-0"
+                >
+                  <div>
+                    <p className="font-medium text-[#f8efe3]">{product.name}</p>
 
-                    <Link
-                      href={`/admin/products/${product.id}/edit`}
-                      className="text-sm font-medium underline underline-offset-4"
-                    >
-                      Edit
-                    </Link>
+                    <p className="mt-1 text-sm text-[#b8a99a]">
+                      {product.origin ?? "Unknown origin"} ·{" "}
+                      {product.size ?? "Unknown size"}
+                    </p>
                   </div>
-                ))
-              ) : (
-                <p className="text-sm text-muted-foreground">
-                  No cigars are currently out of stock.
-                </p>
-              )}
-            </div>
-          </CardContent>
-        </Card>
+
+                  <Link
+                    href={`/admin/products/${product.id}/edit`}
+                    className="text-sm font-medium text-[#f8efe3] underline decoration-[#f5cd7a]/50 underline-offset-4 transition-colors duration-300 hover:text-[#f5cd7a]"
+                  >
+                    Edit
+                  </Link>
+                </div>
+              ))
+            ) : (
+              <p className="text-sm leading-6 text-[#b8a99a]">
+                No cigars are currently out of stock.
+              </p>
+            )}
+          </div>
+        </AdminCard>
       </div>
 
-      <Card className="mt-6">
-        <CardHeader>
-          <CardTitle>Recent inquiries</CardTitle>
-        </CardHeader>
+      <div className="mt-6">
+        <AdminCard>
+          <p className="text-lg font-semibold text-[#f8efe3]">
+            Recent inquiries
+          </p>
 
-        <CardContent>
           {recentInquiries.length === 0 ? (
-            <p className="text-sm text-muted-foreground">
-              No recent inquiries.
-            </p>
+            <p className="mt-6 text-sm text-[#b8a99a]">No recent inquiries.</p>
           ) : (
-            <div className="grid gap-4">
+            <div className="mt-6 grid gap-4">
               {recentInquiries.map((inquiry) => (
                 <Link
                   key={inquiry.id}
                   href={`/admin/inquiries/${inquiry.id}`}
-                  className="rounded-lg border p-4 transition-colors hover:bg-muted/50"
+                  className="border border-[#f5cd7a]/15 bg-black/25 p-4 transition-all duration-300 hover:border-[#f5cd7a]/40 hover:bg-[#f5cd7a]/10"
                 >
                   <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
                     <div>
-                      <p className="font-medium">{inquiry.fullName}</p>
-                      <p className="text-sm text-muted-foreground">
+                      <p className="font-medium text-[#f8efe3]">
+                        {inquiry.fullName}
+                      </p>
+
+                      <p className="mt-1 text-sm text-[#b8a99a]">
                         {inquiry.product.name} · {inquiry.quantity} requested
                       </p>
                     </div>
 
                     <div className="flex items-center gap-3">
-                      <Badge variant="outline">{inquiry.status}</Badge>
-                      <p className="text-sm text-muted-foreground">
+                      <Badge className="rounded-none border border-[#f5cd7a]/30 bg-black/30 px-3 py-1 text-xs font-medium uppercase tracking-[0.12em] text-[#f8efe3]">
+                        {formatStatus(inquiry.status)}
+                      </Badge>
+
+                      <p className="text-sm text-[#b8a99a]">
                         {new Intl.DateTimeFormat("en", {
                           month: "short",
                           day: "numeric",
@@ -312,24 +309,24 @@ export default async function AdminDashboardPage() {
               ))}
             </div>
           )}
-        </CardContent>
-      </Card>
-    </div>
+        </AdminCard>
+      </div>
+    </AdminShell>
   );
 }
 
 function StatCard({ title, value }: { title: string; value: number }) {
   return (
-    <Card>
-      <CardHeader>
-        <CardTitle className="text-sm font-medium text-muted-foreground">
-          {title}
-        </CardTitle>
-      </CardHeader>
+    <AdminCard>
+      <p className="text-sm font-medium text-[#b8a99a]">{title}</p>
 
-      <CardContent>
-        <p className="text-3xl font-bold">{value}</p>
-      </CardContent>
-    </Card>
+      <p className="mt-6 font-serif text-5xl font-semibold tracking-[0.04em] text-[#f8efe3]">
+        {value}
+      </p>
+    </AdminCard>
   );
+}
+
+function formatStatus(status: string) {
+  return status.replaceAll("_", " ").toLowerCase();
 }
