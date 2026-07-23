@@ -3,11 +3,7 @@
 import { useState } from "react";
 import { useForm, useWatch } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Textarea } from "@/components/ui/textarea";
 import type { Product } from "@/lib/generated/prisma/client";
 import {
   inquirySchema,
@@ -15,6 +11,7 @@ import {
   type InquiryFormValues,
 } from "@/lib/validators";
 import { createInquiry } from "@/app/actions/inquiries";
+
 type InquiryFormProps = {
   product: Product;
 };
@@ -62,176 +59,244 @@ export function InquiryForm({ product }: InquiryFormProps) {
 
   if (submitted) {
     return (
-      <div className="rounded-xl border bg-muted/40 p-6">
-        <h2 className="text-xl font-semibold">Inquiry received</h2>
-        <p className="mt-2 text-sm text-muted-foreground">
-          Thanks for your interest in {product.name}. This is only a demo
-          confirmation for now. Later, this form will save the inquiry and
-          notify the business owner.
+      <div className="border border-[#f5cd7a]/20 bg-black/30 p-6 shadow-[0_30px_90px_rgba(0,0,0,0.35)] backdrop-blur-md">
+        <p className="text-xs font-medium uppercase tracking-[0.38em] text-[#f5cd7a]">
+          Inquiry Received
+        </p>
+
+        <h2 className="mt-4 text-2xl font-semibold text-[#f8efe3]">
+          Thank you for your interest.
+        </h2>
+
+        <p className="mt-3 text-sm leading-6 text-[#b8a99a]">
+          Thanks for your interest in {product.name}. Red Diamond Cigars will
+          follow up directly about availability and next steps.
         </p>
       </div>
     );
   }
 
   return (
-    <form
-      onSubmit={form.handleSubmit(onSubmit)}
-      className="rounded-xl border bg-muted/40 p-6"
-    >
-      <div>
-        <h2 className="text-xl font-semibold">Request Availability</h2>
-        <p className="mt-2 text-sm text-muted-foreground">
+    <form onSubmit={form.handleSubmit(onSubmit)}>
+      <div className="border-b border-[#f5cd7a]/15 pb-6">
+        <p className="text-xs font-medium uppercase tracking-[0.38em] text-[#f5cd7a]">
+          Inquiry Form
+        </p>
+
+        <h2 className="mt-4 text-2xl font-semibold text-[#f8efe3]">
+          Request Availability
+        </h2>
+
+        <p className="mt-3 text-sm leading-6 text-[#b8a99a]">
           Let us know you are interested in {product.name}. This is not a
           purchase and no payment is processed online.
         </p>
       </div>
 
-      <div className="mt-6 grid gap-4">
+      <div className="mt-6 grid gap-5">
         <div className="grid gap-2">
-          <Label htmlFor="fullName">Full name</Label>
-          <Input
+          <label
+            htmlFor="fullName"
+            className="text-sm font-medium text-[#f8efe3]"
+          >
+            Full name
+          </label>
+
+          <input
             id="fullName"
             placeholder="Your full name"
             {...form.register("fullName")}
+            className="h-12 border border-[#f5cd7a]/20 bg-black/35 px-4 text-sm text-[#f8efe3] outline-none transition-colors duration-300 placeholder:text-[#8f8174] focus:border-[#f5cd7a]/60"
           />
-          {form.formState.errors.fullName && (
-            <p className="text-sm text-destructive">
+
+          {form.formState.errors.fullName ? (
+            <p className="text-sm leading-6 text-red-300">
               {form.formState.errors.fullName.message}
             </p>
-          )}
+          ) : null}
         </div>
 
         <div className="grid gap-2">
-          <Label htmlFor="email">Email</Label>
-          <Input
+          <label htmlFor="email" className="text-sm font-medium text-[#f8efe3]">
+            Email
+          </label>
+
+          <input
             id="email"
             type="email"
             placeholder="you@example.com"
             {...form.register("email")}
+            className="h-12 border border-[#f5cd7a]/20 bg-black/35 px-4 text-sm text-[#f8efe3] outline-none transition-colors duration-300 placeholder:text-[#8f8174] focus:border-[#f5cd7a]/60"
           />
-          {form.formState.errors.email && (
-            <p className="text-sm text-destructive">
+
+          {form.formState.errors.email ? (
+            <p className="text-sm leading-6 text-red-300">
               {form.formState.errors.email.message}
             </p>
-          )}
+          ) : null}
         </div>
 
         <div className="grid gap-2">
-          <Label htmlFor="phone">Phone (Optional)</Label>
-          <Input
+          <label htmlFor="phone" className="text-sm font-medium text-[#f8efe3]">
+            Phone <span className="text-[#8f8174]">(Optional)</span>
+          </label>
+
+          <input
             id="phone"
+            inputMode="tel"
             placeholder="Phone number"
             {...form.register("phone")}
+            className="h-12 border border-[#f5cd7a]/20 bg-black/35 px-4 text-sm text-[#f8efe3] outline-none transition-colors duration-300 placeholder:text-[#8f8174] focus:border-[#f5cd7a]/60"
           />
-          {form.formState.errors.phone && (
-            <p className="text-sm text-destructive">
+
+          {form.formState.errors.phone ? (
+            <p className="text-sm leading-6 text-red-300">
               {form.formState.errors.phone.message}
             </p>
-          )}
+          ) : null}
         </div>
 
         <div className="grid gap-2">
-          <Label htmlFor="location">Location</Label>
-          <Input
+          <label
+            htmlFor="location"
+            className="text-sm font-medium text-[#f8efe3]"
+          >
+            Location
+          </label>
+
+          <input
             id="location"
             placeholder="City, state, or country"
             {...form.register("location")}
+            className="h-12 border border-[#f5cd7a]/20 bg-black/35 px-4 text-sm text-[#f8efe3] outline-none transition-colors duration-300 placeholder:text-[#8f8174] focus:border-[#f5cd7a]/60"
           />
-          {form.formState.errors.location && (
-            <p className="text-sm text-destructive">
+
+          {form.formState.errors.location ? (
+            <p className="text-sm leading-6 text-red-300">
               {form.formState.errors.location.message}
             </p>
-          )}
+          ) : null}
         </div>
 
         <div className="grid gap-2">
-          <Label htmlFor="quantity">Desired Quantity</Label>
-          <Input
+          <label
+            htmlFor="quantity"
+            className="text-sm font-medium text-[#f8efe3]"
+          >
+            Desired quantity
+          </label>
+
+          <input
             id="quantity"
             type="number"
             min="1"
             placeholder="Example: 5"
             {...form.register("quantity")}
+            className="h-12 border border-[#f5cd7a]/20 bg-black/35 px-4 text-sm text-[#f8efe3] outline-none transition-colors duration-300 placeholder:text-[#8f8174] focus:border-[#f5cd7a]/60"
           />
-          {form.formState.errors.quantity && (
-            <p className="text-sm text-destructive">
+
+          {form.formState.errors.quantity ? (
+            <p className="text-sm leading-6 text-red-300">
               {form.formState.errors.quantity.message}
             </p>
-          )}
+          ) : null}
         </div>
 
         <div className="grid gap-2">
-          <Label htmlFor="message">Message (Optional)</Label>
-          <Textarea
+          <label
+            htmlFor="message"
+            className="text-sm font-medium text-[#f8efe3]"
+          >
+            Message <span className="text-[#8f8174]">(Optional)</span>
+          </label>
+
+          <textarea
             id="message"
             placeholder="Ask about availability, pricing, pickup, or contact preference."
             {...form.register("message")}
+            rows={4}
+            className="min-h-28 resize-y border border-[#f5cd7a]/20 bg-black/35 px-4 py-3 text-sm leading-6 text-[#f8efe3] outline-none transition-colors duration-300 placeholder:text-[#8f8174] focus:border-[#f5cd7a]/60"
           />
-          {form.formState.errors.message && (
-            <p className="text-sm text-destructive">
+
+          {form.formState.errors.message ? (
+            <p className="text-sm leading-6 text-red-300">
               {form.formState.errors.message.message}
             </p>
-          )}
+          ) : null}
         </div>
 
-        <div className="grid gap-2">
-          <div className="flex items-start gap-3">
-            <Checkbox
-              id="confirmed21"
-              checked={confirmed21}
-              onCheckedChange={(checked) =>
-                form.setValue("confirmed21", checked === true, {
-                  shouldValidate: true,
-                })
-              }
-            />
-            <Label htmlFor="confirmed21" className="text-sm leading-5">
-              I confirm that I am 21 years of age or older.
-            </Label>
+        <div className="grid gap-4 border border-[#f5cd7a]/15 bg-black/25 p-4">
+          <div className="grid gap-2">
+            <div className="flex items-start gap-3">
+              <Checkbox
+                id="confirmed21"
+                checked={confirmed21}
+                onCheckedChange={(checked) =>
+                  form.setValue("confirmed21", checked === true, {
+                    shouldValidate: true,
+                  })
+                }
+                className="mt-1 rounded-none border-[#f5cd7a]/35 data-[state=checked]:border-[#f5cd7a] data-[state=checked]:bg-[#f5cd7a] data-[state=checked]:text-black"
+              />
+
+              <label
+                htmlFor="confirmed21"
+                className="text-sm leading-6 text-[#f8efe3]"
+              >
+                I confirm that I am 21 years of age or older.
+              </label>
+            </div>
+
+            {form.formState.errors.confirmed21 ? (
+              <p className="text-sm leading-6 text-red-300">
+                {form.formState.errors.confirmed21.message}
+              </p>
+            ) : null}
           </div>
-          {form.formState.errors.confirmed21 && (
-            <p className="text-sm text-destructive">
-              {form.formState.errors.confirmed21.message}
-            </p>
-          )}
-        </div>
 
-        <div className="grid gap-2">
-          <div className="flex items-start gap-3">
-            <Checkbox
-              id="inquiryOnly"
-              checked={inquiryOnly}
-              onCheckedChange={(checked) =>
-                form.setValue("inquiryOnly", checked === true, {
-                  shouldValidate: true,
-                })
-              }
-            />
-            <Label htmlFor="inquiryOnly" className="text-sm leading-5">
-              I understand this is an inquiry only and not a purchase, sale, or
-              shipment agreement.
-            </Label>
+          <div className="grid gap-2">
+            <div className="flex items-start gap-3">
+              <Checkbox
+                id="inquiryOnly"
+                checked={inquiryOnly}
+                onCheckedChange={(checked) =>
+                  form.setValue("inquiryOnly", checked === true, {
+                    shouldValidate: true,
+                  })
+                }
+                className="mt-1 rounded-none border-[#f5cd7a]/35 data-[state=checked]:border-[#f5cd7a] data-[state=checked]:bg-[#f5cd7a] data-[state=checked]:text-black"
+              />
+
+              <label
+                htmlFor="inquiryOnly"
+                className="text-sm leading-6 text-[#f8efe3]"
+              >
+                I understand this is an inquiry only and not a purchase, sale,
+                or shipment agreement.
+              </label>
+            </div>
+
+            {form.formState.errors.inquiryOnly ? (
+              <p className="text-sm leading-6 text-red-300">
+                {form.formState.errors.inquiryOnly.message}
+              </p>
+            ) : null}
           </div>
-          {form.formState.errors.inquiryOnly && (
-            <p className="text-sm text-destructive">
-              {form.formState.errors.inquiryOnly.message}
-            </p>
-          )}
         </div>
 
-        {form.formState.errors.root && (
-          <p className="text-sm text-destructive">
+        {form.formState.errors.root ? (
+          <p className="border border-red-500/30 bg-red-500/10 px-4 py-3 text-sm leading-6 text-red-300">
             {form.formState.errors.root.message}
           </p>
-        )}
+        ) : null}
 
-        <Button
+        <button
           type="submit"
-          className="mt-2"
           disabled={form.formState.isSubmitting}
+          className="mt-2 h-12 border border-[#f5cd7a]/40 bg-[#f5cd7a] px-8 text-sm font-semibold text-black shadow-[0_0_35px_rgba(245,205,122,0.16)] transition-all duration-500 hover:bg-[#ffe3a3] hover:shadow-[0_0_55px_rgba(245,205,122,0.26)] disabled:cursor-not-allowed disabled:opacity-60"
         >
           {form.formState.isSubmitting ? "Submitting..." : "Submit Inquiry"}
-        </Button>
+        </button>
       </div>
     </form>
   );

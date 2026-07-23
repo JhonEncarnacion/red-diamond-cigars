@@ -7,6 +7,7 @@ import {
   AdminCard,
   AdminShell,
 } from "@/components/admin/AdminShell";
+import { Pencil } from "lucide-react";
 
 export default async function AdminDashboardPage() {
   await requireAdmin();
@@ -146,7 +147,7 @@ export default async function AdminDashboardPage() {
 
           {mostRequestedProduct ? (
             <div className="mt-6">
-              <p className="font-serif text-4xl font-semibold tracking-[0.04em] text-[#f8efe3]">
+              <p className="text-4xl font-semibold tracking-[0.04em] text-[#f8efe3]">
                 {mostRequestedProduct.name}
               </p>
 
@@ -201,9 +202,11 @@ export default async function AdminDashboardPage() {
 
                   <Link
                     href={`/admin/products/${product.id}/edit`}
-                    className="text-sm font-medium text-[#f8efe3] underline decoration-[#f5cd7a]/50 underline-offset-4 transition-colors duration-300 hover:text-[#f5cd7a]"
+                    aria-label={`Edit ${product.name}`}
+                    title={`Edit ${product.name}`}
+                    className="inline-flex h-9 w-9 items-center justify-center border border-[#f5cd7a]/25 bg-black/25 text-[#f8efe3] transition-all duration-300 hover:border-[#f5cd7a] hover:bg-[#f5cd7a] hover:text-black"
                   >
-                    Edit
+                    <Pencil className="h-4 w-4" />
                   </Link>
                 </div>
               ))
@@ -253,9 +256,11 @@ export default async function AdminDashboardPage() {
 
                   <Link
                     href={`/admin/products/${product.id}/edit`}
-                    className="text-sm font-medium text-[#f8efe3] underline decoration-[#f5cd7a]/50 underline-offset-4 transition-colors duration-300 hover:text-[#f5cd7a]"
+                    aria-label={`Edit ${product.name}`}
+                    title={`Edit ${product.name}`}
+                    className="inline-flex h-9 w-9 items-center justify-center border border-[#f5cd7a]/25 bg-black/25 text-[#f8efe3] transition-all duration-300 hover:border-[#f5cd7a] hover:bg-[#f5cd7a] hover:text-black"
                   >
-                    Edit
+                    <Pencil className="h-4 w-4" />
                   </Link>
                 </div>
               ))
