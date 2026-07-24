@@ -125,7 +125,7 @@ export default async function HomePage() {
                 href="/cigars"
                 className="inline-flex h-12 items-center justify-center border border-[#f5cd7a]/40 bg-[#f5cd7a]/15 px-7 text-xs font-medium uppercase tracking-[0.28em] text-[#f8efe3] backdrop-blur-md transition-all duration-500 hover:border-[#f5cd7a] hover:bg-[#f5cd7a] hover:text-black hover:shadow-[0_0_42px_rgba(245,205,122,0.25)]"
               >
-                Explore Collection
+                View Collection
               </Link>
             </div>
           </Reveal>

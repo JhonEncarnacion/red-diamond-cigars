@@ -1,3 +1,5 @@
+"use client";
+
 import Image from "next/image";
 import Link from "next/link";
 
@@ -7,6 +9,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { usePathname } from "next/navigation";
 
 const publicLinks = [
   {
@@ -24,6 +27,34 @@ const publicLinks = [
 ];
 
 export function Navbar() {
+  const pathname = usePathname();
+
+  let rightLink = {
+    label: "Inquire Now",
+    href: "/cigars",
+  };
+
+  if (pathname === "/cigars") {
+    rightLink = {
+      label: "Contact Us",
+      href: "/contact",
+    };
+  }
+
+  if (pathname.startsWith("/cigars/")) {
+    rightLink = {
+      label: "View Collection",
+      href: "/cigars",
+    };
+  }
+
+  if (pathname === "/contact") {
+    rightLink = {
+      label: "View Collection",
+      href: "/cigars",
+    };
+  }
+
   return (
     <header
       className="pointer-events-none fixed left-0 top-0 z-50 h-28 w-full"
@@ -86,13 +117,13 @@ export function Navbar() {
         </Link>
       </div>
 
-      {/* Right: CTA */}
+      {/* Right: Dynamic CTA */}
       <div className="pointer-events-auto absolute right-[clamp(20px,4vw,48px)] top-8">
         <Link
-          href="/cigars"
+          href={rightLink.href}
           className="inline-flex h-11 items-center justify-center border border-[#f5cd7a]/40 bg-black/30 px-6 text-xs font-medium uppercase tracking-[0.22em] text-[#f7efe2] no-underline shadow-[0_0_28px_rgba(0,0,0,0.42)] transition-all duration-300 hover:border-[#f5cd7a] hover:bg-[#f5cd7a] hover:text-black hover:shadow-[0_0_38px_rgba(245,205,122,0.2)]"
         >
-          Inquire Now
+          {rightLink.label}
         </Link>
       </div>
     </header>
