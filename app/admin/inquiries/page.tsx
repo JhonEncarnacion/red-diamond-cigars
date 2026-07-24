@@ -266,11 +266,6 @@ export default async function AdminInquiriesPage({
 
                       <td className="px-5 py-5 text-right">
                         <div className="flex items-center justify-end gap-4">
-                          <InquiryArchiveButton
-                            inquiryId={inquiry.id}
-                            isArchived={inquiry.isArchived}
-                          />
-
                           <Link
                             href={`/admin/inquiries/${inquiry.id}`}
                             aria-label={`View inquiry from ${inquiry.fullName}`}
@@ -279,6 +274,11 @@ export default async function AdminInquiriesPage({
                           >
                             <Eye className="h-4 w-4" />
                           </Link>
+
+                          <InquiryArchiveButton
+                            inquiryId={inquiry.id}
+                            isArchived={inquiry.isArchived}
+                          />
                         </div>
                       </td>
                     </tr>
