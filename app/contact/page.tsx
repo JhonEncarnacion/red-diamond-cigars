@@ -131,10 +131,10 @@ export default function ContactPage() {
                       Phone
                     </p>
 
-                    <div className="mt-2 flex items-center justify-between gap-4">
+                    <div className="relative mt-2">
                       <a
                         href={getPhoneHref(contact.phone)}
-                        className="text-[#d9cbbb] transition-colors duration-300 hover:text-[#f5cd7a]"
+                        className="block pr-14 text-[#d9cbbb] transition-colors duration-300 hover:text-[#f5cd7a]"
                       >
                         {contact.phone}
                       </a>
@@ -144,7 +144,7 @@ export default function ContactPage() {
                         target="_blank"
                         rel="noreferrer"
                         aria-label={`Message ${contact.name} on WhatsApp`}
-                        className="inline-flex h-10 w-10 items-center justify-center border border-[#f5cd7a]/30 bg-black/25 text-[#f5cd7a] transition-all duration-300 hover:border-[#f5cd7a] hover:bg-[#f5cd7a] hover:text-black hover:shadow-[0_0_30px_rgba(245,205,122,0.18)]"
+                        className="absolute right-0 top-1 inline-flex h-10 w-10 -translate-y-1/2 items-center justify-center border border-[#f5cd7a]/30 bg-black/25 text-[#f5cd7a] transition-all duration-300 hover:border-[#f5cd7a] hover:bg-[#f5cd7a] hover:text-black hover:shadow-[0_0_30px_rgba(245,205,122,0.18)]"
                       >
                         <WhatsAppIcon />
                       </a>
