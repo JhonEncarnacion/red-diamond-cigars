@@ -288,12 +288,7 @@
       rgba(92, 38, 12, 0.24),
       transparent 27rem
     ),
-    linear-gradient(
-      135deg,
-      #020000 0%,
-      #0c0201 48%,
-      #030000 100%
-    );
+    linear-gradient(135deg, #020000 0%, #0c0201 48%, #030000 100%);
 }
 
 .page-bg-luxury-alt {
@@ -313,12 +308,7 @@
       rgba(80, 32, 12, 0.24),
       transparent 30rem
     ),
-    linear-gradient(
-      150deg,
-      #020000 0%,
-      #0b0201 50%,
-      #030000 100%
-    );
+    linear-gradient(150deg, #020000 0%, #0b0201 50%, #030000 100%);
 }
 
 .page-bg-luxury-center {
@@ -338,22 +328,16 @@
       rgba(100, 20, 10, 0.28),
       transparent 28rem
     ),
-    linear-gradient(
-      180deg,
-      #020000 0%,
-      #0d0201 52%,
-      #020000 100%
-    );
+    linear-gradient(180deg, #020000 0%, #0d0201 52%, #020000 100%);
 }
 
 .page-bg-texture {
-  background:
-    linear-gradient(
-      115deg,
-      rgba(255, 255, 255, 0.035),
-      transparent 25%,
-      rgba(245, 205, 122, 0.04),
-      transparent 62%
-    );
+  background: linear-gradient(
+    115deg,
+    rgba(255, 255, 255, 0.035),
+    transparent 25%,
+    rgba(245, 205, 122, 0.04),
+    transparent 62%
+  );
   opacity: 0.38;
 }
