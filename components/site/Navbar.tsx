@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 
 import {
   DropdownMenu,
@@ -9,8 +10,6 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { usePathname } from "next/navigation";
-import { useState, useEffect } from "react";
 
 const publicLinks = [
   {
@@ -30,40 +29,6 @@ const publicLinks = [
 export function Navbar() {
   const pathname = usePathname();
 
-  const [activeCigarSlug, setActiveCigarSlug] = useState("");
-  const [activeCigarName, setActiveCigarName] = useState("");
-
-  useEffect(() => {
-    function updateFromHash() {
-      if (window.location.pathname === "/cigars") {
-        setActiveCigarSlug(window.location.hash.replace("#", ""));
-      }
-    }
-
-    function handleActiveCigarChange(event: Event) {
-      const customEvent = event as CustomEvent<{
-        name: string;
-        slug: string;
-      }>;
-
-      setActiveCigarSlug(customEvent.detail.slug);
-      setActiveCigarName(customEvent.detail.name);
-    }
-
-    updateFromHash();
-
-    window.addEventListener("hashchange", updateFromHash);
-    window.addEventListener("active-cigar-change", handleActiveCigarChange);
-
-    return () => {
-      window.removeEventListener("hashchange", updateFromHash);
-      window.removeEventListener(
-        "active-cigar-change",
-        handleActiveCigarChange,
-      );
-    };
-  }, []);
-
   let rightLink = {
     label: "Inquire Now",
     href: "/cigars",
@@ -71,8 +36,8 @@ export function Navbar() {
 
   if (pathname === "/cigars") {
     rightLink = {
-      label: "View Cigar",
-      href: activeCigarSlug ? `/cigars/${activeCigarSlug}` : "/cigars",
+      label: "Contact Us",
+      href: "/contact",
     };
   }
 
@@ -92,7 +57,7 @@ export function Navbar() {
 
   return (
     <header
-      className="pointer-events-none fixed left-0 top-0 z-50 h-28 w-full"
+      className="pointer-events-none fixed left-0 top-0 z-50 h-28 w-screen"
       style={{
         background:
           "linear-gradient(to bottom, rgba(0,0,0,0.96), rgba(0,0,0,0.76), rgba(0,0,0,0.36), transparent)",
@@ -156,11 +121,7 @@ export function Navbar() {
       <div className="pointer-events-auto absolute right-[clamp(20px,4vw,48px)] top-8">
         <Link
           href={rightLink.href}
-          aria-label={
-            pathname === "/cigars" && activeCigarName
-              ? `View ${activeCigarName}`
-              : rightLink.label
-          }
+          aria-label={rightLink.label}
           className="inline-flex h-11 items-center justify-center border border-[#f5cd7a]/40 bg-black/30 px-6 text-xs font-medium uppercase tracking-[0.22em] text-[#f7efe2] no-underline shadow-[0_0_28px_rgba(0,0,0,0.42)] transition-all duration-300 hover:border-[#f5cd7a] hover:bg-[#f5cd7a] hover:text-black hover:shadow-[0_0_38px_rgba(245,205,122,0.2)]"
         >
           {rightLink.label}

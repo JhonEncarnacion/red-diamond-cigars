@@ -6,7 +6,11 @@ import { Footer } from "@/components/site/Footer";
 export function AppFooter() {
   const pathname = usePathname();
 
-  if (pathname === "/" || pathname.startsWith("/admin")) {
+  if (
+    pathname === "/" ||
+    pathname === "/cigars" ||
+    pathname.startsWith("/admin")
+  ) {
     return null;
   }
 
