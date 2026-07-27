@@ -147,7 +147,7 @@ export default async function AdminDashboardPage() {
 
           {mostRequestedProduct ? (
             <div className="mt-6">
-              <p className="text-4xl font-semibold tracking-[0.04em] text-[#f8efe3]">
+              <p className="text-4xl font-serif font-semibold tracking-[0.04em] text-[#f8efe3]">
                 {mostRequestedProduct.name}
               </p>
 

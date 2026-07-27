@@ -155,20 +155,19 @@ export default function ContactPage() {
             ))}
           </div>
 
-          <div className="mx-auto mt-12 flex max-w-3xl flex-col items-center justify-center gap-4 text-center sm:flex-row">
+          <div className="mx-auto mt-12 grid max-w-3xl grid-cols-1 justify-center gap-4 text-center sm:grid-cols-2">
             <a
               href={instagramUrl}
               target="_blank"
               rel="noreferrer"
-              className="inline-flex h-12 items-center justify-center gap-3 border border-[#f5cd7a]/40 bg-black/25 px-7 text-xs font-medium uppercase tracking-[0.28em] text-[#f8efe3] backdrop-blur-md transition-all duration-500 hover:border-[#f5cd7a] hover:bg-[#f5cd7a] hover:text-black hover:shadow-[0_0_42px_rgba(245,205,122,0.2)]"
+              className="inline-flex h-12 w-full items-center justify-center gap-3 border border-[#f5cd7a]/40 bg-black/25 px-7 text-xs font-medium uppercase tracking-[0.28em] text-[#f8efe3] backdrop-blur-md transition-all duration-500 hover:border-[#f5cd7a] hover:bg-[#f5cd7a] hover:text-black hover:shadow-[0_0_42px_rgba(245,205,122,0.2)]"
             >
               <InstagramIcon />
               Instagram
             </a>
-
             <Link
               href="/cigars"
-              className="inline-flex h-12 items-center justify-center border border-[#f5cd7a]/40 bg-[#f5cd7a] px-7 text-xs font-semibold uppercase tracking-[0.28em] text-black shadow-[0_0_45px_rgba(245,205,122,0.18)] transition-all duration-500 hover:bg-[#ffe3a3] hover:shadow-[0_0_65px_rgba(245,205,122,0.28)]"
+              className="inline-flex h-12 w-full items-center justify-center border border-[#f5cd7a]/40 bg-[#f5cd7a] px-7 text-xs font-semibold uppercase tracking-[0.28em] text-black shadow-[0_0_45px_rgba(245,205,122,0.18)] transition-all duration-500 hover:bg-[#ffe3a3] hover:shadow-[0_0_65px_rgba(245,205,122,0.28)]"
             >
               Browse Cigars
             </Link>

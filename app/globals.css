@@ -36,7 +36,7 @@
 
   --radius: 0.875rem;
 
-  --background: #050000;
+  --background: #0f0101;
   --foreground: #f7efe2;
 
   --card: #100909;
@@ -71,27 +71,16 @@
 
   html {
     scroll-behavior: smooth;
+    background-color: #0f0101;
   }
 
   body {
     @apply bg-background text-foreground font-sans;
-    background:
-      radial-gradient(
-        circle at top left,
-        rgba(185, 28, 28, 0.22),
-        transparent 34rem
-      ),
-      radial-gradient(
-        circle at top right,
-        rgba(212, 175, 55, 0.14),
-        transparent 30rem
-      ),
-      linear-gradient(180deg, #050000 0%, #0b0303 45%, #050000 100%);
     min-height: 100vh;
   }
 
   ::selection {
-    background: rgba(212, 175, 55, 0.35);
+    background: rgba(185, 28, 28, 0.45);
     color: #fff7ed;
   }
 }
@@ -157,7 +146,7 @@
   }
 
   50% {
-    box-shadow: 0 0 42px rgba(212, 175, 55, 0.24);
+    box-shadow: 0 0 42px rgba(185, 28, 28, 0.28);
   }
 }
 
@@ -196,150 +185,18 @@
   animation: scroll-arrow 1.8s ease-in-out infinite;
 }
 
-/* Homepage section backgrounds */
-
-.home-bg-experience {
-  background:
-    radial-gradient(
-      circle at 12% 18%,
-      rgba(120, 18, 18, 0.34),
-      transparent 29rem
-    ),
-    radial-gradient(
-      circle at 82% 70%,
-      rgba(245, 205, 122, 0.13),
-      transparent 28rem
-    ),
-    radial-gradient(
-      circle at 90% 16%,
-      rgba(92, 38, 12, 0.22),
-      transparent 27rem
-    ),
-    linear-gradient(135deg, #020000 0%, #0c0201 48%, #030000 100%);
-}
-
-.home-bg-story {
-  background:
-    radial-gradient(
-      circle at 78% 18%,
-      rgba(245, 205, 122, 0.13),
-      transparent 28rem
-    ),
-    radial-gradient(
-      circle at 18% 76%,
-      rgba(140, 18, 18, 0.32),
-      transparent 32rem
-    ),
-    radial-gradient(
-      circle at 48% 42%,
-      rgba(80, 32, 12, 0.24),
-      transparent 30rem
-    ),
-    linear-gradient(150deg, #020000 0%, #0b0201 50%, #030000 100%);
-}
-
-.home-bg-cta {
-  background:
-    radial-gradient(
-      circle at 50% 34%,
-      rgba(140, 18, 18, 0.36),
-      transparent 32rem
-    ),
-    radial-gradient(
-      circle at 82% 82%,
-      rgba(245, 205, 122, 0.14),
-      transparent 28rem
-    ),
-    radial-gradient(
-      circle at 14% 20%,
-      rgba(100, 20, 10, 0.28),
-      transparent 28rem
-    ),
-    linear-gradient(180deg, #020000 0%, #0d0201 52%, #020000 100%);
-}
-
-.home-bg-texture {
-  background: linear-gradient(
-    115deg,
-    rgba(255, 255, 255, 0.035),
-    transparent 25%,
-    rgba(245, 205, 122, 0.04),
-    transparent 62%
-  );
-  opacity: 0.38;
-}
-
-/* Public page backgrounds */
-
-.page-bg-luxury {
-  background:
-    radial-gradient(
-      circle at 14% 18%,
-      rgba(120, 18, 18, 0.34),
-      transparent 30rem
-    ),
-    radial-gradient(
-      circle at 84% 72%,
-      rgba(245, 205, 122, 0.13),
-      transparent 29rem
-    ),
-    radial-gradient(
-      circle at 88% 16%,
-      rgba(92, 38, 12, 0.24),
-      transparent 27rem
-    ),
-    linear-gradient(135deg, #020000 0%, #0c0201 48%, #030000 100%);
-}
-
-.page-bg-luxury-alt {
-  background:
-    radial-gradient(
-      circle at 78% 18%,
-      rgba(245, 205, 122, 0.13),
-      transparent 28rem
-    ),
-    radial-gradient(
-      circle at 18% 76%,
-      rgba(140, 18, 18, 0.32),
-      transparent 32rem
-    ),
-    radial-gradient(
-      circle at 48% 42%,
-      rgba(80, 32, 12, 0.24),
-      transparent 30rem
-    ),
-    linear-gradient(150deg, #020000 0%, #0b0201 50%, #030000 100%);
-}
-
-.page-bg-luxury-center {
-  background:
-    radial-gradient(
-      circle at 50% 30%,
-      rgba(140, 18, 18, 0.36),
-      transparent 34rem
-    ),
-    radial-gradient(
-      circle at 82% 82%,
-      rgba(245, 205, 122, 0.14),
-      transparent 28rem
-    ),
-    radial-gradient(
-      circle at 14% 20%,
-      rgba(100, 20, 10, 0.28),
-      transparent 28rem
-    ),
-    linear-gradient(180deg, #020000 0%, #0d0201 52%, #020000 100%);
+/* Shared solid dark-red background utilities */
+.site-red-gradient,
+.page-bg-luxury,
+.page-bg-luxury-alt,
+.page-bg-luxury-center,
+.homepage-dark-red {
+  background-color: #0f0101;
 }
 
 .page-bg-texture {
-  background: linear-gradient(
-    115deg,
-    rgba(255, 255, 255, 0.035),
-    transparent 25%,
-    rgba(245, 205, 122, 0.04),
-    transparent 62%
-  );
-  opacity: 0.38;
+  background: transparent;
+  opacity: 0;
 }
 
 .cigar-collection-scroll {

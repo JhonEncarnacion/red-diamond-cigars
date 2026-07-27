@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
-import { prisma } from "@/lib/prisma";
 import { CigarCollectionExperience } from "@/components/site/CigarCollectionExperience";
+import { prisma } from "@/lib/prisma";
 
 export const metadata: Metadata = {
   title: "Cigar Collection",
@@ -27,6 +27,7 @@ export default async function CigarsPage() {
     origin: product.origin,
     wrapper: product.wrapper,
     strength: product.strength,
+    stock: product.stock,
   }));
 
   return <CigarCollectionExperience cigars={cigars} />;
