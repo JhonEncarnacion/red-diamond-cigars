@@ -6,11 +6,48 @@ import { resend } from "@/lib/resend";
 import { siteConfig } from "@/lib/site";
 import { inquirySchema, type InquiryFormInput } from "@/lib/validators";
 import { revalidatePath } from "next/cache";
+import type { CreateEmailOptions } from "resend";
 
 type CreateInquiryResult = {
   success: boolean;
   message: string;
 };
+
+const inquiryEmailSender =
+  "Red Diamond Cigars <inquiries@reddiamondcigar.com>";
+
+async function sendInquiryEmail(
+  kind: "admin notification" | "customer confirmation",
+  inquiryId: string,
+  options: CreateEmailOptions,
+): Promise<boolean> {
+  try {
+    const { data, error } = await resend.emails.send(options);
+
+    if (error) {
+      console.error(`Failed to send inquiry ${kind}:`, {
+        inquiryId,
+        error,
+      });
+      return false;
+    }
+
+    if (!data) {
+      console.error(`Resend returned no data for inquiry ${kind}:`, {
+        inquiryId,
+      });
+      return false;
+    }
+
+    return true;
+  } catch (error) {
+    console.error(`Unexpected error while sending inquiry ${kind}:`, {
+      inquiryId,
+      error,
+    });
+    return false;
+  }
+}
 
 export async function createInquiry(
   productId: string,
@@ -54,9 +91,9 @@ export async function createInquiry(
 
   const adminInquiryUrl = `${siteConfig.url}/admin/inquiries/${inquiry.id}`;
 
-  try {
-    await resend.emails.send({
-      from: "Cigar Site <onboarding@resend.dev>",
+  const [adminEmailSent, customerEmailSent] = await Promise.all([
+    sendInquiryEmail("admin notification", inquiry.id, {
+      from: inquiryEmailSender,
       to: process.env.ADMIN_EMAIL!,
       replyTo: validatedFields.data.email,
       subject: `New cigar inquiry: ${product.name}`,
@@ -82,11 +119,12 @@ export async function createInquiry(
       <p><strong>Message:</strong> ${validatedFields.data.message || "No message provided"}</p>
     </div>
   `,
-    });
+    }),
 
-    await resend.emails.send({
-      from: "Red Diamond Cigars <onboarding@resend.dev>",
+    sendInquiryEmail("customer confirmation", inquiry.id, {
+      from: inquiryEmailSender,
       to: validatedFields.data.email,
+      replyTo: process.env.ADMIN_EMAIL!,
       subject: "We received your cigar inquiry",
       html: `
     <div style="font-family: Arial, sans-serif; line-height: 1.6; color: #111;">
@@ -131,14 +169,22 @@ export async function createInquiry(
       </p>
     </div>
   `,
+    }),
+  ]);
+
+  if (!adminEmailSent || !customerEmailSent) {
+    console.error("One or more inquiry emails could not be sent:", {
+      inquiryId: inquiry.id,
+      adminEmailSent,
+      customerEmailSent,
     });
-  } catch (error) {
-    console.error("Failed to send inquiry email:", error);
   }
 
   return {
     success: true,
-    message: "Inquiry submitted successfully.",
+    message: customerEmailSent
+      ? "Your inquiry was received, and a confirmation email is on the way."
+      : "Your inquiry was received, but we could not send the confirmation email. Please do not resubmit; Red Diamond Cigars will still follow up directly.",
   };
 }
 

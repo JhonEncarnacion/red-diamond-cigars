@@ -17,7 +17,9 @@ type InquiryFormProps = {
 };
 
 export function InquiryForm({ product }: InquiryFormProps) {
-  const [submitted, setSubmitted] = useState(false);
+  const [submissionMessage, setSubmissionMessage] = useState<string | null>(
+    null,
+  );
 
   const form = useForm<InquiryFormInput, unknown, InquiryFormValues>({
     resolver: zodResolver(inquirySchema),
@@ -54,12 +56,16 @@ export function InquiryForm({ product }: InquiryFormProps) {
       return;
     }
 
-    setSubmitted(true);
+    setSubmissionMessage(result.message);
   }
 
-  if (submitted) {
+  if (submissionMessage) {
     return (
-      <div className="border border-[#f5cd7a]/20 bg-black/30 p-6 shadow-[0_30px_90px_rgba(0,0,0,0.35)] backdrop-blur-md">
+      <div
+        role="status"
+        aria-live="polite"
+        className="border border-[#f5cd7a]/20 bg-black/30 p-6 shadow-[0_30px_90px_rgba(0,0,0,0.35)] backdrop-blur-md"
+      >
         <p className="text-xs font-medium uppercase tracking-[0.38em] text-[#f5cd7a]">
           Inquiry Received
         </p>
@@ -69,8 +75,7 @@ export function InquiryForm({ product }: InquiryFormProps) {
         </h2>
 
         <p className="mt-3 text-sm leading-6 text-[#b8a99a]">
-          Thanks for your interest in {product.name}. Red Diamond Cigars will
-          follow up directly about availability and next steps.
+          {submissionMessage}
         </p>
       </div>
     );
