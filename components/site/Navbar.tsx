@@ -115,7 +115,7 @@ export function Navbar() {
         <nav
           key={menuRenderKey}
           aria-label="Main navigation"
-          className="fixed left-[clamp(16px,4vw,48px)] top-19 z-10000 w-64 border border-[#f5cd7a]/25 bg-black/95 p-2 text-[#f7efe2] shadow-[0_24px_80px_rgba(0,0,0,0.75)] backdrop-blur-xl lg:left-[clamp(20px,4vw,48px)] lg:top-21"
+          className="fixed left-[clamp(16px,4vw,48px)] top-19 z-10000 w-52 border border-[#f5cd7a]/25 bg-black/95 p-2 text-[#f7efe2] shadow-[0_24px_80px_rgba(0,0,0,0.75)] backdrop-blur-xl lg:left-[clamp(20px,4vw,48px)] lg:top-21"
         >
           {publicLinks.map((link) => (
             <Link
