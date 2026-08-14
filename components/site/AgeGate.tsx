@@ -42,7 +42,7 @@ export function AgeGate() {
   }
 
   return (
-    <div className="fixed inset-0 z-9999 flex items-center justify-center overflow-hidden bg-black px-4">
+    <div className="fixed inset-0 z-11000 flex items-center justify-center overflow-hidden bg-black px-4">
       {isDesktop ? (
         <HeroVideo
           src="/videos/cigar-hero.mp4"
