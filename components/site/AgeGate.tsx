@@ -28,6 +28,41 @@ export function AgeGate() {
     };
   }, []);
 
+  useEffect(() => {
+    if (isVerified !== false) {
+      return;
+    }
+
+    const scrollPosition = window.scrollY;
+    const html = document.documentElement;
+    const body = document.body;
+    const previousStyles = {
+      htmlOverflow: html.style.overflow,
+      htmlOverscrollBehavior: html.style.overscrollBehavior,
+      bodyOverflow: body.style.overflow,
+      bodyPosition: body.style.position,
+      bodyTop: body.style.top,
+      bodyWidth: body.style.width,
+    };
+
+    html.style.overflow = "hidden";
+    html.style.overscrollBehavior = "none";
+    body.style.overflow = "hidden";
+    body.style.position = "fixed";
+    body.style.top = `-${scrollPosition}px`;
+    body.style.width = "100%";
+
+    return () => {
+      html.style.overflow = previousStyles.htmlOverflow;
+      html.style.overscrollBehavior = previousStyles.htmlOverscrollBehavior;
+      body.style.overflow = previousStyles.bodyOverflow;
+      body.style.position = previousStyles.bodyPosition;
+      body.style.top = previousStyles.bodyTop;
+      body.style.width = previousStyles.bodyWidth;
+      window.scrollTo(0, scrollPosition);
+    };
+  }, [isVerified]);
+
   function handleConfirm() {
     localStorage.setItem("age-verified", "true");
     setIsVerified(true);
