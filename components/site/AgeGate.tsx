@@ -1,6 +1,5 @@
 "use client";
 
-import Image from "next/image";
 import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 
@@ -64,17 +63,13 @@ export function AgeGate() {
 
   return (
     <div className="fixed inset-0 z-11000 flex items-center justify-center overflow-hidden bg-black px-4">
-      <Image
-        src="/images/cigar-placeholder-image.png"
-        alt=""
-        fill
-        priority
-        sizes="100vw"
-        className="object-cover"
+      <div
+        aria-hidden="true"
+        className="absolute inset-0 scale-[1.02] bg-[url('/images/hero-mobile.webp')] bg-cover bg-center brightness-[0.68] blur-[2px] lg:bg-[url('/images/hero-desktop.webp')]"
       />
 
-      <div className="absolute inset-0 bg-black/40" />
-      <div className="absolute inset-0 bg-[linear-gradient(to_bottom,rgba(0,0,0,0.25),rgba(0,0,0,0.82))]" />
+      <div className="absolute inset-0 bg-black/30" />
+      <div className="absolute inset-0 bg-[linear-gradient(to_bottom,rgba(0,0,0,0.12),rgba(0,0,0,0.76))]" />
 
       {/* Card */}
       <div className="relative z-10 w-full max-w-lg border border-[#f5cd7a]/25 bg-[#080202]/95 p-7 text-center shadow-[0_40px_120px_rgba(0,0,0,0.75)] backdrop-blur-xl sm:p-9">

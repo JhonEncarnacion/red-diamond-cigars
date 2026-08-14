@@ -8,16 +8,16 @@ export function HomeMobileTabletExperience() {
       {/* Hero */}
       <section className="relative flex min-h-screen items-center justify-center overflow-hidden px-6 py-32 text-center">
         <Image
-          src="/images/cigar-placeholder-image.png"
-          alt="Red Diamond cigar"
+          src="/images/hero-mobile.webp"
+          alt="Red Diamond cigar on a dark walnut humidor table"
           fill
           priority
           sizes="100vw"
-          className="absolute inset-0 h-full w-full object-cover"
+          className="absolute inset-0 h-full w-full scale-[1.02] object-cover object-center brightness-[0.68] blur-[2px]"
         />
 
-        <div className="absolute inset-0 bg-black/40" />
-        <div className="absolute inset-0 bg-[linear-gradient(to_bottom,rgba(0,0,0,0.25),rgba(0,0,0,0.82))]" />
+        <div className="absolute inset-0 bg-black/20" />
+        <div className="absolute inset-0 bg-[linear-gradient(to_bottom,rgba(0,0,0,0.08),rgba(0,0,0,0.72))]" />
 
         <div className="relative z-10 mx-auto max-w-3xl pt-10">
           <p className="mb-5 text-[10px] font-medium uppercase tracking-[0.42em] text-[#f5cd7a] sm:text-xs sm:tracking-[0.55em]">

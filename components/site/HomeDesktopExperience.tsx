@@ -12,16 +12,16 @@ export function HomeDesktopExperience() {
           {/* Hero */}
           <section className="relative h-screen snap-start snap-always overflow-hidden">
             <Image
-              src="/images/cigar-placeholder-image.png"
-              alt="Red Diamond cigar"
+              src="/images/hero-desktop.webp"
+              alt="Red Diamond cigar on a dark walnut humidor table"
               fill
               priority
               sizes="100vw"
-              className="absolute inset-0 h-full w-full object-cover"
+              className="absolute inset-0 h-full w-full scale-[1.02] object-cover object-center brightness-[0.68] blur-[2px]"
             />
 
-            <div className="absolute inset-0 bg-black/40" />
-            <div className="absolute inset-0 bg-[linear-gradient(to_bottom,rgba(0,0,0,0.25),rgba(0,0,0,0.82))]" />
+            <div className="absolute inset-0 bg-black/25" />
+            <div className="absolute inset-0 bg-[linear-gradient(to_bottom,rgba(0,0,0,0.16),rgba(0,0,0,0.74))]" />
 
             <div className="relative z-10 flex h-full items-center justify-center px-6 text-center">
               <div className="animate-luxury-rise max-w-3xl">
