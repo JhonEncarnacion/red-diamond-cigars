@@ -13,8 +13,7 @@ type CreateInquiryResult = {
   message: string;
 };
 
-const inquiryEmailSender =
-  `Red Diamond Cigars <${siteConfig.contactEmail}>`;
+const inquiryEmailSender = "Red Diamond Cigars <inquiries@reddiamondcigar.com>";
 
 async function sendInquiryEmail(
   kind: "admin notification" | "customer confirmation",
