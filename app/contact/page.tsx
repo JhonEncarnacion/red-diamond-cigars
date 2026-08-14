@@ -13,19 +13,19 @@ const contacts = [
   {
     role: "Founder",
     name: "Luis Encarnacion",
-    email: "reddiamondcigars@gmail.com",
+    email: "luis@reddiamondcigar.com",
     phone: "(914) 689-6167",
   },
   {
     role: "Manager",
     name: "Osvaldina Contreras",
-    email: "morejean77@gmail.com",
+    email: "more@reddiamondcigar.com",
     phone: "(347) 981-6331",
   },
   {
     role: "Technology",
     name: "Jhon Encarnacion",
-    email: "jhon@jhonencarnacion.com",
+    email: "jhon@reddiamondcigar.com",
     phone: "(347) 282-0207",
   },
 ];

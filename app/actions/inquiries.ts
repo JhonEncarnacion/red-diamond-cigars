@@ -14,7 +14,7 @@ type CreateInquiryResult = {
 };
 
 const inquiryEmailSender =
-  "Red Diamond Cigars <inquiries@reddiamondcigar.com>";
+  `Red Diamond Cigars <${siteConfig.contactEmail}>`;
 
 async function sendInquiryEmail(
   kind: "admin notification" | "customer confirmation",
@@ -94,7 +94,7 @@ export async function createInquiry(
   const [adminEmailSent, customerEmailSent] = await Promise.all([
     sendInquiryEmail("admin notification", inquiry.id, {
       from: inquiryEmailSender,
-      to: process.env.ADMIN_EMAIL!,
+      to: siteConfig.contactEmail,
       replyTo: validatedFields.data.email,
       subject: `New cigar inquiry: ${product.name}`,
       html: `
@@ -124,7 +124,7 @@ export async function createInquiry(
     sendInquiryEmail("customer confirmation", inquiry.id, {
       from: inquiryEmailSender,
       to: validatedFields.data.email,
-      replyTo: process.env.ADMIN_EMAIL!,
+      replyTo: siteConfig.contactEmail,
       subject: "We received your cigar inquiry",
       html: `
     <div style="font-family: Arial, sans-serif; line-height: 1.6; color: #111;">

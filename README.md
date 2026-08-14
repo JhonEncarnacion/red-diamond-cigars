@@ -98,7 +98,6 @@ cp .env.example .env
 | --- | --- |
 | `DATABASE_URL` | PostgreSQL connection string used by Prisma |
 | `RESEND_API_KEY` | API key used to send inquiry emails |
-| `ADMIN_EMAIL` | Inbox that receives new-inquiry notifications |
 | `NEXT_PUBLIC_SITE_URL` | Public application URL used in links and metadata |
 | `NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY` | Public Clerk application key |
 | `CLERK_SECRET_KEY` | Server-side Clerk secret |
