@@ -2,30 +2,16 @@
 
 import Image from "next/image";
 import { useEffect, useState } from "react";
-import { HeroVideo } from "@/components/site/HeroVideo";
 import { Button } from "@/components/ui/button";
 
 export function AgeGate() {
   const [isVerified, setIsVerified] = useState<boolean | null>(null);
-  const [isDesktop, setIsDesktop] = useState(false);
 
   useEffect(() => {
     const verified = localStorage.getItem("age-verified") === "true";
-    const mediaQuery = window.matchMedia("(min-width: 1024px)");
-
-    function updateScreenSize() {
-      setIsDesktop(mediaQuery.matches);
-    }
 
     // eslint-disable-next-line react-hooks/set-state-in-effect
     setIsVerified(verified);
-    updateScreenSize();
-
-    mediaQuery.addEventListener("change", updateScreenSize);
-
-    return () => {
-      mediaQuery.removeEventListener("change", updateScreenSize);
-    };
   }, []);
 
   useEffect(() => {
@@ -78,26 +64,16 @@ export function AgeGate() {
 
   return (
     <div className="fixed inset-0 z-11000 flex items-center justify-center overflow-hidden bg-black px-4">
-      {isDesktop ? (
-        <HeroVideo
-          src="/videos/cigar-hero.mp4"
-          poster="/images/cigar-placeholder-image.png"
-          className="absolute inset-0 h-full w-full object-cover"
-        />
-      ) : (
-        <Image
-          src="/images/cigar-placeholder-image.png"
-          alt=""
-          fill
-          priority
-          sizes="100vw"
-          className="object-cover"
-        />
-      )}
-
-      <div
-        className={`absolute inset-0 ${isDesktop ? "bg-black/70" : "bg-black/40"}`}
+      <Image
+        src="/images/cigar-placeholder-image.png"
+        alt=""
+        fill
+        priority
+        sizes="100vw"
+        className="object-cover"
       />
+
+      <div className="absolute inset-0 bg-black/40" />
       <div className="absolute inset-0 bg-[linear-gradient(to_bottom,rgba(0,0,0,0.25),rgba(0,0,0,0.82))]" />
 
       {/* Card */}

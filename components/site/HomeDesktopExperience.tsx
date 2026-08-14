@@ -3,7 +3,6 @@ import Link from "next/link";
 import { Reveal } from "@/components/site/Reveal";
 import { Footer } from "@/components/site/Footer";
 import { HomeScrollShell } from "@/components/site/HomeScrollShell";
-import { HeroVideo } from "./HeroVideo";
 
 export function HomeDesktopExperience() {
   return (
@@ -12,12 +11,16 @@ export function HomeDesktopExperience() {
         <div className="bg-background">
           {/* Hero */}
           <section className="relative h-screen snap-start snap-always overflow-hidden">
-            <HeroVideo
-              src="/videos/cigar-hero.mp4"
+            <Image
+              src="/images/cigar-placeholder-image.png"
+              alt="Red Diamond cigar"
+              fill
+              priority
+              sizes="100vw"
               className="absolute inset-0 h-full w-full object-cover"
             />
 
-            <div className="absolute inset-0 bg-black/70" />
+            <div className="absolute inset-0 bg-black/40" />
             <div className="absolute inset-0 bg-[linear-gradient(to_bottom,rgba(0,0,0,0.25),rgba(0,0,0,0.82))]" />
 
             <div className="relative z-10 flex h-full items-center justify-center px-6 text-center">
