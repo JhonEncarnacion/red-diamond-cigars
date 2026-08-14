@@ -1,16 +1,31 @@
 "use client";
 
+import Image from "next/image";
 import { useEffect, useState } from "react";
+import { HeroVideo } from "@/components/site/HeroVideo";
 import { Button } from "@/components/ui/button";
 
 export function AgeGate() {
   const [isVerified, setIsVerified] = useState<boolean | null>(null);
+  const [isDesktop, setIsDesktop] = useState(false);
 
   useEffect(() => {
     const verified = localStorage.getItem("age-verified") === "true";
+    const mediaQuery = window.matchMedia("(min-width: 1024px)");
+
+    function updateScreenSize() {
+      setIsDesktop(mediaQuery.matches);
+    }
 
     // eslint-disable-next-line react-hooks/set-state-in-effect
     setIsVerified(verified);
+    updateScreenSize();
+
+    mediaQuery.addEventListener("change", updateScreenSize);
+
+    return () => {
+      mediaQuery.removeEventListener("change", updateScreenSize);
+    };
   }, []);
 
   function handleConfirm() {
@@ -27,12 +42,28 @@ export function AgeGate() {
   }
 
   return (
-    <div className="fixed inset-0 z-9999 flex items-center justify-center overflow-hidden bg-black/90 px-4 backdrop-blur-md">
-      {/* Background glow */}
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(185,28,28,0.24),transparent_34rem),radial-gradient(circle_at_bottom_right,rgba(245,205,122,0.13),transparent_30rem),linear-gradient(to_bottom,#050000,#0b0303)]" />
+    <div className="fixed inset-0 z-9999 flex items-center justify-center overflow-hidden bg-black px-4">
+      {isDesktop ? (
+        <HeroVideo
+          src="/videos/cigar-hero.mp4"
+          poster="/images/cigar-placeholder-image.png"
+          className="absolute inset-0 h-full w-full object-cover"
+        />
+      ) : (
+        <Image
+          src="/images/cigar-placeholder-image.png"
+          alt=""
+          fill
+          priority
+          sizes="100vw"
+          className="object-cover"
+        />
+      )}
 
-      {/* Dark vignette */}
-      <div className="absolute inset-0 bg-[linear-gradient(to_bottom,rgba(0,0,0,0.35),rgba(0,0,0,0.78))]" />
+      <div
+        className={`absolute inset-0 ${isDesktop ? "bg-black/70" : "bg-black/40"}`}
+      />
+      <div className="absolute inset-0 bg-[linear-gradient(to_bottom,rgba(0,0,0,0.25),rgba(0,0,0,0.82))]" />
 
       {/* Card */}
       <div className="relative z-10 w-full max-w-lg border border-[#f5cd7a]/25 bg-[#080202]/95 p-7 text-center shadow-[0_40px_120px_rgba(0,0,0,0.75)] backdrop-blur-xl sm:p-9">
