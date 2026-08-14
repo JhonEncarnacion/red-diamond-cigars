@@ -1,4 +1,5 @@
 import Image from "next/image";
+import { getProductImage } from "@/lib/product-images";
 import Link from "next/link";
 import { Eye, Pencil } from "lucide-react";
 import { prisma } from "@/lib/prisma";
@@ -173,9 +174,7 @@ export default async function AdminProductsPage({
                         <div className="flex items-center gap-4">
                           <div className="relative h-16 w-16 shrink-0 overflow-hidden border border-[#f5cd7a]/15 bg-black/40">
                             <Image
-                              src={
-                                product.image ?? "/images/cigar-placeholder-image.png"
-                              }
+                              src={getProductImage(product)}
                               alt={product.name}
                               fill
                               sizes="64px"

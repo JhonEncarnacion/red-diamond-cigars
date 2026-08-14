@@ -11,59 +11,65 @@ const prisma = new PrismaClient({
 
 async function main() {
   await prisma.product.upsert({
-    where: { slug: "reserva-especial-robusto" },
-    update: {},
+    where: { slug: "red-diamond-red-label" },
+    update: {
+      image: "/images/products/red-label.webp",
+    },
     create: {
-      name: "Reserva Especial Robusto",
-      slug: "reserva-especial-robusto",
+      name: "Red Label",
+      slug: "red-diamond-red-label",
       description:
-        "A medium-bodied handmade cigar with smooth notes of cedar, cocoa, and light spice.",
+        "This is a limited edition version of the world's greatest cigar collection.",
+      wrapper: "Gold",
+      binder: "Translucent",
+      filler: "Mystery",
+      origin: "Dominican Republic",
+      size: "Medium",
+      strength: "Powerful",
+      stock: 4,
+      image: "/images/products/red-label.webp",
+    },
+  });
+
+  await prisma.product.upsert({
+    where: { slug: "red-diamond-blue-label" },
+    update: {
+      image: "/images/products/blue-label.webp",
+    },
+    create: {
+      name: "Blue Label",
+      slug: "red-diamond-blue-label",
+      description:
+        "An intense version of the normal red diamond cigars for an extra kick!",
+      wrapper: "Stealth",
+      binder: "Dark",
+      filler: "Mist",
+      origin: "New York",
+      size: "Massive",
+      strength: "Intense",
+      stock: 0,
+      image: "/images/products/blue-label.webp",
+    },
+  });
+
+  await prisma.product.upsert({
+    where: { slug: "red-diamond-gold-label" },
+    update: {
+      image: "/images/products/gold-label.webp",
+    },
+    create: {
+      name: "Gold Label",
+      slug: "red-diamond-gold-label",
+      description:
+        "The most premium cigar on the market. Exclusive to only the rich.",
       wrapper: "Habano",
-      binder: "Dominican",
-      filler: "Dominican",
+      binder: "Criollo",
+      filler: "Volado",
       origin: "Dominican Republic",
       size: "Robusto",
       strength: "Medium",
-      stock: 25,
-      image: "/images/cigar-placeholder-image.png",
-    },
-  });
-
-  await prisma.product.upsert({
-    where: { slug: "maduro-toro" },
-    update: {},
-    create: {
-      name: "Maduro Toro",
-      slug: "maduro-toro",
-      description:
-        "A full-bodied cigar with rich notes of dark chocolate, espresso, earth, and pepper.",
-      wrapper: "Maduro",
-      binder: "Dominican",
-      filler: "Dominican",
-      origin: "Dominican Republic",
-      size: "Toro",
-      strength: "Full",
-      stock: 12,
-      image: "/images/cigar-placeholder-image.png",
-    },
-  });
-
-  await prisma.product.upsert({
-    where: { slug: "claro-churchill" },
-    update: {},
-    create: {
-      name: "Claro Churchill",
-      slug: "claro-churchill",
-      description:
-        "A mild cigar with a smooth, creamy profile, light cedar, and subtle natural sweetness.",
-      wrapper: "Claro",
-      binder: "Dominican",
-      filler: "Dominican",
-      origin: "Dominican Republic",
-      size: "Churchill",
-      strength: "Mild",
-      stock: 18,
-      image: "/images/cigar-placeholder-image.png",
+      stock: 17,
+      image: "/images/products/gold-label.webp",
     },
   });
 

@@ -1,4 +1,5 @@
 import Image from "next/image";
+import { getProductImage } from "@/lib/product-images";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { prisma } from "@/lib/prisma";
@@ -58,7 +59,7 @@ export default async function EditProductPage({
               <div className="absolute inset-0 z-10 bg-[radial-gradient(circle_at_center,transparent_42%,rgba(0,0,0,0.48))]" />
 
               <Image
-                src={product.image ?? "/images/cigar-placeholder-image.png"}
+                src={getProductImage(product)}
                 alt={product.name}
                 fill
                 priority

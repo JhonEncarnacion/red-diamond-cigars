@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import { prisma } from "@/lib/prisma";
 import { InquiryForm } from "@/components/site/InquiryForm";
 import { siteConfig } from "@/lib/site";
+import { getProductImage } from "@/lib/product-images";
 import type { Metadata } from "next";
 
 type ProductPageProps = {
@@ -24,6 +25,8 @@ export default async function ProductPage({ params }: ProductPageProps) {
     notFound();
   }
 
+  const productImage = getProductImage(product);
+
   return (
     <main className="relative min-h-screen overflow-hidden bg-[#050000] text-[#f8efe3]">
       {/* Page background */}
@@ -39,7 +42,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
             <div className="absolute inset-0 z-10 bg-[radial-gradient(circle_at_center,transparent_40%,rgba(0,0,0,0.48))]" />
 
             <Image
-              src={product.image ?? "/images/cigar-placeholder-image.png"}
+              src={productImage}
               alt={product.name}
               fill
               priority
@@ -128,7 +131,7 @@ export async function generateMetadata({
       title: `${product.name} | ${siteConfig.name}`,
       description: product.description,
       url: `${siteConfig.url}/cigars/${product.slug}`,
-      images: product.image ? [product.image] : undefined,
+      images: [getProductImage(product)],
     },
   };
 }

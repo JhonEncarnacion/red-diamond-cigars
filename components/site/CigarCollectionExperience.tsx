@@ -256,12 +256,13 @@ export function CigarCollectionExperience({
               fill
               sizes="100vw"
               priority={index === 0}
-              className="object-cover"
+              className="object-contain object-left"
             />
 
             <div className="absolute inset-0 bg-[linear-gradient(to_bottom,rgba(0,0,0,0.42),rgba(0,0,0,0.88))]" />
+            <div className="absolute inset-0 bg-[linear-gradient(to_right,rgba(0,0,0,0.02)_0%,rgba(0,0,0,0.22)_45%,rgba(0,0,0,0.82)_100%)]" />
 
-            <div className="relative z-10 mx-auto max-w-4xl">
+            <div className="relative z-10 ml-auto mr-[7vw] w-[48%] max-w-3xl text-left">
               <p className="text-xs font-medium uppercase tracking-[0.55em] text-[#f5cd7a]">
                 Red Diamond Collection
               </p>
@@ -270,11 +271,11 @@ export function CigarCollectionExperience({
                 {cigar.name}
               </h1>
 
-              <p className="mx-auto mt-6 max-w-2xl text-base leading-8 text-[#d9cbbb]">
+              <p className="mt-6 max-w-2xl text-base leading-8 text-[#d9cbbb]">
                 {cigar.description}
               </p>
 
-              <div className="mx-auto mt-8 grid max-w-2xl grid-cols-3 gap-3 text-xs uppercase tracking-[0.22em] text-[#b8a99a]">
+              <div className="mt-8 grid max-w-2xl grid-cols-3 gap-3 text-xs uppercase tracking-[0.22em] text-[#b8a99a]">
                 {cigar.origin && (
                   <div className="border border-[#f5cd7a]/15 bg-black/25 px-4 py-3 backdrop-blur-sm">
                     <span className="block text-[#f5cd7a]">Origin</span>
@@ -297,7 +298,7 @@ export function CigarCollectionExperience({
                 )}
               </div>
 
-              <div className="mt-10 flex justify-center">
+              <div className="mt-10 flex justify-start">
                 <Link
                   href={`/cigars/${cigar.slug}`}
                   className="inline-flex h-13 items-center justify-center border border-[#f5cd7a]/40 bg-[#f5cd7a]/15 px-7 text-xs font-medium uppercase tracking-[0.24em] text-[#f8efe3] backdrop-blur-md transition-all duration-500 hover:border-[#f5cd7a] hover:bg-[#f5cd7a] hover:text-black"

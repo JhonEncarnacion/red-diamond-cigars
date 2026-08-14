@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { CigarCollectionExperience } from "@/components/site/CigarCollectionExperience";
 import { prisma } from "@/lib/prisma";
+import { getProductImage } from "@/lib/product-images";
 
 export const metadata: Metadata = {
   title: "Cigar Collection",
@@ -23,7 +24,7 @@ export default async function CigarsPage() {
     name: product.name,
     slug: product.slug,
     description: product.description,
-    image: product.image ?? "/images/cigar-placeholder-image.png",
+    image: getProductImage(product),
     origin: product.origin,
     wrapper: product.wrapper,
     strength: product.strength,
