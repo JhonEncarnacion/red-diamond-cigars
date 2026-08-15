@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { connection } from "next/server";
 import { CigarCollectionExperience } from "@/components/site/CigarCollectionExperience";
 import { prisma } from "@/lib/prisma";
 import { getProductImage } from "@/lib/product-images";
@@ -10,6 +11,8 @@ export const metadata: Metadata = {
 };
 
 export default async function CigarsPage() {
+  await connection();
+
   const products = await prisma.product.findMany({
     where: {
       isActive: true,
