@@ -104,13 +104,12 @@ export function HomeMobileTabletExperience() {
             </p>
 
             <h2 className="mt-8 font-serif text-4xl font-semibold leading-tight sm:text-6xl">
-              Built around a passion for fine cigars.
+              Built around a passion for cigars.
             </h2>
 
             <p className="mt-7 max-w-2xl text-base leading-8 text-[#b8a99a]">
               Rooted in passion and expertise, Red Diamond Cigars is made for
-              those who appreciate detail, character, and the ritual of a
-              memorable smoke.
+              those who appreciate detail and character.
             </p>
 
             <div className="mt-10">
