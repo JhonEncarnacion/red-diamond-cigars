@@ -1,5 +1,6 @@
 "use server";
 
+import { escapeHtml } from "@/lib/escape-html";
 import { requireAdmin } from "@/lib/admin-auth";
 import { prisma } from "@/lib/prisma";
 import { resend } from "@/lib/resend";
@@ -102,20 +103,20 @@ export async function createInquiry(
 
       <p>
         <a
-          href="${adminInquiryUrl}"
+          href="${escapeHtml(adminInquiryUrl)}"
           style="display: inline-block; background: #111; color: white; padding: 10px 14px; text-decoration: none; border-radius: 6px;"
         >
           View inquiry in admin
         </a>
       </p>
 
-      <p><strong>Cigar:</strong> ${product.name}</p>
-      <p><strong>Name:</strong> ${validatedFields.data.fullName}</p>
-      <p><strong>Email:</strong> ${validatedFields.data.email}</p>
-      <p><strong>Phone:</strong> ${validatedFields.data.phone || "Not provided"}</p>
-      <p><strong>Location:</strong> ${validatedFields.data.location}</p>
+      <p><strong>Cigar:</strong> ${escapeHtml(product.name)}</p>
+      <p><strong>Name:</strong> ${escapeHtml(validatedFields.data.fullName)}</p>
+      <p><strong>Email:</strong> ${escapeHtml(validatedFields.data.email)}</p>
+      <p><strong>Phone:</strong> ${escapeHtml(validatedFields.data.phone || "Not provided")}</p>
+      <p><strong>Location:</strong> ${escapeHtml(validatedFields.data.location)}</p>
       <p><strong>Desired quantity:</strong> ${validatedFields.data.quantity}</p>
-      <p><strong>Message:</strong> ${validatedFields.data.message || "No message provided"}</p>
+      <p><strong>Message:</strong> ${escapeHtml(validatedFields.data.message || "No message provided")}</p>
     </div>
   `,
     }),
@@ -129,11 +130,11 @@ export async function createInquiry(
     <div style="font-family: Arial, sans-serif; line-height: 1.6; color: #111;">
       <h2>We received your inquiry</h2>
 
-      <p>Hi ${validatedFields.data.fullName},</p>
+      <p>Hi ${escapeHtml(validatedFields.data.fullName)},</p>
 
       <p>
         Thank you for reaching out to Red Diamond Cigars. We received your inquiry
-        for <strong>${product.name}</strong>.
+        for <strong>${escapeHtml(product.name)}</strong>.
       </p>
 
       <p>
@@ -145,13 +146,13 @@ export async function createInquiry(
 
       <h3>Inquiry details</h3>
 
-      <p><strong>Cigar:</strong> ${product.name}</p>
+      <p><strong>Cigar:</strong> ${escapeHtml(product.name)}</p>
       <p><strong>Desired quantity:</strong> ${validatedFields.data.quantity}</p>
-      <p><strong>Location:</strong> ${validatedFields.data.location}</p>
+      <p><strong>Location:</strong> ${escapeHtml(validatedFields.data.location)}</p>
 
       ${
         validatedFields.data.message
-          ? `<p><strong>Your message:</strong> ${validatedFields.data.message}</p>`
+          ? `<p><strong>Your message:</strong> ${escapeHtml(validatedFields.data.message)}</p>`
           : ""
       }
 
