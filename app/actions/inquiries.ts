@@ -74,10 +74,10 @@ export async function createInquiry(
     },
   });
 
-  if (!product) {
+  if (!product || !product.isActive) {
     return {
       success: false,
-      message: "This cigar could not be found.",
+      message: "This cigar is no longer available for inquiries.",
     };
   }
 

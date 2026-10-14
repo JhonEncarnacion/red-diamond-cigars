@@ -21,7 +21,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
     },
   });
 
-  if (!product) {
+  if (!product || !product.isActive) {
     notFound();
   }
 
@@ -117,7 +117,7 @@ export async function generateMetadata({
     },
   });
 
-  if (!product) {
+  if (!product || !product.isActive) {
     return {
       title: "Cigar Not Found",
     };
