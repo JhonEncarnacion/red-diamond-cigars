@@ -248,8 +248,9 @@ export function ProductForm({ product }: ProductFormProps) {
           />
 
           <p className="text-xs leading-5 text-[#8f8174]">
-            For now, use a path from the public folder. Example:
-            /images/cigar-placeholder-image.png
+            Use an existing image in public/images, such as
+            /images/products/toro-habano-corojo-red.webp. Supported formats: PNG,
+            JPG, JPEG, WebP, GIF, and AVIF. Leave blank to use a fallback image.
           </p>
         </div>
 

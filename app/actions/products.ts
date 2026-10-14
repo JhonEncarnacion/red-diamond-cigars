@@ -21,7 +21,9 @@ export async function updateProduct(
   if (!validatedFields.success) {
     return {
       success: false,
-      message: "Please check the product form and try again.",
+      message:
+        validatedFields.error.issues.find((issue) => issue.path[0] === "image")
+          ?.message ?? "Please check the product form and try again.",
     };
   }
 
@@ -95,7 +97,9 @@ export async function createProduct(
   if (!validatedFields.success) {
     return {
       success: false,
-      message: "Please check the product form and try again.",
+      message:
+        validatedFields.error.issues.find((issue) => issue.path[0] === "image")
+          ?.message ?? "Please check the product form and try again.",
     };
   }
 

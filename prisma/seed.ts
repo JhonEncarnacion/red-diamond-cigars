@@ -11,13 +11,14 @@ const prisma = new PrismaClient({
 
 async function main() {
   await prisma.product.upsert({
-    where: { slug: "red-diamond-red-label" },
+    where: { slug: "toro-habano-corojo-red" },
     update: {
-      image: "/images/products/red-label.webp",
+      name: "Toro Habano Corojo Red",
+      image: "/images/products/toro-habano-corojo-red.webp",
     },
     create: {
-      name: "Red Label",
-      slug: "red-diamond-red-label",
+      name: "Toro Habano Corojo Red",
+      slug: "toro-habano-corojo-red",
       description:
         "This is a limited edition version of the world's greatest cigar collection.",
       wrapper: "Gold",
@@ -27,18 +28,19 @@ async function main() {
       size: "Medium",
       strength: "Powerful",
       stock: 4,
-      image: "/images/products/red-label.webp",
+      image: "/images/products/toro-habano-corojo-red.webp",
     },
   });
 
   await prisma.product.upsert({
-    where: { slug: "red-diamond-blue-label" },
+    where: { slug: "toro-habano-ecuador-black" },
     update: {
-      image: "/images/products/blue-label.webp",
+      name: "Toro Habano Ecuador Black",
+      image: "/images/products/toro-habano-ecuador-black.webp",
     },
     create: {
-      name: "Blue Label",
-      slug: "red-diamond-blue-label",
+      name: "Toro Habano Ecuador Black",
+      slug: "toro-habano-ecuador-black",
       description:
         "An intense version of the normal red diamond cigars for an extra kick!",
       wrapper: "Stealth",
@@ -48,18 +50,19 @@ async function main() {
       size: "Massive",
       strength: "Intense",
       stock: 0,
-      image: "/images/products/blue-label.webp",
+      image: "/images/products/toro-habano-ecuador-black.webp",
     },
   });
 
   await prisma.product.upsert({
-    where: { slug: "red-diamond-gold-label" },
+    where: { slug: "maduro-san-andres-gold" },
     update: {
-      image: "/images/products/gold-label.webp",
+      name: "Maduro San Andres Gold",
+      image: "/images/products/maduro-san-andres-gold.webp",
     },
     create: {
-      name: "Gold Label",
-      slug: "red-diamond-gold-label",
+      name: "Maduro San Andres Gold",
+      slug: "maduro-san-andres-gold",
       description:
         "The most premium cigar on the market. Exclusive to only the rich.",
       wrapper: "Habano",
@@ -69,7 +72,7 @@ async function main() {
       size: "Robusto",
       strength: "Medium",
       stock: 17,
-      image: "/images/products/gold-label.webp",
+      image: "/images/products/maduro-san-andres-gold.webp",
     },
   });
 

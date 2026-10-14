@@ -1,8 +1,8 @@
 export const sampleProducts = [
   {
     id: "1",
-    name: "Red Label",
-    slug: "red-diamond-red-label",
+    name: "Toro Habano Corojo Red",
+    slug: "toro-habano-corojo-red",
     description: "A classic cigar with a smooth taste and a rich aroma.",
     wrapper: "Corojo",
     binder: "Maduro",
@@ -11,12 +11,12 @@ export const sampleProducts = [
     size: "Toro",
     strength: "Mild",
     stock: 23,
-    image: "/images/products/red-label.webp",
+    image: "/images/products/toro-habano-corojo-red.webp",
   },
   {
     id: "2",
-    name: "Blue Label",
-    slug: "red-diamond-blue-label",
+    name: "Toro Habano Ecuador Black",
+    slug: "toro-habano-ecuador-black",
     description: "A premium cigar with a luxurious taste and a smooth finish.",
     wrapper: "Connecticut Shade",
     binder: "Sumatra",
@@ -25,12 +25,12 @@ export const sampleProducts = [
     size: "Churchill",
     strength: "Medium",
     stock: 39,
-    image: "/images/products/blue-label.webp",
+    image: "/images/products/toro-habano-ecuador-black.webp",
   },
   {
     id: "3",
-    name: "Gold Label",
-    slug: "red-diamond-gold-label",
+    name: "Maduro San Andres Gold",
+    slug: "maduro-san-andres-gold",
     description: "A bold cigar with a unique flavor profile.",
     wrapper: "Habano",
     binder: "Ecuadorian",
@@ -39,7 +39,7 @@ export const sampleProducts = [
     size: "Robusto",
     strength: "Full",
     stock: 7,
-    image: "/images/products/gold-label.webp",
+    image: "/images/products/maduro-san-andres-gold.webp",
   },
 ];
 

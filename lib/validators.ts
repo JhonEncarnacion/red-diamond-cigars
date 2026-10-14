@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { getProductImageError } from "./product-images";
 
 export const inquirySchema = z.object({
   fullName: z
@@ -86,7 +87,15 @@ export const productSchema = z.object({
     .min(1, "Strength is required.")
     .max(40, "Strength must be less than 40 characters."),
 
-  image: z.string().max(300, "Image path is too long.").optional(),
+  image: z
+    .string()
+    .trim()
+    .max(300, "Image path is too long.")
+    .superRefine((image, ctx) => {
+      const message = getProductImageError(image);
+      if (message) ctx.addIssue({ code: "custom", message });
+    })
+    .optional(),
 
   stock: z.coerce
     .number()

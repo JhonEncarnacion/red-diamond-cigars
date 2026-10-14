@@ -175,6 +175,31 @@ Run `npm run test:rate-limit` for header checks. To also run database integratio
 tests, set `TEST_DATABASE_URL` to a **disposable PostgreSQL database**; these tests
 truncate its `InquiryRateLimit` table. They never use `DATABASE_URL` implicitly.
 
+### Product images
+
+Product image paths must reference an existing PNG, JPG, JPEG, WebP, GIF, or
+AVIF file under `public/images`. External URLs and missing files are rejected
+when creating or updating products. A blank field uses the product's configured
+fallback, or the placeholder when no matching fallback exists. Existing invalid
+stored paths display the placeholder without changing the stored record.
+
+The available image list in `lib/public-images.json` is generated automatically
+by `npm run dev` and `npm run build`. After adding, renaming, or removing images
+during development, restart the dev server or run `npm run images:generate`.
+Commit the refreshed list with your image changes. Use `npm run test:images`
+to check validation, fallbacks, and consistency with the files on disk.
+
+The sample products, seed script, and blank-image fallbacks use the current catalog:
+
+| Product | Image path |
+| --- | --- |
+| Toro Habano Corojo Red | `/images/products/toro-habano-corojo-red.webp` |
+| Toro Habano Ecuador Black | `/images/products/toro-habano-ecuador-black.webp` |
+| Maduro San Andres Gold | `/images/products/maduro-san-andres-gold.webp` |
+
+For existing products with these slugs, the seed script updates only their names
+and image paths, preserving stock, descriptions, and inquiry relationships.
+
 ## Author
 
 Built by [Jhon Encarnacion](https://www.jhonencarnacion.com). Connect on [LinkedIn](https://www.linkedin.com/in/jhonencarnacion/) or view more work on [GitHub](https://github.com/JhonEncarnacion).

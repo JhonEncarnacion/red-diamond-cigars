@@ -4,7 +4,7 @@ import type { Metadata } from "next";
 export const metadata: Metadata = {
   title: "Contact",
   description:
-    "Contact Red Diamond Cigars for cigar availability, inquiries, and direct follow-up.",
+    "Contact Red Diamond Cigars for cigar availability and inquiries.",
 };
 
 const instagramUrl = "https://www.instagram.com/reddiamond001";
