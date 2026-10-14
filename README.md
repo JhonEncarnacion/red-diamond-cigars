@@ -147,6 +147,34 @@ proxy.ts             Clerk route protection for the admin workspace
 
 The live application is deployed on Vercel. A production deployment requires the same environment variables listed above, a reachable PostgreSQL database, and a verified Resend sender/domain for reliable email delivery.
 
+### Inquiry submission limits
+
+Inquiries are limited to 5 per IP address per 15 minutes, 3 per email address
+(case-insensitive) per hour, and 50 site-wide per hour. Each accepted inquiry
+attempts two emails. Windows start with the first accepted submission, and a
+rejected request does not consume other buckets. These limits are fixed windows,
+not rolling windows; traffic can burst across a window boundary.
+
+Counters are stored in PostgreSQL and updated atomically, so they apply across
+server instances and restarts. IP and email bucket keys are SHA-256 hashes;
+expired buckets are cleaned up in bounded batches on accepted submissions.
+On Vercel, the server uses the platform's `x-vercel-forwarded-for` header
+([Vercel documentation](https://vercel.com/docs/headers/request-headers#x-vercel-forwarded-for)).
+Locally or on other hosts, requests share an `unknown` IP bucket. Configure a
+trusted proxy before deploying to another host; do not trust arbitrary forwarded
+headers supplied by clients. Users sharing a public IP share its limit.
+
+**Existing database rollout:** run `npm run db:setup-rate-limit` against the
+intended database **before deploying this code**. This additive, repeatable SQL
+creates only the rate-limit table and its index; it does not change products or
+inquiries. New installations using `prisma db push` already include the table.
+If the rate-limit check fails, the action rejects the inquiry without saving it
+or sending emails. No additional service or environment secret is required.
+
+Run `npm run test:rate-limit` for header checks. To also run database integration
+tests, set `TEST_DATABASE_URL` to a **disposable PostgreSQL database**; these tests
+truncate its `InquiryRateLimit` table. They never use `DATABASE_URL` implicitly.
+
 ## Author
 
 Built by [Jhon Encarnacion](https://www.jhonencarnacion.com). Connect on [LinkedIn](https://www.linkedin.com/in/jhonencarnacion/) or view more work on [GitHub](https://github.com/JhonEncarnacion).

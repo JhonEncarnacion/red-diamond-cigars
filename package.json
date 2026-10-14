@@ -6,7 +6,9 @@
     "dev": "next dev",
     "build": "prisma generate && next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "test:rate-limit": "node --import tsx --test tests/inquiry-rate-limit.test.ts",
+    "db:setup-rate-limit": "prisma db execute --file prisma/sql/add-inquiry-rate-limit.sql"
   },
   "dependencies": {
     "@clerk/nextjs": "^7.5.2",

@@ -1,5 +1,11 @@
 "use server";
 
+import { headers } from "next/headers";
+import {
+  getInquiryClientKey,
+  InquiryRateLimitExceeded,
+  reserveInquirySubmission,
+} from "@/lib/inquiry-rate-limit";
 import { escapeHtml } from "@/lib/escape-html";
 import { requireAdmin } from "@/lib/admin-auth";
 import { prisma } from "@/lib/prisma";
@@ -72,6 +78,32 @@ export async function createInquiry(
     return {
       success: false,
       message: "This cigar could not be found.",
+    };
+  }
+
+  try {
+    const clientKey = getInquiryClientKey(
+      await headers(),
+      process.env.VERCEL === "1",
+    );
+    await prisma.$transaction((tx) =>
+      reserveInquirySubmission(tx, validatedFields.data.email, clientKey),
+    );
+  } catch (error) {
+    if (error instanceof InquiryRateLimitExceeded) {
+      return {
+        success: false,
+        message:
+          "Too many inquiries have been submitted recently. Please wait up to an hour before trying again.",
+      };
+    }
+
+    // Fail closed: a missing table or unavailable database must not bypass limits.
+    console.error("Could not check inquiry submission limits:", error);
+    return {
+      success: false,
+      message:
+        "We could not submit your inquiry right now. Please try again later.",
     };
   }
 

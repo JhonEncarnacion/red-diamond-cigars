@@ -66,3 +66,11 @@ enum InquiryStatus {
   NOT_INTERESTED
   COMPLETED
 }
+
+model InquiryRateLimit {
+  key       String   @id
+  count     Int
+  expiresAt DateTime
+
+  @@index([expiresAt])
+}
