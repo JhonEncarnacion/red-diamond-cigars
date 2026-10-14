@@ -46,17 +46,27 @@ export function InquiryForm({ product }: InquiryFormProps) {
   });
 
   async function onSubmit(values: InquiryFormValues) {
-    const result = await createInquiry(product.id, values);
+    form.clearErrors("root");
 
-    if (!result.success) {
+    try {
+      const result = await createInquiry(product.id, values);
+
+      if (!result.success) {
+        form.setError("root", {
+          message: result.message,
+        });
+
+        return;
+      }
+
+      setSubmissionMessage(result.message);
+    } catch {
+      // The request may have succeeded before its response was lost.
       form.setError("root", {
-        message: result.message,
+        message:
+          "We couldn't confirm whether your inquiry was received. Your entries are still here. Please check your email or contact Red Diamond Cigars before submitting again.",
       });
-
-      return;
     }
-
-    setSubmissionMessage(result.message);
   }
 
   if (submissionMessage) {
@@ -290,7 +300,10 @@ export function InquiryForm({ product }: InquiryFormProps) {
         </div>
 
         {form.formState.errors.root ? (
-          <p className="border border-red-500/30 bg-red-500/10 px-4 py-3 text-sm leading-6 text-red-300">
+          <p
+            role="alert"
+            className="border border-red-500/30 bg-red-500/10 px-4 py-3 text-sm leading-6 text-red-300"
+          >
             {form.formState.errors.root.message}
           </p>
         ) : null}
