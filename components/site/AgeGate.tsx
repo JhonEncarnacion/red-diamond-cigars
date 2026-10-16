@@ -7,7 +7,13 @@ export function AgeGate() {
   const [isVerified, setIsVerified] = useState<boolean | null>(null);
 
   useEffect(() => {
-    const verified = localStorage.getItem("age-verified") === "true";
+    let verified = false;
+
+    try {
+      verified = localStorage.getItem("age-verified") === "true";
+    } catch {
+      // Show the prompt when browser storage cannot be read.
+    }
 
     // eslint-disable-next-line react-hooks/set-state-in-effect
     setIsVerified(verified);
@@ -49,7 +55,12 @@ export function AgeGate() {
   }, [isVerified]);
 
   function handleConfirm() {
-    localStorage.setItem("age-verified", "true");
+    try {
+      localStorage.setItem("age-verified", "true");
+    } catch {
+      // Confirmation still applies to this visit if it cannot be remembered.
+    }
+
     setIsVerified(true);
   }
 
