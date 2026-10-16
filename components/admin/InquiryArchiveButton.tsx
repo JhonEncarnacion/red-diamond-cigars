@@ -29,16 +29,22 @@ export function InquiryArchiveButton({
     }
 
     startTransition(async () => {
-      const result = isArchived
-        ? await restoreInquiry(inquiryId)
-        : await archiveInquiry(inquiryId);
+      try {
+        const result = isArchived
+          ? await restoreInquiry(inquiryId)
+          : await archiveInquiry(inquiryId);
 
-      if (!result.success) {
-        alert(result.message);
-        return;
+        if (!result.success) {
+          alert(result.message);
+          return;
+        }
+
+        router.refresh();
+      } catch {
+        alert(
+          "We couldn't confirm whether the inquiry was archived or restored. Refresh the page to check its current state before trying again.",
+        );
       }
-
-      router.refresh();
     });
   }
 

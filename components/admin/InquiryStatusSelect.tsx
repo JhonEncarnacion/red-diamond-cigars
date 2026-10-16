@@ -54,22 +54,34 @@ export function InquiryStatusSelect({
 }: InquiryStatusSelectProps) {
   const router = useRouter();
   const [status, setStatus] = useState<InquiryStatus>(currentStatus);
+  const [error, setError] = useState<string | null>(null);
   const [isPending, startTransition] = useTransition();
 
   function handleStatusChange(value: string) {
     const newStatus = value as InquiryStatus;
+    const previousStatus = status;
+
+    setError(null);
 
     setStatus(newStatus);
 
     startTransition(async () => {
-      const result = await updateInquiryStatus(inquiryId, newStatus);
+      try {
+        const result = await updateInquiryStatus(inquiryId, newStatus);
 
-      if (!result.success) {
-        setStatus(currentStatus);
-        return;
+        if (!result.success) {
+          setStatus(previousStatus);
+          setError(result.message);
+          return;
+        }
+
+        router.refresh();
+      } catch {
+        setStatus(previousStatus);
+        setError(
+          "We couldn't confirm whether the status was saved. The previous selection is shown. Refresh the page to check the saved status before trying again.",
+        );
       }
-
-      router.refresh();
     });
   }
 
@@ -97,7 +109,13 @@ export function InquiryStatusSelect({
         </SelectContent>
       </Select>
 
-      {showHelp ? (
+      {error ? (
+        <p role="alert" className="text-sm leading-6 text-red-300">
+          {error}
+        </p>
+      ) : null}
+
+      {showHelp && !error ? (
         isPending ? (
           <p className="text-xs uppercase tracking-[0.18em] text-[#f5cd7a]">
             Updating status...

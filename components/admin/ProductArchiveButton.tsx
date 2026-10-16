@@ -29,16 +29,22 @@ export function ProductArchiveButton({
     }
 
     startTransition(async () => {
-      const result = isActive
-        ? await archiveProduct(productId)
-        : await restoreProduct(productId);
+      try {
+        const result = isActive
+          ? await archiveProduct(productId)
+          : await restoreProduct(productId);
 
-      if (!result.success) {
-        alert(result.message);
-        return;
+        if (!result.success) {
+          alert(result.message);
+          return;
+        }
+
+        router.refresh();
+      } catch {
+        alert(
+          "We couldn't confirm whether the product was archived or restored. Refresh the page to check its current state before trying again.",
+        );
       }
-
-      router.refresh();
     });
   }
 

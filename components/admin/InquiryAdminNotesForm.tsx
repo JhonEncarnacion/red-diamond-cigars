@@ -16,19 +16,29 @@ export function InquiryAdminNotesForm({
   const router = useRouter();
   const [notes, setNotes] = useState(initialNotes ?? "");
   const [message, setMessage] = useState<string | null>(null);
+  const [isError, setIsError] = useState(false);
   const [isPending, startTransition] = useTransition();
 
   function handleSubmit(event: React.SyntheticEvent<HTMLFormElement>) {
     event.preventDefault();
     setMessage(null);
+    setIsError(false);
 
     startTransition(async () => {
-      const result = await updateInquiryAdminNotes(inquiryId, notes);
+      try {
+        const result = await updateInquiryAdminNotes(inquiryId, notes);
 
-      setMessage(result.message);
+        setMessage(result.message);
+        setIsError(!result.success);
 
-      if (result.success) {
-        router.refresh();
+        if (result.success) {
+          router.refresh();
+        }
+      } catch {
+        setIsError(true);
+        setMessage(
+          "We couldn't confirm whether your notes were saved. Your text is still here. Check the inquiry in another tab before saving again.",
+        );
       }
     });
   }
@@ -71,7 +81,10 @@ export function InquiryAdminNotesForm({
         </div>
 
         {message ? (
-          <p className="border border-[#f5cd7a]/15 bg-black/25 px-4 py-3 text-sm leading-6 text-[#b8a99a]">
+          <p
+            role={isError ? "alert" : "status"}
+            className="border border-[#f5cd7a]/15 bg-black/25 px-4 py-3 text-sm leading-6 text-[#b8a99a]"
+          >
             {message}
           </p>
         ) : null}

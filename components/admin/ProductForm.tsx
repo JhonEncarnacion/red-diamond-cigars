@@ -28,11 +28,13 @@ export function ProductForm({ product }: ProductFormProps) {
   const router = useRouter();
   const [isPending, startTransition] = useTransition();
   const [message, setMessage] = useState<string | null>(null);
+  const [isError, setIsError] = useState(false);
   const [isActive, setIsActive] = useState(product?.isActive ?? true);
 
   function handleSubmit(event: React.SyntheticEvent<HTMLFormElement>) {
     event.preventDefault();
     setMessage(null);
+    setIsError(false);
 
     const formData = new FormData(event.currentTarget);
 
@@ -52,18 +54,26 @@ export function ProductForm({ product }: ProductFormProps) {
     };
 
     startTransition(async () => {
-      const result = product
-        ? await updateProduct(product.id, values)
-        : await createProduct(values);
+      try {
+        const result = product
+          ? await updateProduct(product.id, values)
+          : await createProduct(values);
 
-      setMessage(result.message);
+        setMessage(result.message);
+        setIsError(!result.success);
 
-      if (result.success) {
-        router.refresh();
+        if (result.success) {
+          router.refresh();
 
-        if (!product) {
-          router.push("/admin/products");
+          if (!product) {
+            router.push("/admin/products");
+          }
         }
+      } catch {
+        setIsError(true);
+        setMessage(
+          "We couldn't confirm whether the product was saved. Your entries are still here. Check the product list in another tab before submitting again.",
+        );
       }
     });
   }
@@ -296,7 +306,10 @@ export function ProductForm({ product }: ProductFormProps) {
         </div>
 
         {message ? (
-          <p className="border border-[#f5cd7a]/15 bg-black/25 px-4 py-3 text-sm leading-6 text-[#b8a99a]">
+          <p
+            role={isError ? "alert" : "status"}
+            className="border border-[#f5cd7a]/15 bg-black/25 px-4 py-3 text-sm leading-6 text-[#b8a99a]"
+          >
             {message}
           </p>
         ) : null}
