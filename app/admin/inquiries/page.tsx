@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { Eye } from "lucide-react";
 import { prisma } from "@/lib/prisma";
+import { getInquiryStatusFilter } from "@/lib/inquiry-status";
 import { requireAdmin } from "@/lib/admin-auth";
 import { InquiryFilters } from "@/components/admin/InquiryFilters";
 import { InquiryStatusSelect } from "@/components/admin/InquiryStatusSelect";
@@ -13,7 +14,7 @@ import {
 
 type AdminInquiriesPageProps = {
   searchParams: Promise<{
-    status?: string;
+    status?: string | string[];
     search?: string;
     archive?: string;
   }>;
@@ -25,6 +26,7 @@ export default async function AdminInquiriesPage({
   await requireAdmin();
 
   const { status, search, archive } = await searchParams;
+  const statusFilter = getInquiryStatusFilter(status);
 
   const [
     activeInquiryCount,
@@ -69,16 +71,7 @@ export default async function AdminInquiriesPage({
 
   const inquiries = await prisma.inquiry.findMany({
     where: {
-      ...(status && status !== "ALL"
-        ? {
-            status: status as
-              | "NEW"
-              | "CONTACTED"
-              | "INTERESTED"
-              | "NOT_INTERESTED"
-              | "COMPLETED",
-          }
-        : {}),
+      ...(statusFilter ? { status: statusFilter } : {}),
 
       ...(search
         ? {

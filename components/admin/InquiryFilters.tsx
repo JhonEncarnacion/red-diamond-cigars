@@ -2,6 +2,7 @@
 
 import { useRouter, useSearchParams } from "next/navigation";
 import { useState, useTransition } from "react";
+import { getInquiryStatusFilter } from "@/lib/inquiry-status";
 import {
   Select,
   SelectContent,
@@ -31,7 +32,9 @@ export function InquiryFilters() {
   const [isPending, startTransition] = useTransition();
 
   const [search, setSearch] = useState(searchParams.get("search") ?? "");
-  const [status, setStatus] = useState(searchParams.get("status") ?? "ALL");
+  const [status, setStatus] = useState<string>(
+    getInquiryStatusFilter(searchParams.get("status")) ?? "ALL",
+  );
   const [archive, setArchive] = useState(
     searchParams.get("archive") ?? "ACTIVE",
   );
