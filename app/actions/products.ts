@@ -207,21 +207,27 @@ export async function deleteProduct(productId: string): Promise<UpdateProductRes
   await requireAdmin();
 
   const result = await prisma.$transaction(async (tx) => {
-    // Lock the parent before checking inquiries. Foreign-key inserts must wait,
-    // preventing a new inquiry from being cascade-deleted between check/delete.
+    // Block concurrent foreign-key inserts while preserving and detaching inquiries.
     const products = await tx.$queryRaw<{ id: string; slug: string }[]>`
       SELECT "id", "slug" FROM "Product" WHERE "id" = ${productId} FOR UPDATE
     `;
     const product = products[0];
     if (!product) return { success: false, message: "Product could not be found." };
 
-    const inquiryCount = await tx.inquiry.count({ where: { productId } });
-    if (inquiryCount > 0) {
-      return {
-        success: false,
-        message: "This product has customer inquiries and cannot be deleted. Archive it instead to preserve those records.",
-      };
-    }
+    // Fill snapshots missed by older deployments without changing inquiry timestamps.
+    await tx.$executeRaw`
+      UPDATE "Inquiry" AS i SET
+        "productOriginalId" = p."id", "productName" = p."name",
+        "productDescription" = p."description", "productStrength" = p."strength",
+        "productSize" = p."size", "productWrapper" = p."wrapper"
+      FROM "Product" AS p
+      WHERE i."productId" = ${productId} AND p."id" = i."productId"
+        AND i."productName" IS NULL
+    `;
+    // Explicitly detach first, so even a legacy cascade cannot remove inquiries.
+    await tx.$executeRaw`
+      UPDATE "Inquiry" SET "productId" = NULL WHERE "productId" = ${productId}
+    `;
 
     await tx.product.delete({ where: { id: productId } });
     return { success: true, message: "Product deleted permanently.", slug: product.slug };
@@ -233,6 +239,7 @@ export async function deleteProduct(productId: string): Promise<UpdateProductRes
     revalidatePath(`/cigars/${result.slug}`);
     revalidatePath("/admin");
     revalidatePath("/admin/products");
+    revalidatePath("/admin/inquiries", "layout");
     revalidatePath(`/admin/products/${productId}/edit`);
   }
   return { success: result.success, message: result.message };

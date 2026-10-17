@@ -1,3 +1,4 @@
+import { getInquiryProduct } from "@/lib/inquiry-product";
 import Link from "next/link";
 import { prisma } from "@/lib/prisma";
 import { Badge } from "@/components/ui/badge";
@@ -60,34 +61,34 @@ export default async function AdminDashboardPage() {
     }),
 
     prisma.inquiry.groupBy({
-      by: ["productId"],
+      by: ["productOriginalId"],
       where: {
         isArchived: false,
       },
       _count: {
-        productId: true,
+        _all: true,
       },
       orderBy: {
         _count: {
-          productId: "desc",
+          productOriginalId: "desc",
         },
       },
       take: 1,
     }),
   ]);
 
-  const mostRequestedProduct =
-    productInquiryCounts.length > 0
-      ? await prisma.product.findUnique({
-          where: {
-            id: productInquiryCounts[0].productId,
-          },
-        })
-      : null;
+  const mostRequestedInquiry = productInquiryCounts.length > 0
+    ? await prisma.inquiry.findFirst({
+        where: { isArchived: false, productOriginalId: productInquiryCounts[0].productOriginalId },
+        include: { product: true },
+        orderBy: { createdAt: "desc" },
+      })
+    : null;
+  const mostRequestedProduct = mostRequestedInquiry ? getInquiryProduct(mostRequestedInquiry) : null;
 
   const mostRequestedCount =
     productInquiryCounts.length > 0
-      ? productInquiryCounts[0]._count.productId
+      ? productInquiryCounts[0]._count._all
       : 0;
 
   return (
@@ -165,7 +166,7 @@ export default async function AdminDashboardPage() {
                       </p>
 
                       <p className="mt-1 text-sm text-[#b8a99a]">
-                        {inquiry.product.name} · {inquiry.quantity} requested
+                        {getInquiryProduct(inquiry).name} · {inquiry.quantity} requested
                       </p>
                     </div>
 

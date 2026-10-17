@@ -13,7 +13,7 @@ export function ProductDeleteButton({ productId, productName }: {
   const [isPending, startTransition] = useTransition();
 
   function handleClick() {
-    if (!window.confirm(`Permanently delete “${productName}”? This cannot be undone. Products with customer inquiries must be archived instead.`)) {
+    if (!window.confirm(`Permanently delete “${productName}”? This cannot be undone. Existing inquiries and their saved product details will be kept.`)) {
       return;
     }
 

@@ -14,7 +14,9 @@
     "prebuild": "npm run images:generate",
     "test:images": "node --import tsx --test tests/product-images.test.ts",
     "db:remove-stock": "prisma db execute --file prisma/sql/remove-product-stock.sql",
-    "test:catalog": "node --import tsx --test tests/product-catalog.test.ts"
+    "test:catalog": "node --import tsx --test tests/product-catalog.test.ts",
+    "db:preserve-inquiries": "prisma db execute --file prisma/sql/preserve-product-inquiries.sql",
+    "test:deletion": "node --import tsx --test tests/independent-deletion.test.ts"
   },
   "dependencies": {
     "@clerk/nextjs": "^7.5.2",

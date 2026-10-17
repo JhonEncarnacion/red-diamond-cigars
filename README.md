@@ -209,6 +209,10 @@ Deploy the updated application and regenerated Prisma client first. The new code
 
 New product slugs are generated from the name. A duplicate generated address is rejected with a message to choose a different name. Slugs are hidden in the editor; editing a name preserves the existing page address. Slugs supplied in update requests are ignored. Enter sizes as `Toro – 6x56` (length first); legacy description dimensions such as `56×6` are formatted automatically. Run `npm run test:catalog` for these rules.
 
-### Product deletion
+### Independent product and inquiry deletion
 
-Admins can permanently delete a product from the product list after confirmation. Products with any customer inquiries, including archived inquiries, cannot be deleted; archive them instead. The server locks the product while checking related inquiries so a concurrent submission cannot be silently removed by the database cascade. Product image files are retained because they may be shared.
+Run `npm run db:preserve-inquiries` against the intended database **before deploying this version**. The transactional script backfills saved product details for existing inquiries, makes the catalog link optional, and replaces cascading deletion with `ON DELETE SET NULL`. It is safe to repeat and does not delete products, inquiries, messages, or notes. During rollout, do not delete products until all running deployments use this version, because older admin pages assume the product always exists.
+
+New inquiries save the product name, description, strength, size, wrapper, and original ID. Product deletion preserves those snapshots and detaches the catalog link without changing inquiry timestamps. Admin search, detail views, and dashboard statistics continue to include inquiries for deleted products. Image files are retained because they may be shared.
+
+Admins may separately delete an inquiry from the list or detail page after confirmation. That permanently deletes only that inquiry and its notes; the product and other inquiries remain intact.

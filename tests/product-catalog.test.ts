@@ -72,13 +72,13 @@ test("duplicate generated slugs and invalid names do not create products", async
   assert.equal(invalid.saved(), undefined);
 });
 
-function mutationActions(options: { exists?: boolean; inquiries?: number; deny?: boolean; collision?: boolean } = {}) {
+function mutationActions(options: { exists?: boolean; deny?: boolean; collision?: boolean } = {}) {
   const events: string[] = [];
   let saved: Record<string, unknown> | undefined;
   const product = { id: "existing", slug: "original-address" };
   const tx = {
     $queryRaw: async () => { events.push("lock"); return options.exists === false ? [] : [product]; },
-    inquiry: { count: async () => { events.push("count"); return options.inquiries ?? 0; } },
+    $executeRaw: async () => { events.push("preserve"); return 1; },
     product: { delete: async () => { events.push("delete"); return product; } },
   };
   const dependencies: Record<string, unknown> = {
@@ -128,15 +128,15 @@ test("editing a name preserves its URL and ignores supplied slugs", async () => 
   assert.equal("slug" in action.saved()!, false);
 });
 
-test("deletion locks the product, checks inquiries, deletes, then invalidates pages", async () => {
+test("deletion preserves and detaches inquiries before deleting the product", async () => {
   const action = mutationActions();
   assert.equal((await action.deleteProduct("existing")).success, true);
-  assert.deepEqual(action.events.slice(0, 6), ["authorize", "transaction", "lock", "count", "delete", "commit"]);
-  assert.ok(action.events.slice(6).every(event => event === "revalidate"));
+  assert.deepEqual(action.events.slice(0, 7), ["authorize", "transaction", "lock", "preserve", "preserve", "delete", "commit"]);
+  assert.ok(action.events.slice(7).every(event => event === "revalidate"));
 });
 
-test("products with inquiries and missing products are never deleted", async () => {
-  for (const options of [{inquiries: 2}, {exists: false}]) {
+test("missing products are not deleted", async () => {
+  for (const options of [{exists: false}]) {
     const action = mutationActions(options);
     assert.equal((await action.deleteProduct("existing")).success, false);
     assert.ok(!action.events.includes("delete"));

@@ -51,8 +51,16 @@ model Inquiry {
 
   status       InquiryStatus @default(NEW)
 
-  productId    String
-  product      Product       @relation(fields: [productId], references: [id], onDelete: Cascade)
+  productId    String?
+  product      Product?      @relation(fields: [productId], references: [id], onDelete: SetNull)
+
+  // Historical details survive catalog edits and deletion.
+  productOriginalId  String?
+  productName        String?
+  productDescription String?
+  productStrength    String?
+  productSize        String?
+  productWrapper     String?
 
   createdAt    DateTime      @default(now())
   updatedAt    DateTime      @updatedAt

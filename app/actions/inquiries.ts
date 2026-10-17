@@ -1,5 +1,6 @@
 "use server";
 
+import { snapshotInquiryProduct } from "@/lib/inquiry-product";
 import { headers } from "next/headers";
 import {
   getInquiryClientKey,
@@ -110,6 +111,7 @@ export async function createInquiry(
   const inquiry = await prisma.inquiry.create({
     data: {
       productId: product.id,
+      ...snapshotInquiryProduct(product),
       fullName: validatedFields.data.fullName,
       email: validatedFields.data.email,
       phone: validatedFields.data.phone || null,
@@ -360,4 +362,16 @@ export async function restoreInquiry(inquiryId: string) {
     success: true,
     message: "Inquiry restored.",
   };
+}
+
+export async function deleteInquiry(inquiryId: string) {
+  await requireAdmin();
+  const result = await prisma.inquiry.deleteMany({ where: { id: inquiryId } });
+  if (result.count === 0) {
+    return { success: false, message: "Inquiry could not be found." };
+  }
+  revalidatePath("/admin");
+  revalidatePath("/admin/inquiries");
+  revalidatePath(`/admin/inquiries/${inquiryId}`);
+  return { success: true, message: "Inquiry deleted permanently." };
 }

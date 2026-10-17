@@ -1,3 +1,6 @@
+import { getInquiryProduct } from "@/lib/inquiry-product";
+import { formatProductSize } from "@/lib/product-size";
+import { InquiryDeleteButton } from "@/components/admin/InquiryDeleteButton";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { prisma } from "@/lib/prisma";
@@ -36,6 +39,8 @@ export default async function InquiryDetailPage({
     notFound();
   }
 
+  const savedProduct = getInquiryProduct(inquiry);
+
   return (
     <AdminShell
       title={inquiry.fullName}
@@ -54,6 +59,7 @@ export default async function InquiryDetailPage({
           </AdminButtonLink>
 
           <AdminButtonLink href="/admin">Back to Dashboard</AdminButtonLink>
+          <InquiryDeleteButton inquiryId={inquiry.id} customerName={inquiry.fullName} returnToList />
         </>
       }
     >
@@ -134,7 +140,7 @@ export default async function InquiryDetailPage({
               </p>
 
               <h2 className="mt-4 text-2xl font-semibold text-[#f8efe3]">
-                {inquiry.product.name}
+                {savedProduct.name}
               </h2>
 
               <p className="mt-3 text-sm leading-6 text-[#b8a99a]">
@@ -144,13 +150,14 @@ export default async function InquiryDetailPage({
             </div>
 
             <div className="grid gap-x-8 gap-y-5 sm:grid-cols-2">
-              <Detail label="Cigar" value={inquiry.product.name} />
+              <Detail label="Cigar" value={savedProduct.name} />
               <Detail label="Desired quantity" value={inquiry.quantity} />
-              <Detail label="Strength" value={inquiry.product.strength} />
-              <Detail label="Size" value={inquiry.product.size} />
-              <Detail label="Wrapper" value={inquiry.product.wrapper} />
+              <Detail label="Strength" value={savedProduct.strength} />
+              <Detail label="Size" value={formatProductSize(savedProduct)} />
+              <Detail label="Wrapper" value={savedProduct.wrapper} />
             </div>
 
+            {inquiry.product?.isActive ? (
             <div className="mt-6">
               <Link
                 href={`/cigars/${inquiry.product.slug}`}
@@ -159,6 +166,9 @@ export default async function InquiryDetailPage({
                 View Product
               </Link>
             </div>
+            ) : (
+              <p className="mt-6 text-sm text-[#b8a99a]">The product is no longer in the public catalog. Its details are preserved above.</p>
+            )}
           </AdminCard>
 
           <AdminCard>

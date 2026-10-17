@@ -1,3 +1,5 @@
+import { getInquiryProduct } from "@/lib/inquiry-product";
+import { InquiryDeleteButton } from "@/components/admin/InquiryDeleteButton";
 import Link from "next/link";
 import { Eye } from "lucide-react";
 import { prisma } from "@/lib/prisma";
@@ -76,6 +78,7 @@ export default async function AdminInquiriesPage({
       ...(search
         ? {
             OR: [
+              { productName: { contains: search, mode: "insensitive" } },
               {
                 fullName: {
                   contains: search,
@@ -228,7 +231,7 @@ export default async function AdminInquiriesPage({
                       </td>
 
                       <td className="px-5 py-5 text-sm font-medium text-[#f8efe3]">
-                        {inquiry.product.name}
+                        {getInquiryProduct(inquiry).name}
                       </td>
 
                       <td className="px-5 py-5 text-sm text-[#d9cbbb]">
@@ -272,6 +275,7 @@ export default async function AdminInquiriesPage({
                             inquiryId={inquiry.id}
                             isArchived={inquiry.isArchived}
                           />
+                          <InquiryDeleteButton inquiryId={inquiry.id} customerName={inquiry.fullName} />
                         </div>
                       </td>
                     </tr>
