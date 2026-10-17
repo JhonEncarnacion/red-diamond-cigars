@@ -102,3 +102,5 @@ export const productSchema = z.object({
 
 export type ProductFormInput = z.input<typeof productSchema>;
 export type ProductFormValues = z.output<typeof productSchema>;
+// Slugs are managed by the server, never by the product editor.
+export type ProductEditorInput = Omit<ProductFormInput, "slug">;

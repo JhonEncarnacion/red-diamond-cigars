@@ -3,15 +3,13 @@
 import { useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
 import { createProduct, updateProduct } from "@/app/actions/products";
-import { generateProductSlug } from "@/lib/product-slug";
 import { Checkbox } from "@/components/ui/checkbox";
-import type { ProductFormInput } from "@/lib/validators";
+import type { ProductEditorInput } from "@/lib/validators";
 
 type ProductFormProps = {
   product?: {
     id: string;
     name: string;
-    slug: string;
     description: string;
     wrapper: string | null;
     binder: string | null;
@@ -39,9 +37,8 @@ export function ProductForm({ product }: ProductFormProps) {
 
     const formData = new FormData(event.currentTarget);
 
-    const values: ProductFormInput = {
+    const values: ProductEditorInput = {
       name: String(formData.get("name") || ""),
-      slug: String(formData.get("slug") || ""),
       description: String(formData.get("description") || ""),
       wrapper: String(formData.get("wrapper") || ""),
       binder: String(formData.get("binder") || ""),
@@ -98,27 +95,6 @@ export function ProductForm({ product }: ProductFormProps) {
               required
               className="h-12 border border-[#f5cd7a]/20 bg-black/35 px-4 text-sm text-[#f8efe3] outline-none transition-colors duration-300 placeholder:text-[#8f8174] focus:border-[#f5cd7a]/60"
             />
-          </div>
-
-          <div className="grid gap-2">
-            <label
-              htmlFor="slug"
-              className="text-sm font-medium text-[#f8efe3]"
-            >
-              Slug
-            </label>
-
-            <input
-              id="slug"
-              name="slug"
-              {...(product ? { defaultValue: product.slug } : { value: generateProductSlug(name), readOnly: true })}
-              required
-              className="h-12 border border-[#f5cd7a]/20 bg-black/35 px-4 text-sm text-[#f8efe3] outline-none transition-colors duration-300 placeholder:text-[#8f8174] focus:border-[#f5cd7a]/60"
-            />
-
-            <p className="text-xs leading-5 text-[#8f8174]">
-              {product ? "Changing this changes the cigar’s page address." : "Generated automatically from the product name."}
-            </p>
           </div>
 
           <div className="grid gap-2">

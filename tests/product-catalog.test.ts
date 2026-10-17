@@ -71,3 +71,99 @@ test("duplicate generated slugs and invalid names do not create products", async
   assert.equal((await invalid.create({...values, name: "!!!"})).success, false);
   assert.equal(invalid.saved(), undefined);
 });
+
+function mutationActions(options: { exists?: boolean; inquiries?: number; deny?: boolean; collision?: boolean } = {}) {
+  const events: string[] = [];
+  let saved: Record<string, unknown> | undefined;
+  const product = { id: "existing", slug: "original-address" };
+  const tx = {
+    $queryRaw: async () => { events.push("lock"); return options.exists === false ? [] : [product]; },
+    inquiry: { count: async () => { events.push("count"); return options.inquiries ?? 0; } },
+    product: { delete: async () => { events.push("delete"); return product; } },
+  };
+  const dependencies: Record<string, unknown> = {
+    "next/cache": { revalidatePath() { events.push("revalidate"); } },
+    "@/lib/prisma": { prisma: {
+      $transaction: async (callback: (transaction: typeof tx) => Promise<unknown>, config: {isolationLevel: string}) => {
+        assert.equal(config.isolationLevel, "ReadCommitted");
+        events.push("transaction");
+        const result = await callback(tx);
+        events.push("commit");
+        return result;
+      },
+      product: {
+        findUnique: async ({where}: {where: {id?: string; slug?: string}}) => {
+          events.push("find");
+          if (where.slug && options.collision) return {id: "other", slug: where.slug};
+          return options.exists === false ? null : product;
+        },
+        update: async ({data}: {data: Record<string, unknown>}) => {
+          saved = data; return {...product, ...data};
+        },
+      },
+    } },
+    "@/lib/validators": { productSchema },
+    "@/lib/product-slug": { generateProductSlug },
+    "@/lib/admin-auth": { requireAdmin: async () => { events.push("authorize"); if (options.deny) throw new Error("Denied"); } },
+  };
+  const source = ts.transpileModule(readFileSync("app/actions/products.ts", "utf8"), {
+    compilerOptions: {module: ts.ModuleKind.CommonJS},
+  }).outputText;
+  type Result = Promise<{success: boolean; message: string}>;
+  const exports = {} as {
+    deleteProduct: (id: string) => Result;
+    updateProduct: (id: string, input: typeof values) => Result;
+  };
+  new Function("require", "exports", source)((name: string) => {
+    assert.ok(name in dependencies);
+    return dependencies[name];
+  }, exports);
+  return {...exports, events, saved: () => saved};
+}
+
+test("editing a name preserves its URL and ignores supplied slugs", async () => {
+  const action = mutationActions();
+  assert.equal((await action.updateProduct("existing", values)).success, true);
+  assert.equal(action.saved()?.name, values.name);
+  assert.equal("slug" in action.saved()!, false);
+});
+
+test("deletion locks the product, checks inquiries, deletes, then invalidates pages", async () => {
+  const action = mutationActions();
+  assert.equal((await action.deleteProduct("existing")).success, true);
+  assert.deepEqual(action.events.slice(0, 6), ["authorize", "transaction", "lock", "count", "delete", "commit"]);
+  assert.ok(action.events.slice(6).every(event => event === "revalidate"));
+});
+
+test("products with inquiries and missing products are never deleted", async () => {
+  for (const options of [{inquiries: 2}, {exists: false}]) {
+    const action = mutationActions(options);
+    assert.equal((await action.deleteProduct("existing")).success, false);
+    assert.ok(!action.events.includes("delete"));
+    assert.ok(!action.events.includes("revalidate"));
+  }
+});
+
+test("unauthorized delete and update requests never reach the database", async () => {
+  for (const operation of ["delete", "update"]) {
+    const action = mutationActions({deny: true});
+    await assert.rejects(operation === "delete"
+      ? action.deleteProduct("existing")
+      : action.updateProduct("existing", values), /Denied/);
+    assert.deepEqual(action.events, ["authorize"]);
+  }
+});
+
+
+test("renaming does not compete for another product's generated address", async () => {
+  const action = mutationActions({collision: true});
+  assert.equal((await action.updateProduct("existing", values)).success, true);
+  assert.equal("slug" in action.saved()!, false);
+  assert.equal(action.events.filter(event => event === "find").length, 1);
+});
+
+test("an invalid edited name does not save any changes", async () => {
+  const action = mutationActions();
+  assert.equal((await action.updateProduct("existing", {...values, name: ""})).success, false);
+  assert.equal(action.saved(), undefined);
+});

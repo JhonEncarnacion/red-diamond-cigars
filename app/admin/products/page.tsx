@@ -1,3 +1,4 @@
+import { ProductDeleteButton } from "@/components/admin/ProductDeleteButton";
 import Image from "next/image";
 import { getProductImage } from "@/lib/product-images";
 import Link from "next/link";
@@ -227,6 +228,10 @@ export default async function AdminProductsPage({
                           <ProductArchiveButton
                             productId={product.id}
                             isActive={product.isActive}
+                          />
+                          <ProductDeleteButton
+                            productId={product.id}
+                            productName={product.name}
                           />
                         </div>
                       </td>

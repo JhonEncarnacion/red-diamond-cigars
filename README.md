@@ -207,4 +207,8 @@ Built by [Jhon Encarnacion](https://www.jhonencarnacion.com). Connect on [Linked
 
 Deploy the updated application and regenerated Prisma client first. The new code works with the old unused column still present. Once all running deployments use the new schema, run `npm run db:remove-stock` against the intended database. This permanently removes only the old `Product.stock` column and its saved counts; products and inquiries remain intact. Do not run this cleanup while an older deployment still reads that column. New databases created from the schema do not include it.
 
-New product slugs are generated from the name. A duplicate generated address is rejected with a message to choose a different name. Existing product slugs remain editable. Enter sizes as `Toro – 6x56` (length first); legacy description dimensions such as `56×6` are formatted automatically. Run `npm run test:catalog` for these rules.
+New product slugs are generated from the name. A duplicate generated address is rejected with a message to choose a different name. Slugs are hidden in the editor; editing a name preserves the existing page address. Slugs supplied in update requests are ignored. Enter sizes as `Toro – 6x56` (length first); legacy description dimensions such as `56×6` are formatted automatically. Run `npm run test:catalog` for these rules.
+
+### Product deletion
+
+Admins can permanently delete a product from the product list after confirmation. Products with any customer inquiries, including archived inquiries, cannot be deleted; archive them instead. The server locks the product while checking related inquiries so a concurrent submission cannot be silently removed by the database cascade. Product image files are retained because they may be shared.

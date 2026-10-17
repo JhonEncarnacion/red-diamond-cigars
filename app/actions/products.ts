@@ -2,7 +2,7 @@
 
 import { revalidatePath } from "next/cache";
 import { prisma } from "@/lib/prisma";
-import { productSchema, type ProductFormInput } from "@/lib/validators";
+import { productSchema, type ProductEditorInput } from "@/lib/validators";
 import { generateProductSlug } from "@/lib/product-slug";
 import { requireAdmin } from "@/lib/admin-auth";
 
@@ -13,20 +13,9 @@ type UpdateProductResult = {
 
 export async function updateProduct(
   productId: string,
-  values: ProductFormInput,
+  values: ProductEditorInput,
 ): Promise<UpdateProductResult> {
   await requireAdmin();
-
-  const validatedFields = productSchema.safeParse(values);
-
-  if (!validatedFields.success) {
-    return {
-      success: false,
-      message:
-        validatedFields.error.issues.find((issue) => issue.path[0] === "image")
-          ?.message ?? "Please check the product form and try again.",
-    };
-  }
 
   const existingProduct = await prisma.product.findUnique({
     where: {
@@ -41,26 +30,23 @@ export async function updateProduct(
     };
   }
 
-  const slugOwner = await prisma.product.findUnique({
-    where: {
-      slug: validatedFields.data.slug,
-    },
-  });
+  const validatedFields = productSchema.safeParse({ ...values, slug: existingProduct.slug });
 
-  if (slugOwner && slugOwner.id !== productId) {
+  if (!validatedFields.success) {
     return {
       success: false,
-      message: "Another product already uses this slug.",
+      message:
+        validatedFields.error.issues.find((issue) => issue.path[0] === "image")
+          ?.message ?? "Please check the product form and try again.",
     };
   }
 
-  const updatedProduct = await prisma.product.update({
+  await prisma.product.update({
     where: {
       id: productId,
     },
     data: {
       name: validatedFields.data.name,
-      slug: validatedFields.data.slug,
       description: validatedFields.data.description,
       wrapper: validatedFields.data.wrapper || null,
       binder: validatedFields.data.binder || null,
@@ -76,7 +62,6 @@ export async function updateProduct(
   revalidatePath("/");
   revalidatePath("/cigars");
   revalidatePath(`/cigars/${existingProduct.slug}`);
-  revalidatePath(`/cigars/${updatedProduct.slug}`);
   revalidatePath("/admin");
   revalidatePath("/admin/products");
   revalidatePath(`/admin/products/${productId}/edit`);
@@ -88,7 +73,7 @@ export async function updateProduct(
 }
 
 export async function createProduct(
-  values: ProductFormInput,
+  values: ProductEditorInput,
 ): Promise<UpdateProductResult> {
   await requireAdmin();
 
@@ -216,4 +201,39 @@ export async function restoreProduct(productId: string) {
     success: true,
     message: "Product restored.",
   };
+}
+
+export async function deleteProduct(productId: string): Promise<UpdateProductResult> {
+  await requireAdmin();
+
+  const result = await prisma.$transaction(async (tx) => {
+    // Lock the parent before checking inquiries. Foreign-key inserts must wait,
+    // preventing a new inquiry from being cascade-deleted between check/delete.
+    const products = await tx.$queryRaw<{ id: string; slug: string }[]>`
+      SELECT "id", "slug" FROM "Product" WHERE "id" = ${productId} FOR UPDATE
+    `;
+    const product = products[0];
+    if (!product) return { success: false, message: "Product could not be found." };
+
+    const inquiryCount = await tx.inquiry.count({ where: { productId } });
+    if (inquiryCount > 0) {
+      return {
+        success: false,
+        message: "This product has customer inquiries and cannot be deleted. Archive it instead to preserve those records.",
+      };
+    }
+
+    await tx.product.delete({ where: { id: productId } });
+    return { success: true, message: "Product deleted permanently.", slug: product.slug };
+  }, { isolationLevel: "ReadCommitted" });
+
+  if (result.success && "slug" in result) {
+    revalidatePath("/");
+    revalidatePath("/cigars");
+    revalidatePath(`/cigars/${result.slug}`);
+    revalidatePath("/admin");
+    revalidatePath("/admin/products");
+    revalidatePath(`/admin/products/${productId}/edit`);
+  }
+  return { success: result.success, message: result.message };
 }
