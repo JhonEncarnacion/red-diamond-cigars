@@ -17,7 +17,6 @@ type AdminProductsPageProps = {
   searchParams: Promise<{
     search?: string;
     status?: string;
-    stock?: string;
   }>;
 };
 
@@ -26,7 +25,7 @@ export default async function AdminProductsPage({
 }: AdminProductsPageProps) {
   await requireAdmin();
 
-  const { search, status, stock } = await searchParams;
+  const { search, status } = await searchParams;
 
   const products = await prisma.product.findMany({
     where: {
@@ -35,14 +34,6 @@ export default async function AdminProductsPage({
         : status === "INACTIVE"
           ? { isActive: false }
           : {}),
-
-      ...(stock === "LOW_STOCK"
-        ? {
-            stock: {
-              lte: 10,
-            },
-          }
-        : {}),
 
       ...(search
         ? {
@@ -90,7 +81,7 @@ export default async function AdminProductsPage({
   return (
     <AdminShell
       title="Products"
-      description="Manage the cigar catalog, stock levels, and product visibility."
+      description="Manage the cigar catalog and product visibility."
       actions={
         <>
           <AdminButtonLink href="/admin">Back to Dashboard</AdminButtonLink>
@@ -119,7 +110,7 @@ export default async function AdminProductsPage({
           </div>
 
           <p className="text-xs font-medium uppercase tracking-[0.28em] text-[#f5cd7a]">
-            Inventory
+            Catalog
           </p>
         </div>
 
@@ -140,9 +131,6 @@ export default async function AdminProductsPage({
                     Size
                   </th>
 
-                  <th className="px-5 py-4 text-left text-xs font-medium uppercase tracking-[0.22em] text-[#f5cd7a]">
-                    Stock
-                  </th>
 
                   <th className="px-5 py-4 text-left text-xs font-medium uppercase tracking-[0.22em] text-[#f5cd7a]">
                     Status
@@ -158,7 +146,7 @@ export default async function AdminProductsPage({
                 {products.length === 0 ? (
                   <tr>
                     <td
-                      colSpan={6}
+                      colSpan={5}
                       className="px-5 py-12 text-center text-sm text-[#b8a99a]"
                     >
                       No products yet.
@@ -202,23 +190,7 @@ export default async function AdminProductsPage({
                         {product.size ?? "Not listed"}
                       </td>
 
-                      <td className="px-5 py-5">
-                        <div className="flex items-center gap-3">
-                          <span className="text-sm font-medium text-[#f8efe3]">
-                            {product.stock}
-                          </span>
 
-                          {product.stock === 0 ? (
-                            <Badge className="rounded-none border border-red-500/40 bg-red-500/10 p-3 text-xs font-medium text-red-300">
-                              Out of stock
-                            </Badge>
-                          ) : product.stock <= 10 ? (
-                            <Badge className="rounded-none border border-[#f5cd7a]/35 bg-[#f5cd7a]/10 p-3 text-xs font-medium text-[#f5cd7a]">
-                              Low stock
-                            </Badge>
-                          ) : null}
-                        </div>
-                      </td>
 
                       <td className="px-5 py-5">
                         <Badge

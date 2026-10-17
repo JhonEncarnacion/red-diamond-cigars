@@ -3,6 +3,7 @@
 import { useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
 import { createProduct, updateProduct } from "@/app/actions/products";
+import { generateProductSlug } from "@/lib/product-slug";
 import { Checkbox } from "@/components/ui/checkbox";
 import type { ProductFormInput } from "@/lib/validators";
 
@@ -19,13 +20,13 @@ type ProductFormProps = {
     size: string | null;
     strength: string;
     image: string | null;
-    stock: number;
     isActive: boolean;
   };
 };
 
 export function ProductForm({ product }: ProductFormProps) {
   const router = useRouter();
+  const [name, setName] = useState(product?.name ?? "");
   const [isPending, startTransition] = useTransition();
   const [message, setMessage] = useState<string | null>(null);
   const [isError, setIsError] = useState(false);
@@ -49,7 +50,6 @@ export function ProductForm({ product }: ProductFormProps) {
       size: String(formData.get("size") || ""),
       strength: String(formData.get("strength") || ""),
       image: String(formData.get("image") || ""),
-      stock: Number(formData.get("stock") || 0),
       isActive,
     };
 
@@ -93,7 +93,8 @@ export function ProductForm({ product }: ProductFormProps) {
             <input
               id="name"
               name="name"
-              defaultValue={product?.name}
+              value={name}
+              onChange={(event) => setName(event.target.value)}
               required
               className="h-12 border border-[#f5cd7a]/20 bg-black/35 px-4 text-sm text-[#f8efe3] outline-none transition-colors duration-300 placeholder:text-[#8f8174] focus:border-[#f5cd7a]/60"
             />
@@ -110,13 +111,13 @@ export function ProductForm({ product }: ProductFormProps) {
             <input
               id="slug"
               name="slug"
-              defaultValue={product?.slug}
+              {...(product ? { defaultValue: product.slug } : { value: generateProductSlug(name), readOnly: true })}
               required
               className="h-12 border border-[#f5cd7a]/20 bg-black/35 px-4 text-sm text-[#f8efe3] outline-none transition-colors duration-300 placeholder:text-[#8f8174] focus:border-[#f5cd7a]/60"
             />
 
             <p className="text-xs leading-5 text-[#8f8174]">
-              Example: reserva-especial-robusto
+              {product ? "Changing this changes the cigar’s page address." : "Generated automatically from the product name."}
             </p>
           </div>
 
@@ -202,7 +203,7 @@ export function ProductForm({ product }: ProductFormProps) {
             <input
               id="origin"
               name="origin"
-              defaultValue={product?.origin ?? ""}
+              defaultValue={product?.origin ?? "Dominican Republic"}
               placeholder="Dominican Republic"
               className="h-12 border border-[#f5cd7a]/20 bg-black/35 px-4 text-sm text-[#f8efe3] outline-none transition-colors duration-300 placeholder:text-[#8f8174] focus:border-[#f5cd7a]/60"
             />
@@ -220,7 +221,7 @@ export function ProductForm({ product }: ProductFormProps) {
               id="size"
               name="size"
               defaultValue={product?.size ?? ""}
-              placeholder="Robusto, Toro, Churchill..."
+              placeholder="Toro – 6x56"
               className="h-12 border border-[#f5cd7a]/20 bg-black/35 px-4 text-sm text-[#f8efe3] outline-none transition-colors duration-300 placeholder:text-[#8f8174] focus:border-[#f5cd7a]/60"
             />
           </div>
@@ -262,22 +263,6 @@ export function ProductForm({ product }: ProductFormProps) {
             /images/products/toro-habano-corojo-red.webp. Supported formats: PNG,
             JPG, JPEG, WebP, GIF, and AVIF. Leave blank to use a fallback image.
           </p>
-        </div>
-
-        <div className="grid gap-2">
-          <label htmlFor="stock" className="text-sm font-medium text-[#f8efe3]">
-            Stock
-          </label>
-
-          <input
-            id="stock"
-            name="stock"
-            type="number"
-            min="0"
-            defaultValue={product?.stock}
-            required
-            className="h-12 border border-[#f5cd7a]/20 bg-black/35 px-4 text-sm text-[#f8efe3] outline-none transition-colors duration-300 placeholder:text-[#8f8174] focus:border-[#f5cd7a]/60"
-          />
         </div>
 
         <div className="border border-[#f5cd7a]/15 bg-black/25 p-4">

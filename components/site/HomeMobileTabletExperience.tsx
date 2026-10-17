@@ -139,7 +139,7 @@ export function HomeMobileTabletExperience() {
         <div className="relative z-10 mx-auto flex max-w-4xl items-center justify-center text-center">
           <div className="max-w-3xl">
             <p className="text-xs font-medium uppercase tracking-[0.42em] text-[#f5cd7a] sm:tracking-[0.5em]">
-              Begin the Inquiry
+              Submit the Inquiry
             </p>
 
             <h2 className="mt-6 font-serif text-4xl font-semibold leading-tight sm:text-6xl">

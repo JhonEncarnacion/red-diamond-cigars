@@ -3,6 +3,7 @@
 import { revalidatePath } from "next/cache";
 import { prisma } from "@/lib/prisma";
 import { productSchema, type ProductFormInput } from "@/lib/validators";
+import { generateProductSlug } from "@/lib/product-slug";
 import { requireAdmin } from "@/lib/admin-auth";
 
 type UpdateProductResult = {
@@ -68,7 +69,6 @@ export async function updateProduct(
       size: validatedFields.data.size || null,
       strength: validatedFields.data.strength,
       image: validatedFields.data.image || null,
-      stock: validatedFields.data.stock,
       isActive: validatedFields.data.isActive,
     },
   });
@@ -92,7 +92,7 @@ export async function createProduct(
 ): Promise<UpdateProductResult> {
   await requireAdmin();
 
-  const validatedFields = productSchema.safeParse(values);
+  const validatedFields = productSchema.safeParse({ ...values, slug: generateProductSlug(values?.name) });
 
   if (!validatedFields.success) {
     return {
@@ -112,7 +112,7 @@ export async function createProduct(
   if (existingProduct) {
     return {
       success: false,
-      message: "Another product already uses this slug.",
+      message: "A product with this generated address already exists. Please use a different name.",
     };
   }
 
@@ -128,7 +128,6 @@ export async function createProduct(
       size: validatedFields.data.size || null,
       strength: validatedFields.data.strength,
       image: validatedFields.data.image || null,
-      stock: validatedFields.data.stock,
       isActive: validatedFields.data.isActive,
     },
   });

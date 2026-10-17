@@ -10,10 +10,9 @@ type Cigar = {
   slug: string;
   description: string;
   image: string;
-  origin: string | null;
+  size: string;
   wrapper: string | null;
   strength: string | null;
-  stock: number;
 };
 
 type CigarCollectionExperienceProps = {
@@ -129,7 +128,7 @@ export function CigarCollectionExperience({
       <main className="min-h-screen bg-background px-5 pb-20 pt-32 text-[#f8efe3] lg:hidden">
         <section className="mx-auto max-w-3xl text-center">
           <p className="text-[10px] font-medium uppercase tracking-[0.42em] text-[#f5cd7a] sm:text-xs sm:tracking-[0.55em]">
-            Red Diamond Collection
+            Collection
           </p>
 
           <h1 className="mt-5 font-serif text-5xl font-semibold leading-tight tracking-[0.04em] text-[#f8efe3] sm:text-7xl">
@@ -180,26 +179,18 @@ export function CigarCollectionExperience({
                 </p>
 
                 <div className="mt-6 grid gap-3 text-xs uppercase tracking-[0.18em] text-[#b8a99a]">
-                  {cigar.origin && (
-                    <div className="border border-[#f5cd7a]/12 bg-white/3 px-4 py-3">
-                      <span className="block text-[#f5cd7a]">Origin</span>
-                      <span className="mt-1 block">{cigar.origin}</span>
-                    </div>
-                  )}
-
-                  {cigar.wrapper && (
-                    <div className="border border-[#f5cd7a]/12 bg-white/3 px-4 py-3">
-                      <span className="block text-[#f5cd7a]">Wrapper</span>
-                      <span className="mt-1 block">{cigar.wrapper}</span>
-                    </div>
-                  )}
-
-                  {cigar.strength && (
-                    <div className="border border-[#f5cd7a]/12 bg-white/3 px-4 py-3">
-                      <span className="block text-[#f5cd7a]">Strength</span>
-                      <span className="mt-1 block">{cigar.strength}</span>
-                    </div>
-                  )}
+                  <div className="border border-[#f5cd7a]/12 bg-white/3 px-4 py-3">
+                    <span className="block text-[#f5cd7a]">Strength</span>
+                    <span className="mt-1 block">{cigar.strength || "Not listed"}</span>
+                  </div>
+                  <div className="border border-[#f5cd7a]/12 bg-white/3 px-4 py-3">
+                    <span className="block text-[#f5cd7a]">Size</span>
+                    <span className="mt-1 block">{cigar.size}</span>
+                  </div>
+                  <div className="border border-[#f5cd7a]/12 bg-white/3 px-4 py-3">
+                    <span className="block text-[#f5cd7a]">Wrapper</span>
+                    <span className="mt-1 block">{cigar.wrapper || "Not listed"}</span>
+                  </div>
                 </div>
 
                 <div className="mt-7">
@@ -264,7 +255,7 @@ export function CigarCollectionExperience({
 
             <div className="relative z-10 ml-auto mr-[7vw] w-[48%] max-w-3xl text-left">
               <p className="text-xs font-medium uppercase tracking-[0.55em] text-[#f5cd7a]">
-                Red Diamond Collection
+                Collection
               </p>
 
               <h1 className="mt-5 font-serif text-8xl font-semibold leading-tight tracking-[0.04em] text-[#f8efe3]">
@@ -276,26 +267,18 @@ export function CigarCollectionExperience({
               </p>
 
               <div className="mt-8 grid max-w-2xl grid-cols-3 gap-3 text-xs uppercase tracking-[0.22em] text-[#b8a99a]">
-                {cigar.origin && (
-                  <div className="border border-[#f5cd7a]/15 bg-black/25 px-4 py-3 backdrop-blur-sm">
-                    <span className="block text-[#f5cd7a]">Origin</span>
-                    <span className="mt-1 block">{cigar.origin}</span>
-                  </div>
-                )}
-
-                {cigar.wrapper && (
-                  <div className="border border-[#f5cd7a]/15 bg-black/25 px-4 py-3 backdrop-blur-sm">
-                    <span className="block text-[#f5cd7a]">Wrapper</span>
-                    <span className="mt-1 block">{cigar.wrapper}</span>
-                  </div>
-                )}
-
-                {cigar.strength && (
-                  <div className="border border-[#f5cd7a]/15 bg-black/25 px-4 py-3 backdrop-blur-sm">
-                    <span className="block text-[#f5cd7a]">Strength</span>
-                    <span className="mt-1 block">{cigar.strength}</span>
-                  </div>
-                )}
+                <div className="border border-[#f5cd7a]/15 bg-black/25 px-4 py-3 backdrop-blur-sm">
+                  <span className="block text-[#f5cd7a]">Strength</span>
+                  <span className="mt-1 block">{cigar.strength || "Not listed"}</span>
+                </div>
+                <div className="border border-[#f5cd7a]/15 bg-black/25 px-4 py-3 backdrop-blur-sm">
+                  <span className="block text-[#f5cd7a]">Size</span>
+                  <span className="mt-1 block">{cigar.size}</span>
+                </div>
+                <div className="border border-[#f5cd7a]/15 bg-black/25 px-4 py-3 backdrop-blur-sm">
+                  <span className="block text-[#f5cd7a]">Wrapper</span>
+                  <span className="mt-1 block">{cigar.wrapper || "Not listed"}</span>
+                </div>
               </div>
 
               <div className="mt-10 flex justify-start">

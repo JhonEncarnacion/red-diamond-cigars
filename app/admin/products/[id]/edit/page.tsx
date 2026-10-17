@@ -93,7 +93,6 @@ export default async function EditProductPage({
                   value={product.size ?? "Not listed"}
                 />
 
-                <ProductPreviewDetail label="Stock" value={product.stock} />
 
                 <ProductPreviewDetail
                   label="Status"

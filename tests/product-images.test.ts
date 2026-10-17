@@ -12,7 +12,7 @@ import { sampleProducts } from "../lib/sample-products";
 const redImage = "/images/products/toro-habano-corojo-red.webp";
 const validProduct = {
   name: "Test Cigar", slug: "test-cigar", description: "A test cigar description.",
-  strength: "Medium", stock: 0, isActive: true,
+  strength: "Medium", isActive: true,
 };
 
 test("available image index matches files shipped in public/images", () => {

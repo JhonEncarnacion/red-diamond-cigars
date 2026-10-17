@@ -16,7 +16,7 @@
 
 ## Overview
 
-Red Diamond Cigars gives customers a polished way to browse available cigars, review product details, and submit purchase inquiries. Behind the public site is a protected admin workspace for managing inventory and following each inquiry from initial contact through completion.
+Red Diamond Cigars gives customers a polished way to browse available cigars, review product details, and submit purchase inquiries. Behind the public site is a protected admin workspace for managing the catalog and following each inquiry from initial contact through completion.
 
 The application intentionally uses an inquiry workflow instead of online checkout. This keeps payment processing outside the application while still giving the business a structured sales pipeline.
 
@@ -25,7 +25,7 @@ The application intentionally uses an inquiry workflow instead of online checkou
 ### Customer experience
 
 - Responsive landing page, product catalog, product-detail pages, brand story, and contact page
-- Inventory-aware product information and product-specific inquiry forms
+- Product specifications and product-specific inquiry forms
 - Form validation with React Hook Form and Zod
 - Required age and inquiry-only confirmations before submission
 - Inquiry records stored in PostgreSQL
@@ -35,10 +35,9 @@ The application intentionally uses an inquiry workflow instead of online checkou
 ### Admin workspace
 
 - Clerk authentication plus an email allowlist for protected admin routes
-- Dashboard metrics for products, inquiries, and inventory status
+- Dashboard metrics for inquiries and customer interest
 - Product creation, editing, archiving, and restoration
 - Inquiry search, filtering, status updates, notes, archiving, and restoration
-- Low-stock and out-of-stock visibility
 
 ## Tech Stack
 
@@ -67,7 +66,7 @@ flowchart LR
     Actions --> Resend["Resend email notifications"]
 ```
 
-The main records are `Product` and `Inquiry`. A product holds catalog and inventory data; an inquiry stores customer details, requested quantity, pipeline status, and private admin notes.
+The main records are `Product` and `Inquiry`. A product holds catalog data; an inquiry stores customer details, requested quantity, pipeline status, and private admin notes.
 
 ## Local Development
 
@@ -198,8 +197,14 @@ The sample products, seed script, and blank-image fallbacks use the current cata
 | Maduro San Andres Gold | `/images/products/maduro-san-andres-gold.webp` |
 
 For existing products with these slugs, the seed script updates only their names
-and image paths, preserving stock, descriptions, and inquiry relationships.
+and image paths, preserving descriptions and inquiry relationships.
 
 ## Author
 
 Built by [Jhon Encarnacion](https://www.jhonencarnacion.com). Connect on [LinkedIn](https://www.linkedin.com/in/jhonencarnacion/) or view more work on [GitHub](https://github.com/JhonEncarnacion).
+
+### Retiring stock tracking
+
+Deploy the updated application and regenerated Prisma client first. The new code works with the old unused column still present. Once all running deployments use the new schema, run `npm run db:remove-stock` against the intended database. This permanently removes only the old `Product.stock` column and its saved counts; products and inquiries remain intact. Do not run this cleanup while an older deployment still reads that column. New databases created from the schema do not include it.
+
+New product slugs are generated from the name. A duplicate generated address is rejected with a message to choose a different name. Existing product slugs remain editable. Enter sizes as `Toro – 6x56` (length first); legacy description dimensions such as `56×6` are formatted automatically. Run `npm run test:catalog` for these rules.

@@ -1,3 +1,4 @@
+import { formatProductSize } from "@/lib/product-size";
 import type { Metadata } from "next";
 import { connection } from "next/server";
 import { CigarCollectionExperience } from "@/components/site/CigarCollectionExperience";
@@ -28,10 +29,9 @@ export default async function CigarsPage() {
     slug: product.slug,
     description: product.description,
     image: getProductImage(product),
-    origin: product.origin,
+    size: formatProductSize(product),
     wrapper: product.wrapper,
     strength: product.strength,
-    stock: product.stock,
   }));
 
   return <CigarCollectionExperience cigars={cigars} />;

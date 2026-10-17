@@ -159,7 +159,7 @@ export function HomeDesktopExperience() {
             <div className="relative z-10 mx-auto flex h-full max-w-4xl items-center justify-center text-center">
               <Reveal className="max-w-3xl">
                 <p className="text-xs font-medium uppercase tracking-[0.5em] text-[#f5cd7a]">
-                  Begin the Inquiry
+                  Submit the Inquiry
                 </p>
 
                 <h2 className="mt-6 font-serif text-4xl font-semibold leading-tight sm:text-6xl">

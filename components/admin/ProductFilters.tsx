@@ -16,11 +16,6 @@ const statusOptions = [
   { label: "Inactive", value: "INACTIVE" },
 ];
 
-const stockOptions = [
-  { label: "All stock levels", value: "ALL" },
-  { label: "Low stock", value: "LOW_STOCK" },
-];
-
 export function ProductFilters() {
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -28,11 +23,9 @@ export function ProductFilters() {
 
   const [search, setSearch] = useState(searchParams.get("search") ?? "");
   const [status, setStatus] = useState(searchParams.get("status") ?? "ALL");
-  const [stock, setStock] = useState(searchParams.get("stock") ?? "ALL");
 
   function updateFilters(
     nextStatus = status,
-    nextStock = stock,
     nextSearch = search,
   ) {
     const params = new URLSearchParams();
@@ -43,10 +36,6 @@ export function ProductFilters() {
 
     if (nextStatus !== "ALL") {
       params.set("status", nextStatus);
-    }
-
-    if (nextStock !== "ALL") {
-      params.set("stock", nextStock);
     }
 
     const queryString = params.toString();
@@ -65,18 +54,12 @@ export function ProductFilters() {
 
   function handleStatusChange(value: string) {
     setStatus(value);
-    updateFilters(value, stock, search);
-  }
-
-  function handleStockChange(value: string) {
-    setStock(value);
-    updateFilters(status, value, search);
+    updateFilters(value, search);
   }
 
   function handleClear() {
     setSearch("");
     setStatus("ALL");
-    setStock("ALL");
 
     startTransition(() => {
       router.push("/admin/products");
@@ -104,24 +87,6 @@ export function ProductFilters() {
 
           <SelectContent className="rounded-none border-[#f5cd7a]/20 bg-black text-[#f8efe3]">
             {statusOptions.map((option) => (
-              <SelectItem
-                key={option.value}
-                value={option.value}
-                className="rounded-none text-[#d9cbbb] focus:bg-[#f5cd7a] focus:text-black"
-              >
-                {option.label}
-              </SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
-
-        <Select value={stock} onValueChange={handleStockChange}>
-          <SelectTrigger className="h-12! min-h-12 w-full rounded-none border-[#f5cd7a]/20 bg-black/35 px-4 text-sm text-[#f8efe3] shadow-none transition-colors duration-300 focus:border-[#f5cd7a]/60 focus:ring-0 focus:ring-offset-0 xl:w-48 [&>svg]:h-4 [&>svg]:w-4 [&>svg]:text-[#f5cd7a]">
-            <SelectValue placeholder="All stock levels" />
-          </SelectTrigger>
-
-          <SelectContent className="rounded-none border-[#f5cd7a]/20 bg-black text-[#f8efe3]">
-            {stockOptions.map((option) => (
               <SelectItem
                 key={option.value}
                 value={option.value}

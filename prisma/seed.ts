@@ -27,7 +27,7 @@ async function main() {
       origin: "Dominican Republic",
       size: "Medium",
       strength: "Powerful",
-      stock: 4,
+
       image: "/images/products/toro-habano-corojo-red.webp",
     },
   });
@@ -49,7 +49,7 @@ async function main() {
       origin: "New York",
       size: "Massive",
       strength: "Intense",
-      stock: 0,
+
       image: "/images/products/toro-habano-ecuador-black.webp",
     },
   });
@@ -71,7 +71,7 @@ async function main() {
       origin: "Dominican Republic",
       size: "Robusto",
       strength: "Medium",
-      stock: 17,
+
       image: "/images/products/maduro-san-andres-gold.webp",
     },
   });

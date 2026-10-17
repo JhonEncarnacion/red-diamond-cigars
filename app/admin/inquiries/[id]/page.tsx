@@ -149,7 +149,6 @@ export default async function InquiryDetailPage({
               <Detail label="Strength" value={inquiry.product.strength} />
               <Detail label="Size" value={inquiry.product.size} />
               <Detail label="Wrapper" value={inquiry.product.wrapper} />
-              <Detail label="Available stock" value={inquiry.product.stock} />
             </div>
 
             <div className="mt-6">

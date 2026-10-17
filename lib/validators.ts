@@ -97,11 +97,6 @@ export const productSchema = z.object({
     })
     .optional(),
 
-  stock: z.coerce
-    .number()
-    .int("Stock must be a whole number.")
-    .min(0, "Stock cannot be negative."),
-
   isActive: z.boolean(),
 });
 

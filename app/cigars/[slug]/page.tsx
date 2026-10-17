@@ -1,3 +1,4 @@
+import { formatProductSize } from "@/lib/product-size";
 import Image from "next/image";
 import { notFound } from "next/navigation";
 import { prisma } from "@/lib/prisma";
@@ -55,7 +56,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
         {/* Right content */}
         <div>
           <p className="text-xs font-medium uppercase tracking-[0.5em] text-[#f5cd7a]">
-            {product.origin ?? "Origin not listed"}
+            Cigar Details
           </p>
 
           <h1 className="mt-5 font-serif text-5xl font-semibold leading-tight tracking-[0.04em] text-[#f8efe3] sm:text-6xl">
@@ -69,32 +70,12 @@ export default async function ProductPage({ params }: ProductPageProps) {
           <div className="mt-8 border border-[#f5cd7a]/20 bg-black/30 p-6 shadow-[0_30px_90px_rgba(0,0,0,0.35)] backdrop-blur-md">
             <div className="grid gap-x-8 gap-y-6 sm:grid-cols-2">
               <Detail label="Strength" value={product.strength} />
-              <Detail label="Size" value={product.size} />
+              <Detail label="Size" value={formatProductSize(product)} />
               <Detail label="Wrapper" value={product.wrapper} />
               <Detail label="Binder" value={product.binder} />
               <Detail label="Filler" value={product.filler} />
-              <Detail label="Available Stock" value={`${product.stock}`} />
+              <Detail label="Origin" value="Dominican Republic" />
             </div>
-          </div>
-
-          <div className="mt-8 border border-[#f5cd7a]/20 bg-black/30 p-5 shadow-[0_24px_80px_rgba(0,0,0,0.3)] backdrop-blur-md">
-            <p className="text-sm font-semibold text-[#f8efe3]">Availability</p>
-
-            {product.stock === 0 ? (
-              <p className="mt-2 text-sm leading-6 text-red-300">
-                This cigar is currently out of stock. You can still send an
-                inquiry to ask about future availability.
-              </p>
-            ) : product.stock <= 10 ? (
-              <p className="mt-2 text-sm leading-6 text-[#b8a99a]">
-                Limited availability. Send an inquiry to confirm current stock.
-              </p>
-            ) : (
-              <p className="mt-2 text-sm leading-6 text-[#b8a99a]">
-                Available for inquiry. Send a request to confirm quantity and
-                availability.
-              </p>
-            )}
           </div>
 
           <div className="mt-8 border border-[#f5cd7a]/20 bg-black/30 p-6 shadow-[0_30px_90px_rgba(0,0,0,0.35)] backdrop-blur-md">

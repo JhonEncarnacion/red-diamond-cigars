@@ -24,7 +24,6 @@ model Product {
   origin      String?
   size        String?
   strength    String
-  stock       Int      @default(0)
   image       String?
 
   isActive    Boolean  @default(true)

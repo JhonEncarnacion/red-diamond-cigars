@@ -10,7 +10,7 @@ export const sampleProducts = [
     origin: "Dominican Republic",
     size: "Toro",
     strength: "Mild",
-    stock: 23,
+
     image: "/images/products/toro-habano-corojo-red.webp",
   },
   {
@@ -24,7 +24,7 @@ export const sampleProducts = [
     origin: "Dominican Republic",
     size: "Churchill",
     strength: "Medium",
-    stock: 39,
+
     image: "/images/products/toro-habano-ecuador-black.webp",
   },
   {
@@ -38,7 +38,7 @@ export const sampleProducts = [
     origin: "Dominican Republic",
     size: "Robusto",
     strength: "Full",
-    stock: 7,
+
     image: "/images/products/maduro-san-andres-gold.webp",
   },
 ];
