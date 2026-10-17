@@ -103,8 +103,8 @@ export function InquiryForm({ product }: InquiryFormProps) {
         </h2>
 
         <p className="mt-3 text-sm leading-6 text-[#b8a99a]">
-          Let us know you are interested in {product.name} and we will get back
-          to you on the cigar&apos;s availability.
+          Let us know you are interested in {product.name}. We will get back
+          to you shortly on the cigar&apos;s availability.
         </p>
       </div>
 
