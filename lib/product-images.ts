@@ -4,7 +4,7 @@ export const PRODUCT_PLACEHOLDER_IMAGE = "/images/cigar-placeholder-image.png";
 const availableImages = new Set<string>(publicImages);
 const PLACEHOLDER_IMAGES = new Set([
   PRODUCT_PLACEHOLDER_IMAGE,
-  "/images/cigar-placeholder.png",
+  "/images/cigar-placeholder-image.png",
 ]);
 
 const PRODUCT_IMAGES: Record<string, string> = {
