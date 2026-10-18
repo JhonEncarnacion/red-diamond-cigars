@@ -1,5 +1,6 @@
 import { useSiteText } from "@/i18n/text";
-import { getLocale, getFormatter } from "next-intl/server";
+import { getLocale } from "next-intl/server";
+import { formatPrice } from "@/lib/format-price";
 import { localizeProduct } from "@/lib/product-localization";
 import { getSiteText } from "@/i18n/server";
 import { formatProductSize } from "@/lib/product-size";
@@ -19,7 +20,6 @@ type ProductPageProps = {
 
 export default async function ProductPage({ params }: ProductPageProps) {
   const t = await getSiteText();
-  const format = await getFormatter();
   const { slug } = await params;
 
   const sourceProduct = await prisma.product.findUnique({
@@ -96,7 +96,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
               ].map(({ label, value }) => (
                 <div key={label} className="min-w-0 px-3 py-1 sm:px-4">
                   <dt className="break-words text-[10px] font-medium uppercase tracking-[0.14em] text-[#d3b77f] sm:text-xs sm:tracking-[0.18em]">{label}</dt>
-                  <dd className="mt-2 break-words text-lg font-medium leading-tight tabular-nums text-[#f8efe3]">{format.number(value, {style: "currency", currency: "USD", minimumFractionDigits: 0, maximumFractionDigits: 2})}</dd>
+                  <dd className="mt-2 break-words text-lg font-medium leading-tight tabular-nums text-[#f8efe3]">{formatPrice(value)}</dd>
                 </div>
               ))}
             </dl>

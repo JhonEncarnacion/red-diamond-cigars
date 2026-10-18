@@ -2,7 +2,7 @@
 import { useSiteText } from "@/i18n/text";
 
 
-import { useFormatter } from "next-intl";
+import { formatPrice } from "@/lib/format-price";
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
@@ -29,7 +29,6 @@ type CigarCollectionExperienceProps = {
 };
 
 function PackagingRow({ cigar }: { cigar: Cigar }) {
-  const format = useFormatter();
   const t = useSiteText();
   const options = [
     { label: t("Single"), value: cigar.singleValue },
@@ -45,7 +44,7 @@ function PackagingRow({ cigar }: { cigar: Cigar }) {
       {options.map(({ label, value }) => (
         <div key={label} className="min-w-0 px-3 py-1 sm:px-4">
           <dt className="break-words text-[10px] font-medium uppercase tracking-[0.14em] text-[#d3b77f] sm:text-xs sm:tracking-[0.18em]">{label}</dt>
-          <dd className="mt-2 break-words text-lg font-medium leading-tight tabular-nums text-[#f8efe3]">{format.number(value, {style: "currency", currency: "USD", minimumFractionDigits: 0, maximumFractionDigits: 2})}</dd>
+          <dd className="mt-2 break-words text-lg font-medium leading-tight tabular-nums text-[#f8efe3]">{formatPrice(value)}</dd>
         </div>
       ))}
     </dl>
