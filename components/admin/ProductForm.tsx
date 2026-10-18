@@ -239,20 +239,6 @@ export function ProductForm({ product }: ProductFormProps) {
           </div>
         </div>
 
-        <fieldset className="grid gap-4 border border-[#f5cd7a]/15 p-4">
-          <legend className="px-2 text-sm font-medium text-[#f8efe3]">Product translations</legend>
-          <p className="text-sm leading-6 text-[#b8a99a]">Add a translation for each language. Blank fields use the original product text above. Product names, sizes, and prices are shared across languages.</p>
-          <div role="group" aria-label="Product translation language" className="flex flex-wrap gap-2">
-            {languages.map(language => <button key={language.code} type="button" id={`tab-${language.code}`} aria-controls="translation-panel" aria-pressed={translationLocale === language.code} onClick={() => setTranslationLocale(language.code)} className={`min-h-10 border px-3 py-2 text-sm ${translationLocale === language.code ? "border-[#f5cd7a]/60 bg-[#f5cd7a]/10 text-[#f5cd7a]" : "border-[#f5cd7a]/15 text-[#b8a99a]"}`}>{language.name}</button>)}
-          </div>
-          <div role="region" id="translation-panel" aria-labelledby={`tab-${translationLocale}`} className="grid gap-4 sm:grid-cols-2">
-            {translatedFields.map(field => <div key={field} className={`grid gap-2 ${field === "description" ? "sm:col-span-2" : ""}`}>
-              <label htmlFor={`translation-${field}`} className="text-sm capitalize text-[#f8efe3]">{field}</label>
-              <textarea id={`translation-${field}`} rows={field === "description" ? 3 : 1} maxLength={field === "description" ? 1000 : field === "strength" ? 40 : field === "origin" ? 100 : field === "filler" ? 120 : 80} value={translations[translationLocale]?.[field] ?? ""} onChange={event => setTranslations(previous => ({...previous, [translationLocale]: {...previous[translationLocale], [field]: event.target.value}}))} className="w-full min-w-0 border border-[#f5cd7a]/20 bg-black/35 px-3 py-2 text-sm text-[#f8efe3] outline-none focus:border-[#f5cd7a]/60" />
-            </div>)}
-          </div>
-        </fieldset>
-
         <fieldset className="grid gap-4 border border-[#f5cd7a]/15 p-4 sm:grid-cols-2">
           <legend className="px-2 text-sm font-medium text-[#f8efe3]">Packaging</legend>
           <div className="grid gap-2">
