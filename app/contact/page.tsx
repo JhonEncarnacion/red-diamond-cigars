@@ -14,7 +14,7 @@ const contacts = [
   {
     role: "Founder",
     name: "Luis Encarnacion",
-    email: "luis@reddiamondcigar.com",
+    email: "reddiamondcigars001@gmail.com",
     phone: "(914) 689-6167",
   },
   {
