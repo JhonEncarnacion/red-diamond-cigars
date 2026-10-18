@@ -82,9 +82,6 @@ export default async function ProductPage({ params }: ProductPageProps) {
             aria-labelledby="packaging-heading"
             className="mt-8"
           >
-            <h2 id="packaging-heading" className="text-xs font-medium uppercase tracking-[0.3em] text-[#f5cd7a]">
-              Packaging
-            </h2>
             <dl className="mt-4 grid grid-cols-3 divide-x divide-[#f5cd7a]/15 border-y border-[#f5cd7a]/25 bg-[#f5cd7a]/[0.05] py-4">
               {[
                 { label: "Single", value: product.singleValue },
