@@ -55,6 +55,11 @@ export async function updateProduct(
       size: validatedFields.data.size || null,
       strength: validatedFields.data.strength,
       image: validatedFields.data.image || null,
+      packQuantity: validatedFields.data.packQuantity,
+      boxQuantity: validatedFields.data.boxQuantity,
+      singleValue: validatedFields.data.singleValue,
+      packValue: validatedFields.data.packValue,
+      boxValue: validatedFields.data.boxValue,
       isActive: validatedFields.data.isActive,
     },
   });
@@ -113,6 +118,11 @@ export async function createProduct(
       size: validatedFields.data.size || null,
       strength: validatedFields.data.strength,
       image: validatedFields.data.image || null,
+      packQuantity: validatedFields.data.packQuantity,
+      boxQuantity: validatedFields.data.boxQuantity,
+      singleValue: validatedFields.data.singleValue,
+      packValue: validatedFields.data.packValue,
+      boxValue: validatedFields.data.boxValue,
       isActive: validatedFields.data.isActive,
     },
   });

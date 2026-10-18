@@ -167,3 +167,27 @@ test("an invalid edited name does not save any changes", async () => {
   assert.equal((await action.updateProduct("existing", {...values, name: ""})).success, false);
   assert.equal(action.saved(), undefined);
 });
+
+test("packaging defaults and custom values survive creation and editing", async () => {
+  const defaults = productSchema.parse(values);
+  assert.deepEqual([defaults.packQuantity, defaults.boxQuantity, defaults.singleValue, defaults.packValue, defaults.boxValue], [5, 20, 10, 45, 160]);
+  const packaging = {packQuantity: 4, boxQuantity: 24, singleValue: 12.5, packValue: 0, boxValue: 250};
+  const create = actions(false);
+  assert.equal((await create.create({...values, ...packaging})).success, true);
+  const update = mutationActions();
+  assert.equal((await update.updateProduct("existing", {...values, ...packaging})).success, true);
+  for (const [key, value] of Object.entries(packaging)) {
+    assert.equal(create.saved()?.[key], value);
+    assert.equal(update.saved()?.[key], value);
+  }
+});
+
+test("invalid packaging numbers cannot be saved", async () => {
+  for (const invalid of [{packQuantity: 0}, {boxQuantity: 1.5}, {singleValue: -1}, {packValue: NaN}, {boxValue: Infinity}]) {
+    const input = {...values, ...invalid};
+    assert.equal(productSchema.safeParse(input).success, false);
+    const update = mutationActions();
+    assert.equal((await update.updateProduct("existing", input)).success, false);
+    assert.equal(update.saved(), undefined);
+  }
+});

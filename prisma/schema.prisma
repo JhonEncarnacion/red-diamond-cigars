@@ -26,6 +26,12 @@ model Product {
   strength    String
   image       String?
 
+  packQuantity Int @default(5)
+  boxQuantity Int @default(20)
+  singleValue Float @default(10)
+  packValue Float @default(45)
+  boxValue Float @default(160)
+
   isActive    Boolean  @default(true)
 
   inquiries   Inquiry[]

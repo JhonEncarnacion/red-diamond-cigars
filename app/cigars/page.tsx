@@ -32,6 +32,12 @@ export default async function CigarsPage() {
     size: formatProductSize(product),
     wrapper: product.wrapper,
     strength: product.strength,
+    packQuantity: product.packQuantity,
+    boxQuantity: product.boxQuantity,
+    singleValue: product.singleValue,
+    packValue: product.packValue,
+    boxValue: product.boxValue,
+
   }));
 
   return <CigarCollectionExperience cigars={cigars} />;

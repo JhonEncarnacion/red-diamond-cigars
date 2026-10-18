@@ -97,6 +97,12 @@ export const productSchema = z.object({
     })
     .optional(),
 
+  packQuantity: z.number().int().min(1).max(10000).default(5),
+  boxQuantity: z.number().int().min(1).max(10000).default(20),
+  singleValue: z.number().min(0).max(1000000).default(10),
+  packValue: z.number().min(0).max(1000000).default(45),
+  boxValue: z.number().min(0).max(1000000).default(160),
+
   isActive: z.boolean(),
 });
 

@@ -13,6 +13,7 @@
     "predev": "npm run images:generate",
     "prebuild": "npm run images:generate",
     "test:images": "node --import tsx --test tests/product-images.test.ts",
+    "db:add-packaging": "prisma db execute --file prisma/sql/add-product-packaging.sql",
     "db:remove-stock": "prisma db execute --file prisma/sql/remove-product-stock.sql",
     "test:catalog": "node --import tsx --test tests/product-catalog.test.ts",
     "db:preserve-inquiries": "prisma db execute --file prisma/sql/preserve-product-inquiries.sql",

@@ -13,11 +13,39 @@ type Cigar = {
   size: string;
   wrapper: string | null;
   strength: string | null;
+  packQuantity: number;
+  boxQuantity: number;
+  singleValue: number;
+  packValue: number;
+  boxValue: number;
+
 };
 
 type CigarCollectionExperienceProps = {
   cigars: Cigar[];
 };
+
+function PackagingRow({ cigar }: { cigar: Cigar }) {
+  const options = [
+    { label: "Single", value: cigar.singleValue },
+    { label: `${cigar.packQuantity}-Pack`, value: cigar.packValue },
+    { label: `Box of ${cigar.boxQuantity}`, value: cigar.boxValue },
+  ];
+
+  return (
+    <dl
+      aria-label="Packaging options"
+      className="mt-4 grid max-w-2xl grid-cols-3 divide-x divide-[#f5cd7a]/15 border-y border-[#f5cd7a]/25 bg-[#f5cd7a]/[0.05] py-3"
+    >
+      {options.map(({ label, value }) => (
+        <div key={label} className="min-w-0 px-3 py-1 sm:px-4">
+          <dt className="break-words text-[10px] font-medium uppercase tracking-[0.14em] text-[#d3b77f] sm:text-xs sm:tracking-[0.18em]">{label}</dt>
+          <dd className="mt-2 break-words text-lg font-medium leading-tight tabular-nums text-[#f8efe3]">{value}</dd>
+        </div>
+      ))}
+    </dl>
+  );
+}
 
 export function CigarCollectionExperience({
   cigars,
@@ -193,6 +221,8 @@ export function CigarCollectionExperience({
                   </div>
                 </div>
 
+                <PackagingRow cigar={cigar} />
+
                 <div className="mt-7">
                   <Link
                     href={`/cigars/${cigar.slug}`}
@@ -239,7 +269,7 @@ export function CigarCollectionExperience({
             ref={(element) => {
               desktopSectionRefs.current[index] = element;
             }}
-            className="relative flex h-screen snap-start snap-always items-center justify-center overflow-hidden px-16 py-28 text-center"
+            className="relative flex min-h-screen snap-start snap-always items-center justify-center overflow-hidden px-16 py-28 text-center"
           >
             <Image
               src={cigar.image}
@@ -281,7 +311,9 @@ export function CigarCollectionExperience({
                 </div>
               </div>
 
-              <div className="mt-10 flex justify-start">
+              <PackagingRow cigar={cigar} />
+
+              <div className="mt-8 flex justify-start">
                 <Link
                   href={`/cigars/${cigar.slug}`}
                   className="inline-flex h-13 items-center justify-center border border-[#f5cd7a]/40 bg-[#f5cd7a]/15 px-7 text-xs font-medium uppercase tracking-[0.24em] text-[#f8efe3] backdrop-blur-md transition-all duration-500 hover:border-[#f5cd7a] hover:bg-[#f5cd7a] hover:text-black"

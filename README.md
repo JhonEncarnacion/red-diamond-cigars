@@ -216,3 +216,7 @@ Run `npm run db:preserve-inquiries` against the intended database **before deplo
 New inquiries save the product name, description, strength, size, wrapper, and original ID. Product deletion preserves those snapshots and detaches the catalog link without changing inquiry timestamps. Admin search, detail views, and dashboard statistics continue to include inquiries for deleted products. Image files are retained because they may be shared.
 
 Admins may separately delete an inquiry from the list or detail page after confirmation. That permanently deletes only that inquiry and its notes; the product and other inquiries remain intact.
+
+### Collection packaging
+
+Run `npm run db:add-packaging` before starting or deploying this version, then regenerate the client with `npx prisma generate`. This repeatable, additive update gives existing and new products placeholder values: Single 10, 5-Pack 45, and Box of 20 160. Admins can change all five numbers in the product editor under Collection packaging. Values display as plain numbers without an assumed currency. Pack and box quantities must be positive whole numbers; displayed values must be nonnegative.
