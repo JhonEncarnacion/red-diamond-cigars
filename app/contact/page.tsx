@@ -26,7 +26,7 @@ const contacts = [
   {
     role: "Technology",
     name: "Jhon Encarnacion",
-    email: "jhon@reddiamondcigar.com",
+    email: "contact@reddiamondcigar.com",
     phone: "(347) 282-0207",
   },
 ];
