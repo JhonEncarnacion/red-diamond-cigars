@@ -90,7 +90,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
               ].map(({ label, value }) => (
                 <div key={label} className="min-w-0 px-3 py-1 sm:px-4">
                   <dt className="break-words text-[10px] font-medium uppercase tracking-[0.14em] text-[#d3b77f] sm:text-xs sm:tracking-[0.18em]">{label}</dt>
-                  <dd className="mt-2 break-words text-lg font-medium leading-tight tabular-nums text-[#f8efe3]">{value}</dd>
+                  <dd className="mt-2 break-words text-lg font-medium leading-tight tabular-nums text-[#f8efe3]">${value}</dd>
                 </div>
               ))}
             </dl>

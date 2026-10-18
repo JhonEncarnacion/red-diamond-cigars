@@ -18,7 +18,6 @@ export default async function AdminDashboardPage() {
     contactedInquiries,
     completedInquiries,
     recentInquiries,
-    productInquiryCounts,
   ] = await Promise.all([
     prisma.inquiry.count({
       where: {
@@ -60,36 +59,7 @@ export default async function AdminDashboardPage() {
       take: 5,
     }),
 
-    prisma.inquiry.groupBy({
-      by: ["productOriginalId"],
-      where: {
-        isArchived: false,
-      },
-      _count: {
-        _all: true,
-      },
-      orderBy: {
-        _count: {
-          productOriginalId: "desc",
-        },
-      },
-      take: 1,
-    }),
   ]);
-
-  const mostRequestedInquiry = productInquiryCounts.length > 0
-    ? await prisma.inquiry.findFirst({
-        where: { isArchived: false, productOriginalId: productInquiryCounts[0].productOriginalId },
-        include: { product: true },
-        orderBy: { createdAt: "desc" },
-      })
-    : null;
-  const mostRequestedProduct = mostRequestedInquiry ? getInquiryProduct(mostRequestedInquiry) : null;
-
-  const mostRequestedCount =
-    productInquiryCounts.length > 0
-      ? productInquiryCounts[0]._count._all
-      : 0;
 
   return (
     <AdminShell
@@ -112,35 +82,6 @@ export default async function AdminDashboardPage() {
         <StatCard title="New inquiries" value={newInquiries} />
         <StatCard title="Contacted" value={contactedInquiries} />
         <StatCard title="Completed" value={completedInquiries} />
-      </div>
-
-      <div className="mt-6">
-        <AdminCard>
-          <p className="text-lg font-semibold text-[#f8efe3]">
-            Most requested cigar
-          </p>
-
-          {mostRequestedProduct ? (
-            <div className="mt-6">
-              <p className="text-4xl font-serif font-semibold tracking-[0.04em] text-[#f8efe3]">
-                {mostRequestedProduct.name}
-              </p>
-
-              <p className="mt-3 text-sm leading-6 text-[#b8a99a]">
-                {mostRequestedCount}{" "}
-                {mostRequestedCount === 1
-                  ? "customer inquiry"
-                  : "customer inquiries"}{" "}
-                submitted.
-              </p>
-            </div>
-          ) : (
-            <p className="mt-6 text-sm leading-6 text-[#b8a99a]">
-              No product inquiries yet.
-            </p>
-          )}
-        </AdminCard>
-
       </div>
 
       <div className="mt-6">
