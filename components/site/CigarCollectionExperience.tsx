@@ -192,7 +192,7 @@ export function CigarCollectionExperience({
 
                 <div className="absolute bottom-12 left-5 right-5 sm:left-6 sm:right-6">
                   <p className="text-[10px] font-medium uppercase tracking-[0.34em] text-[#f5cd7a]">
-                    Red Diamond
+                    Red Diamond Cigars
                   </p>
 
                   <h2 className="mt-2 font-serif text-4xl font-semibold leading-tight text-[#f8efe3]">
@@ -201,7 +201,7 @@ export function CigarCollectionExperience({
                 </div>
               </div>
 
-              <div className="relative z-10 -mt-10 bg-black px-5 pb-6 pt-12 sm:px-6">
+              <div className="relative z-10 -mt-10 bg-black px-5 pb-6 pt-4 sm:px-6">
                 <p className="text-sm leading-7 text-[#d9cbbb]">
                   {cigar.description}
                 </p>
