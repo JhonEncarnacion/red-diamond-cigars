@@ -220,3 +220,15 @@ Admins may separately delete an inquiry from the list or detail page after confi
 ### Collection packaging
 
 Run `npm run db:add-packaging` before starting or deploying this version, then regenerate the client with `npx prisma generate`. This repeatable, additive update gives existing and new products placeholder values: Single 10, 5-Pack 45, and Box of 20 160. Admins can change all five numbers in the product editor under Collection packaging. Values display as plain numbers without an assumed currency. Pack and box quantities must be positive whole numbers; displayed values must be nonnegative.
+
+### Languages
+
+The public site supports English, Spanish, French, Portuguese, German, Italian, and Simplified Chinese, in that order in the language menu. The server selects the best supported language from `Accept-Language` on the first visit; English is the fallback. Regional variants such as es-MX and fr-CA use their base language. Traditional Chinese is not treated as a Simplified Chinese translation. A manual choice is saved in a one-year, HTTP-only, SameSite=Lax cookie. “Use browser language” clears that preference. The selector appears in the navigation menu and age gate.
+
+Existing URLs stay unchanged: language selection is cookie-based, with server-rendered text and a matching document language. This does not yet provide separately indexable language URLs or hreflang alternatives. Admin controls remain in English.
+
+Translations live in `messages/{locale}.json`; `messages/source-keys.json` maps source phrases to stable message keys. Keep every catalog complete when changing copy. Currency formatting uses USD, preserving the catalog’s dollar pricing; this is formatting, not currency conversion. The public pages, inquiry validation, feedback, metadata, age gate, and customer email are localized. Customer-entered messages are not translated.
+
+Run `npm run db:add-translations` before deployment, then `npx prisma generate`. This additive, repeatable migration adds a Product JSON translation field without changing original data. The admin product editor has per-language fields for description, strength, wrapper, binder, filler, and origin. Blank entries fall back to the original field; names, sizes, and prices remain shared. Current catalog descriptions and standard strength/country terms also have built-in translations. New custom product descriptions need entries in the editor for each language; they are not machine-translated on demand.
+
+Run `npm run test:i18n` for language negotiation, catalog completeness, interpolation, and product fallback validation. Translation copy should receive fluent-speaker review before publishing.

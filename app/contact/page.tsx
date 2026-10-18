@@ -1,11 +1,12 @@
+import { getSiteText } from "@/i18n/server";
+import { useSiteText } from "@/i18n/text";
 import Link from "next/link";
 import type { Metadata } from "next";
 
-export const metadata: Metadata = {
-  title: "Contact",
-  description:
-    "Contact Red Diamond Cigars for cigar availability and inquiries.",
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const t = await getSiteText();
+  return { title: t("Contact"), description: t("Contact Red Diamond Cigars for cigar availability and inquiries.") };
+}
 
 const instagramUrl = "https://www.instagram.com/reddiamond001";
 
@@ -74,6 +75,7 @@ function InstagramIcon() {
 }
 
 export default function ContactPage() {
+  const t = useSiteText();
   return (
     <main className="min-h-screen bg-[#050000] text-[#f8efe3]">
       <section className="relative flex min-h-screen items-center overflow-hidden px-6 py-28">
@@ -84,18 +86,11 @@ export default function ContactPage() {
 
         <div className="relative z-10 mx-auto w-full max-w-6xl">
           <div className="mx-auto max-w-3xl text-center">
-            <p className="text-xs font-medium uppercase tracking-[0.55em] text-[#f5cd7a]">
-              Contact
-            </p>
+            <p className="text-xs font-medium uppercase tracking-[0.55em] text-[#f5cd7a]">{t("Contact")}</p>
 
-            <h1 className="mt-6 font-serif text-5xl font-semibold leading-tight tracking-[0.04em] text-[#f8efe3] sm:text-6xl lg:text-7xl">
-              Get in Touch
-            </h1>
+            <h1 className="mt-6 font-serif text-5xl font-semibold leading-tight tracking-[0.04em] text-[#f8efe3] sm:text-6xl lg:text-7xl">{t("Get in Touch")}</h1>
 
-            <p className="mx-auto mt-7 max-w-2xl text-base leading-8 text-[#b8a99a]">
-              Reach out directly for cigar availability, questions, and inquiry
-              follow-up.
-            </p>
+            <p className="mx-auto mt-7 max-w-2xl text-base leading-8 text-[#b8a99a]">{t("Reach out directly for cigar availability, questions, and inquiry follow-up.")}</p>
           </div>
 
           <div className="mt-14 grid gap-6 lg:grid-cols-3">
@@ -105,7 +100,7 @@ export default function ContactPage() {
                 className="border border-[#f5cd7a]/20 bg-black/35 p-7 shadow-[0_30px_90px_rgba(0,0,0,0.45)] backdrop-blur-md transition-all duration-500 hover:border-[#f5cd7a]/45 hover:bg-black/50 hover:shadow-[0_0_45px_rgba(245,205,122,0.08)]"
               >
                 <p className="text-xs font-medium uppercase tracking-[0.35em] text-[#f5cd7a]">
-                  {contact.role}
+                  {t(contact.role)}
                 </p>
 
                 <h2 className="mt-4 font-serif text-3xl font-semibold tracking-[0.04em] text-[#f8efe3]">
@@ -114,9 +109,7 @@ export default function ContactPage() {
 
                 <div className="mt-7 space-y-5 text-sm">
                   <div>
-                    <p className="text-xs uppercase tracking-[0.28em] text-[#8f8174]">
-                      Email
-                    </p>
+                    <p className="text-xs uppercase tracking-[0.28em] text-[#8f8174]">{t("Email")}</p>
 
                     <a
                       href={`mailto:${contact.email}`}
@@ -127,9 +120,7 @@ export default function ContactPage() {
                   </div>
 
                   <div>
-                    <p className="text-xs uppercase tracking-[0.28em] text-[#8f8174]">
-                      Phone
-                    </p>
+                    <p className="text-xs uppercase tracking-[0.28em] text-[#8f8174]">{t("Phone")}</p>
 
                     <div className="relative mt-2">
                       <a
@@ -143,7 +134,7 @@ export default function ContactPage() {
                         href={getWhatsAppHref(contact.phone)}
                         target="_blank"
                         rel="noreferrer"
-                        aria-label={`Message ${contact.name} on WhatsApp`}
+                        aria-label={t("Message {name} on WhatsApp", {name: contact.name})}
                         className="absolute right-0 top-1 inline-flex h-10 w-10 -translate-y-1/2 items-center justify-center border border-[#f5cd7a]/30 bg-black/25 text-[#f5cd7a] transition-all duration-300 hover:border-[#f5cd7a] hover:bg-[#f5cd7a] hover:text-black hover:shadow-[0_0_30px_rgba(245,205,122,0.18)]"
                       >
                         <WhatsAppIcon />
@@ -160,17 +151,15 @@ export default function ContactPage() {
               href={instagramUrl}
               target="_blank"
               rel="noreferrer"
-              className="inline-flex h-12 w-full items-center justify-center gap-3 border border-[#f5cd7a]/40 bg-black/25 px-7 text-xs font-medium uppercase tracking-[0.28em] text-[#f8efe3] backdrop-blur-md transition-all duration-500 hover:border-[#f5cd7a] hover:bg-[#f5cd7a] hover:text-black hover:shadow-[0_0_42px_rgba(245,205,122,0.2)]"
+              className="inline-flex min-h-12 py-3 w-full items-center justify-center gap-3 border border-[#f5cd7a]/40 bg-black/25 px-7 text-xs font-medium uppercase tracking-[0.28em] text-[#f8efe3] backdrop-blur-md transition-all duration-500 hover:border-[#f5cd7a] hover:bg-[#f5cd7a] hover:text-black hover:shadow-[0_0_42px_rgba(245,205,122,0.2)]"
             >
               <InstagramIcon />
               Instagram
             </a>
             <Link
               href="/cigars"
-              className="inline-flex h-12 w-full items-center justify-center border border-[#f5cd7a]/40 bg-[#f5cd7a] px-7 text-xs font-semibold uppercase tracking-[0.28em] text-black shadow-[0_0_45px_rgba(245,205,122,0.18)] transition-all duration-500 hover:bg-[#ffe3a3] hover:shadow-[0_0_65px_rgba(245,205,122,0.28)]"
-            >
-              Browse Cigars
-            </Link>
+              className="inline-flex min-h-12 py-3 w-full items-center justify-center border border-[#f5cd7a]/40 bg-[#f5cd7a] px-7 text-xs font-semibold uppercase tracking-[0.28em] text-black shadow-[0_0_45px_rgba(245,205,122,0.18)] transition-all duration-500 hover:bg-[#ffe3a3] hover:shadow-[0_0_65px_rgba(245,205,122,0.28)]"
+            >{t("Browse Cigars")}</Link>
           </div>
         </div>
       </section>

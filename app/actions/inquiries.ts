@@ -1,5 +1,7 @@
 "use server";
 
+import { getSiteText } from "@/i18n/server";
+import { getLocale } from "next-intl/server";
 import { snapshotInquiryProduct } from "@/lib/inquiry-product";
 import { headers } from "next/headers";
 import {
@@ -123,6 +125,8 @@ export async function createInquiry(
     },
   });
 
+  const t = await getSiteText();
+  const locale = await getLocale();
   const adminInquiryUrl = `${siteConfig.url}/admin/inquiries/${inquiry.id}`;
 
   const [adminEmailSent, customerEmailSent] = await Promise.all([
@@ -159,50 +163,21 @@ export async function createInquiry(
       from: inquiryEmailSender,
       to: validatedFields.data.email,
       replyTo: siteConfig.contactEmail,
-      subject: "We received your cigar inquiry",
+      subject: t("We received your cigar inquiry"),
       html: `
-    <div style="font-family: Arial, sans-serif; line-height: 1.6; color: #111;">
-      <h2>We received your inquiry</h2>
-
-      <p>Hi ${escapeHtml(validatedFields.data.fullName)},</p>
-
-      <p>
-        Thank you for reaching out to Red Diamond Cigars. We received your inquiry
-        for <strong>${escapeHtml(product.name)}</strong>.
-      </p>
-
-      <p>
-        Someone from Red Diamond Cigars will contact you soon using the information
-        you provided.
-      </p>
-
-      <hr />
-
-      <h3>Inquiry details</h3>
-
-      <p><strong>Cigar:</strong> ${escapeHtml(product.name)}</p>
-      <p><strong>Desired quantity:</strong> ${validatedFields.data.quantity}</p>
-      <p><strong>Location:</strong> ${escapeHtml(validatedFields.data.location)}</p>
-
-      ${
-        validatedFields.data.message
-          ? `<p><strong>Your message:</strong> ${escapeHtml(validatedFields.data.message)}</p>`
-          : ""
-      }
-
-      <hr />
-
-      <p style="font-size: 13px; color: #555;">
-        This email confirms that your inquiry was received. It is not a purchase,
-        order confirmation, payment confirmation, shipping confirmation, or guarantee
-        of product availability.
-      </p>
-
-      <p style="font-size: 13px; color: #555;">
-        Red Diamond Cigars products are intended only for adults 21 and older.
-      </p>
-    </div>
-  `,
+        <div lang="${escapeHtml(locale)}" style="font-family: Arial, sans-serif; line-height: 1.6; color: #111;">
+          <h2>${escapeHtml(t("We received your cigar inquiry"))}</h2>
+          <p>${escapeHtml(validatedFields.data.fullName)},</p>
+          <p>${escapeHtml(t("Thank you for contacting Red Diamond Cigars about {name}.", {name: product.name}))}</p>
+          <p>${escapeHtml(t("We will contact you soon using the information you provided."))}</p>
+          <hr />
+          <p><strong>${escapeHtml(t("Desired quantity"))}:</strong> ${validatedFields.data.quantity}</p>
+          <p><strong>${escapeHtml(t("Location"))}:</strong> ${escapeHtml(validatedFields.data.location)}</p>
+          ${validatedFields.data.message ? `<p><strong>${escapeHtml(t("Message"))}:</strong> ${escapeHtml(validatedFields.data.message)}</p>` : ""}
+          <hr />
+          <p style="font-size: 13px; color: #555;">${escapeHtml(t("This email confirms receipt of your inquiry only. It is not a purchase, order, payment, or shipping confirmation, or a guarantee of availability. Products are intended for adults 21 and older."))}</p>
+        </div>
+      `,
     }),
   ]);
 

@@ -46,6 +46,7 @@ export async function updateProduct(
       id: productId,
     },
     data: {
+      translations: validatedFields.data.translations,
       name: validatedFields.data.name,
       description: validatedFields.data.description,
       wrapper: validatedFields.data.wrapper || null,
@@ -108,6 +109,7 @@ export async function createProduct(
 
   const product = await prisma.product.create({
     data: {
+      translations: validatedFields.data.translations,
       name: validatedFields.data.name,
       slug: validatedFields.data.slug,
       description: validatedFields.data.description,

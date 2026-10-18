@@ -1,10 +1,14 @@
 "use client";
+import { useSiteText } from "@/i18n/text";
+
 
 import { useEffect, useRef, useState } from "react";
+import { LanguageSelector } from "./LanguageSelector";
 import { Dialog } from "radix-ui";
 import { Button } from "@/components/ui/button";
 
 export function AgeGate() {
+  const t = useSiteText();
   const [isVerified, setIsVerified] = useState<boolean | null>(null);
   const previousFocusRef = useRef<HTMLElement | null>(null);
 
@@ -111,46 +115,34 @@ export function AgeGate() {
 
             <div className="mx-auto mt-5 h-px w-20 bg-[#f5cd7a]/55" />
 
+            <div className="mx-auto mt-5 max-w-60"><LanguageSelector /></div>
+
             <Dialog.Title asChild>
-              <h2 className="mt-7 font-serif text-4xl font-semibold leading-tight tracking-[0.04em] text-[#f8efe3] sm:text-5xl">
-                Age Verification
-              </h2>
+              <h2 className="mt-7 font-serif text-4xl font-semibold leading-tight tracking-[0.04em] text-[#f8efe3] sm:text-5xl">{t("Age Verification")}</h2>
             </Dialog.Title>
 
             <Dialog.Description asChild>
-              <p className="mt-5 text-sm font-medium uppercase tracking-[0.22em] text-[#d9cbbb]">
-                Are you 21 years of age or older?
-              </p>
+              <p className="mt-5 text-sm font-medium uppercase tracking-[0.22em] text-[#d9cbbb]">{t("Are you 21 years of age or older?")}</p>
             </Dialog.Description>
 
-            <p className="mx-auto mt-5 max-w-md text-sm leading-7 text-[#b8a99a]">
-              This website contains cigar-related content and is intended only for
-              adults 21 years of age or older.
-            </p>
+            <p className="mx-auto mt-5 max-w-md text-sm leading-7 text-[#b8a99a]">{t("This website contains cigar-related content and is intended only for adults 21 years of age or older.")}</p>
 
             <div className="mt-8 grid gap-3 sm:grid-cols-2">
               <Button
                 type="button"
                 onClick={handleConfirm}
-                className="h-12 rounded-none border border-[#f5cd7a]/40 bg-[#f5cd7a] px-6 text-xs font-semibold uppercase tracking-[0.22em] text-black shadow-[0_0_35px_rgba(245,205,122,0.22)] transition-all duration-500 hover:bg-[#ffe3a3] hover:text-black hover:shadow-[0_0_55px_rgba(245,205,122,0.32)]"
-              >
-                Yes, I am 21+
-              </Button>
+                className="min-h-12 h-auto whitespace-normal py-3 rounded-none border border-[#f5cd7a]/40 bg-[#f5cd7a] px-6 text-xs font-semibold uppercase tracking-[0.22em] text-black shadow-[0_0_35px_rgba(245,205,122,0.22)] transition-all duration-500 hover:bg-[#ffe3a3] hover:text-black hover:shadow-[0_0_55px_rgba(245,205,122,0.32)]"
+              >{t("Yes, I am 21+")}</Button>
 
               <Button
                 type="button"
                 onClick={handleDeny}
                 variant="outline"
-                className="h-12 rounded-none border-[#f5cd7a]/25 bg-transparent px-6 text-xs font-medium uppercase tracking-[0.22em] text-[#f8efe3] transition-all duration-500 hover:border-[#f5cd7a]/50 hover:bg-[#f5cd7a]/10 hover:text-[#f8efe3]"
-              >
-                No, exit site
-              </Button>
+                className="min-h-12 h-auto whitespace-normal py-3 rounded-none border-[#f5cd7a]/25 bg-transparent px-6 text-xs font-medium uppercase tracking-[0.22em] text-[#f8efe3] transition-all duration-500 hover:border-[#f5cd7a]/50 hover:bg-[#f5cd7a]/10 hover:text-[#f8efe3]"
+              >{t("No, exit site")}</Button>
             </div>
 
-            <p className="mx-auto mt-6 max-w-md text-xs leading-6 text-[#8f8174]">
-              Product inquiries submitted through this site do not constitute a
-              purchase, sale, or shipment agreement.
-            </p>
+            <p className="mx-auto mt-6 max-w-md text-xs leading-6 text-[#8f8174]">{t("Product inquiries submitted through this site do not constitute a purchase, sale, or shipment agreement.")}</p>
           </div>
         </Dialog.Content>
       </Dialog.Portal>

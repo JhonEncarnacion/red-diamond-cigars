@@ -17,7 +17,9 @@
     "db:remove-stock": "prisma db execute --file prisma/sql/remove-product-stock.sql",
     "test:catalog": "node --import tsx --test tests/product-catalog.test.ts",
     "db:preserve-inquiries": "prisma db execute --file prisma/sql/preserve-product-inquiries.sql",
-    "test:deletion": "node --import tsx --test tests/independent-deletion.test.ts"
+    "test:deletion": "node --import tsx --test tests/independent-deletion.test.ts",
+    "test:i18n": "node --import tsx --test tests/i18n.test.ts",
+    "db:add-translations": "prisma db execute --file prisma/sql/add-product-translations.sql"
   },
   "dependencies": {
     "@clerk/nextjs": "^7.5.2",
@@ -29,6 +31,7 @@
     "lucide-react": "^1.17.0",
     "motion": "^12.42.2",
     "next": "16.2.7",
+    "next-intl": "^4.14.9",
     "pg": "^8.21.0",
     "prisma": "^7.8.0",
     "radix-ui": "^1.5.0",

@@ -1,14 +1,16 @@
+import { getSiteText } from "@/i18n/server";
+import { useSiteText } from "@/i18n/text";
 import Image from "next/image";
 import Link from "next/link";
 import type { Metadata } from "next";
 
-export const metadata: Metadata = {
-  title: "Story",
-  description:
-    "Learn the story behind Red Diamond Cigars, a family-driven cigar brand built on tradition, craftsmanship, and passion.",
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const t = await getSiteText();
+  return { title: t("Story"), description: t("Learn the story behind Red Diamond Cigars, a family-driven cigar brand built on tradition, craftsmanship, and passion.") };
+}
 
 export default function StoryPage() {
+  const t = useSiteText();
   return (
     <main className="relative overflow-hidden bg-[#050000] text-[#f8efe3]">
       {/* Page background */}
@@ -26,7 +28,7 @@ export default function StoryPage() {
 
             <Image
               src="/images/story-image.jpg"
-              alt="Red Diamond Cigars story"
+              alt={t("Red Diamond Cigars story")}
               width={900}
               height={1100}
               priority
@@ -34,61 +36,36 @@ export default function StoryPage() {
             />
 
             <div className="absolute bottom-0 left-0 z-20 w-full border-t border-[#f5cd7a]/15 bg-black/45 px-6 py-5 backdrop-blur-md">
-              <p className="text-xs font-medium uppercase tracking-[0.35em] text-[#f5cd7a]">
-                Quality. Craft. Experience.
-              </p>
+              <p className="text-xs font-medium uppercase tracking-[0.35em] text-[#f5cd7a]">{t("Quality. Craft. Experience.")}</p>
             </div>
           </div>
 
           {/* Right story content */}
           <div>
-            <p className="text-xs font-medium uppercase tracking-[0.55em] text-[#f5cd7a]">
-              Our Story
-            </p>
+            <p className="text-xs font-medium uppercase tracking-[0.55em] text-[#f5cd7a]">{t("Our Story")}</p>
 
-            <h1 className="mt-6 font-serif text-5xl font-semibold leading-tight tracking-[0.04em] text-[#f8efe3] sm:text-6xl lg:text-7xl">
-              Made with Passion
-            </h1>
+            <h1 className="mt-6 font-serif text-5xl font-semibold leading-tight tracking-[0.04em] text-[#f8efe3] sm:text-6xl lg:text-7xl">{t("Made with Passion")}</h1>
 
-            <p className="mt-7 max-w-xl text-base leading-8 text-[#b8a99a]">
-              Red Diamond Cigars is a cigar brand shaped by passion, patience,
-              and respect for the cigar-making tradition.
-            </p>
+            <p className="mt-7 max-w-xl text-base leading-8 text-[#b8a99a]">{t("Red Diamond Cigars is a cigar brand shaped by passion, patience, and respect for the cigar-making tradition.")}</p>
 
             <div className="mt-9 border border-[#f5cd7a]/20 bg-black/35 p-6 shadow-[0_30px_90px_rgba(0,0,0,0.45)] backdrop-blur-md">
               <div className="space-y-6">
                 <div className="border-b border-[#f5cd7a]/15 pb-6">
-                  <p className="text-sm uppercase tracking-[0.28em] text-[#d9cbbb]">
-                    Quality
-                  </p>
+                  <p className="text-sm uppercase tracking-[0.28em] text-[#d9cbbb]">{t("Quality")}</p>
 
-                  <p className="mt-3 leading-7 text-[#b8a99a]">
-                    Every cigar is crafted with meticulous attention to detail,
-                    ensuring a premium smoking experience that reflects our
-                    commitment to excellence.
-                  </p>
+                  <p className="mt-3 leading-7 text-[#b8a99a]">{t("Every cigar is crafted with meticulous attention to detail, ensuring a premium smoking experience that reflects our commitment to excellence.")}</p>
                 </div>
 
                 <div className="border-b border-[#f5cd7a]/15 pb-6">
-                  <p className="text-sm uppercase tracking-[0.28em] text-[#d9cbbb]">
-                    Craft
-                  </p>
+                  <p className="text-sm uppercase tracking-[0.28em] text-[#d9cbbb]">{t("Craft")}</p>
 
-                  <p className="mt-3 leading-7 text-[#b8a99a]">
-                    The brand is built around the details that make cigars
-                    memorable: aroma, character, quality, and the experience
-                    that comes with smoking a great cigar.
-                  </p>
+                  <p className="mt-3 leading-7 text-[#b8a99a]">{t("The brand is built around the details that make cigars memorable: aroma, character, quality, and the experience that comes with smoking a great cigar.")}</p>
                 </div>
 
                 <div>
-                  <p className="text-sm uppercase tracking-[0.28em] text-[#d9cbbb]">
-                    Experience
-                  </p>
+                  <p className="text-sm uppercase tracking-[0.28em] text-[#d9cbbb]">{t("Experience")}</p>
 
-                  <p className="mt-3 leading-7 text-[#b8a99a]">
-                    Our cigars are designed to be savored, creating moments of relaxation and enjoyment.
-                  </p>
+                  <p className="mt-3 leading-7 text-[#b8a99a]">{t("Our cigars are designed to be savored, creating moments of relaxation and enjoyment.")}</p>
                 </div>
               </div>
             </div>
@@ -96,17 +73,13 @@ export default function StoryPage() {
             <div className="mt-9 flex flex-col gap-4 sm:flex-row">
               <Link
                 href="/cigars"
-                className="inline-flex h-12 items-center justify-center border border-[#f5cd7a]/40 bg-[#f5cd7a] px-8 text-xs font-semibold uppercase tracking-[0.28em] text-black shadow-[0_0_45px_rgba(245,205,122,0.18)] transition-all duration-500 hover:bg-[#ffe3a3] hover:shadow-[0_0_65px_rgba(245,205,122,0.28)]"
-              >
-                Explore Cigars
-              </Link>
+                className="inline-flex min-h-12 py-3 items-center justify-center border border-[#f5cd7a]/40 bg-[#f5cd7a] px-8 text-xs font-semibold uppercase tracking-[0.28em] text-black shadow-[0_0_45px_rgba(245,205,122,0.18)] transition-all duration-500 hover:bg-[#ffe3a3] hover:shadow-[0_0_65px_rgba(245,205,122,0.28)]"
+              >{t("Explore Cigars")}</Link>
 
               <Link
                 href="/contact"
-                className="inline-flex h-12 items-center justify-center border border-[#f5cd7a]/30 bg-black/25 px-8 text-xs font-medium uppercase tracking-[0.28em] text-[#f8efe3] backdrop-blur-md transition-all duration-500 hover:border-[#f5cd7a] hover:bg-[#f5cd7a]/10"
-              >
-                Contact Us
-              </Link>
+                className="inline-flex min-h-12 py-3 items-center justify-center border border-[#f5cd7a]/30 bg-black/25 px-8 text-xs font-medium uppercase tracking-[0.28em] text-[#f8efe3] backdrop-blur-md transition-all duration-500 hover:border-[#f5cd7a] hover:bg-[#f5cd7a]/10"
+              >{t("Contact Us")}</Link>
             </div>
           </div>
         </div>

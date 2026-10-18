@@ -97,6 +97,15 @@ export const productSchema = z.object({
     })
     .optional(),
 
+  translations: z.partialRecord(z.enum(["en", "es", "fr", "pt", "de", "it", "zh"]), z.object({
+    description: z.string().trim().max(1000).optional(),
+    strength: z.string().trim().max(40).optional(),
+    wrapper: z.string().trim().max(80).optional(),
+    binder: z.string().trim().max(80).optional(),
+    filler: z.string().trim().max(120).optional(),
+    origin: z.string().trim().max(100).optional(),
+  })).optional(),
+
   packQuantity: z.number().int().min(1).max(10000).default(5),
   boxQuantity: z.number().int().min(1).max(10000).default(20),
   singleValue: z.number().min(0).max(1000000).default(10),

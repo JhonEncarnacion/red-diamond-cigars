@@ -209,3 +209,5 @@
   height: 0;
   display: none;
 }
+/* Chinese text uses natural tracking instead of Latin display letter spacing. */
+html:lang(zh) [class*="tracking-"] { letter-spacing: normal; }

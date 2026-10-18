@@ -1,5 +1,8 @@
 "use client";
+import { useSiteText } from "@/i18n/text";
 
+
+import { useFormatter } from "next-intl";
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
@@ -26,21 +29,23 @@ type CigarCollectionExperienceProps = {
 };
 
 function PackagingRow({ cigar }: { cigar: Cigar }) {
+  const format = useFormatter();
+  const t = useSiteText();
   const options = [
-    { label: "Single", value: cigar.singleValue },
-    { label: `${cigar.packQuantity}-Pack`, value: cigar.packValue },
-    { label: `Box of ${cigar.boxQuantity}`, value: cigar.boxValue },
+    { label: t("Single"), value: cigar.singleValue },
+    { label: t("{count}-Pack", {count: cigar.packQuantity}), value: cigar.packValue },
+    { label: t("Box of {count}", {count: cigar.boxQuantity}), value: cigar.boxValue },
   ];
 
   return (
     <dl
-      aria-label="Packaging options"
+      aria-label={t("Packaging options")}
       className="mt-4 grid max-w-2xl grid-cols-3 divide-x divide-[#f5cd7a]/15 border-y border-[#f5cd7a]/25 bg-[#f5cd7a]/[0.05] py-3"
     >
       {options.map(({ label, value }) => (
         <div key={label} className="min-w-0 px-3 py-1 sm:px-4">
           <dt className="break-words text-[10px] font-medium uppercase tracking-[0.14em] text-[#d3b77f] sm:text-xs sm:tracking-[0.18em]">{label}</dt>
-          <dd className="mt-2 break-words text-lg font-medium leading-tight tabular-nums text-[#f8efe3]">${value}</dd>
+          <dd className="mt-2 break-words text-lg font-medium leading-tight tabular-nums text-[#f8efe3]">{format.number(value, {style: "currency", currency: "USD", minimumFractionDigits: 0, maximumFractionDigits: 2})}</dd>
         </div>
       ))}
     </dl>
@@ -50,6 +55,7 @@ function PackagingRow({ cigar }: { cigar: Cigar }) {
 export function CigarCollectionExperience({
   cigars,
 }: CigarCollectionExperienceProps) {
+  const t = useSiteText();
   const [activeIndex, setActiveIndex] = useState(0);
   const desktopScrollRef = useRef<HTMLElement | null>(null);
   const desktopSectionRefs = useRef<Array<HTMLElement | null>>([]);
@@ -134,17 +140,11 @@ export function CigarCollectionExperience({
     return (
       <main className="flex min-h-screen items-center justify-center bg-background px-6 text-center text-[#f8efe3]">
         <div className="max-w-xl">
-          <p className="text-xs font-medium uppercase tracking-[0.45em] text-[#f5cd7a]">
-            Cigar Collection
-          </p>
+          <p className="text-xs font-medium uppercase tracking-[0.45em] text-[#f5cd7a]">{t("Cigar Collection")}</p>
 
-          <h1 className="mt-6 font-serif text-4xl font-semibold sm:text-5xl">
-            No cigars available yet.
-          </h1>
+          <h1 className="mt-6 font-serif text-4xl font-semibold sm:text-5xl">{t("No cigars available yet.")}</h1>
 
-          <p className="mt-5 text-base leading-8 text-[#b8a99a]">
-            Check back soon for available Red Diamond Cigars.
-          </p>
+          <p className="mt-5 text-base leading-8 text-[#b8a99a]">{t("Check back soon for available Red Diamond Cigars.")}</p>
         </div>
       </main>
     );
@@ -155,18 +155,11 @@ export function CigarCollectionExperience({
       {/* Mobile / Tablet Experience */}
       <main className="min-h-screen bg-background px-5 pb-20 pt-32 text-[#f8efe3] lg:hidden">
         <section className="mx-auto max-w-3xl text-center">
-          <p className="text-[10px] font-medium uppercase tracking-[0.42em] text-[#f5cd7a] sm:text-xs sm:tracking-[0.55em]">
-            Collection
-          </p>
+          <p className="text-[10px] font-medium uppercase tracking-[0.42em] text-[#f5cd7a] sm:text-xs sm:tracking-[0.55em]">{t("Collection")}</p>
 
-          <h1 className="mt-5 font-serif text-5xl font-semibold leading-tight tracking-[0.04em] text-[#f8efe3] sm:text-7xl">
-            Cigars
-          </h1>
+          <h1 className="mt-5 font-serif text-5xl font-semibold leading-tight tracking-[0.04em] text-[#f8efe3] sm:text-7xl">{t("Cigars")}</h1>
 
-          <p className="mx-auto mt-6 max-w-2xl text-sm leading-7 text-[#b8a99a] sm:text-base sm:leading-8">
-            Explore available Red Diamond Cigars and submit an inquiry for the
-            cigar that fits your taste.
-          </p>
+          <p className="mx-auto mt-6 max-w-2xl text-sm leading-7 text-[#b8a99a] sm:text-base sm:leading-8">{t("Explore available Red Diamond Cigars and submit an inquiry for the cigar that fits your taste.")}</p>
         </section>
 
         <section className="mx-auto mt-14 grid max-w-3xl gap-10 md:max-w-5xl md:grid-cols-2">
@@ -203,21 +196,21 @@ export function CigarCollectionExperience({
 
               <div className="relative z-10 -mt-10 bg-black px-5 pb-6 pt-4 sm:px-6">
                 <p className="text-sm leading-7 text-[#d9cbbb]">
-                  {cigar.description}
+                  {t(cigar.description)}
                 </p>
 
                 <div className="mt-6 grid gap-3 text-xs uppercase tracking-[0.18em] text-[#b8a99a]">
                   <div className="border border-[#f5cd7a]/12 bg-white/3 px-4 py-3">
-                    <span className="block text-[#f5cd7a]">Strength</span>
-                    <span className="mt-1 block">{cigar.strength || "Not listed"}</span>
+                    <span className="block text-[#f5cd7a]">{t("Strength")}</span>
+                    <span className="mt-1 block">{t(cigar.strength || "Not listed")}</span>
                   </div>
                   <div className="border border-[#f5cd7a]/12 bg-white/3 px-4 py-3">
-                    <span className="block text-[#f5cd7a]">Size</span>
-                    <span className="mt-1 block">{cigar.size}</span>
+                    <span className="block text-[#f5cd7a]">{t("Size")}</span>
+                    <span className="mt-1 block">{t(cigar.size)}</span>
                   </div>
                   <div className="border border-[#f5cd7a]/12 bg-white/3 px-4 py-3">
-                    <span className="block text-[#f5cd7a]">Wrapper</span>
-                    <span className="mt-1 block">{cigar.wrapper || "Not listed"}</span>
+                    <span className="block text-[#f5cd7a]">{t("Wrapper")}</span>
+                    <span className="mt-1 block">{t(cigar.wrapper || "Not listed")}</span>
                   </div>
                 </div>
 
@@ -226,10 +219,8 @@ export function CigarCollectionExperience({
                 <div className="mt-7">
                   <Link
                     href={`/cigars/${cigar.slug}`}
-                    className="inline-flex h-13 w-full items-center justify-center border border-[#f5cd7a]/40 bg-[#f5cd7a]/15 px-7 text-xs font-medium uppercase tracking-[0.24em] text-[#f8efe3] backdrop-blur-md transition-all duration-500 hover:border-[#f5cd7a] hover:bg-[#f5cd7a] hover:text-black"
-                  >
-                    View Cigar
-                  </Link>
+                    className="inline-flex min-h-13 py-3 w-full items-center justify-center border border-[#f5cd7a]/40 bg-[#f5cd7a]/15 px-7 text-xs font-medium uppercase tracking-[0.24em] text-[#f8efe3] backdrop-blur-md transition-all duration-500 hover:border-[#f5cd7a] hover:bg-[#f5cd7a] hover:text-black"
+                  >{t("View Cigar")}</Link>
                 </div>
               </div>
             </article>
@@ -248,7 +239,7 @@ export function CigarCollectionExperience({
             <button
               key={cigar.id}
               type="button"
-              aria-label={`Go to ${cigar.name}`}
+              aria-label={t("Go to {name}", {name: cigar.name})}
               onClick={() => scrollToDesktopCigar(index)}
               className="group flex h-8 w-5 items-center justify-center"
             >
@@ -284,30 +275,28 @@ export function CigarCollectionExperience({
             <div className="absolute inset-0 bg-[linear-gradient(to_right,rgba(0,0,0,0.02)_0%,rgba(0,0,0,0.22)_45%,rgba(0,0,0,0.82)_100%)]" />
 
             <div className="relative z-10 ml-auto mr-[7vw] w-[48%] max-w-3xl text-left">
-              <p className="text-xs font-medium uppercase tracking-[0.55em] text-[#f5cd7a]">
-                Collection
-              </p>
+              <p className="text-xs font-medium uppercase tracking-[0.55em] text-[#f5cd7a]">{t("Collection")}</p>
 
               <h1 className="mt-5 font-serif text-8xl font-semibold leading-tight tracking-[0.04em] text-[#f8efe3]">
                 {cigar.name}
               </h1>
 
               <p className="mt-6 max-w-2xl text-base leading-8 text-[#d9cbbb]">
-                {cigar.description}
+                {t(cigar.description)}
               </p>
 
               <div className="mt-8 grid max-w-2xl grid-cols-3 gap-3 text-xs uppercase tracking-[0.22em] text-[#b8a99a]">
                 <div className="border border-[#f5cd7a]/15 bg-black/25 px-4 py-3 backdrop-blur-sm">
-                  <span className="block text-[#f5cd7a]">Strength</span>
-                  <span className="mt-1 block">{cigar.strength || "Not listed"}</span>
+                  <span className="block text-[#f5cd7a]">{t("Strength")}</span>
+                  <span className="mt-1 block">{t(cigar.strength || "Not listed")}</span>
                 </div>
                 <div className="border border-[#f5cd7a]/15 bg-black/25 px-4 py-3 backdrop-blur-sm">
-                  <span className="block text-[#f5cd7a]">Size</span>
-                  <span className="mt-1 block">{cigar.size}</span>
+                  <span className="block text-[#f5cd7a]">{t("Size")}</span>
+                  <span className="mt-1 block">{t(cigar.size)}</span>
                 </div>
                 <div className="border border-[#f5cd7a]/15 bg-black/25 px-4 py-3 backdrop-blur-sm">
-                  <span className="block text-[#f5cd7a]">Wrapper</span>
-                  <span className="mt-1 block">{cigar.wrapper || "Not listed"}</span>
+                  <span className="block text-[#f5cd7a]">{t("Wrapper")}</span>
+                  <span className="mt-1 block">{t(cigar.wrapper || "Not listed")}</span>
                 </div>
               </div>
 
@@ -316,10 +305,8 @@ export function CigarCollectionExperience({
               <div className="mt-8 flex justify-start">
                 <Link
                   href={`/cigars/${cigar.slug}`}
-                  className="inline-flex h-13 items-center justify-center border border-[#f5cd7a]/40 bg-[#f5cd7a]/15 px-7 text-xs font-medium uppercase tracking-[0.24em] text-[#f8efe3] backdrop-blur-md transition-all duration-500 hover:border-[#f5cd7a] hover:bg-[#f5cd7a] hover:text-black"
-                >
-                  View Cigar
-                </Link>
+                  className="inline-flex min-h-13 py-3 items-center justify-center border border-[#f5cd7a]/40 bg-[#f5cd7a]/15 px-7 text-xs font-medium uppercase tracking-[0.24em] text-[#f8efe3] backdrop-blur-md transition-all duration-500 hover:border-[#f5cd7a] hover:bg-[#f5cd7a] hover:text-black"
+                >{t("View Cigar")}</Link>
               </div>
             </div>
           </section>

@@ -1,3 +1,6 @@
+import { NextIntlClientProvider } from "next-intl";
+import { getSiteText } from "@/i18n/server";
+import { getLocale } from "next-intl/server";
 import { Cormorant_Garamond, Inter } from "next/font/google";
 import "./globals.css";
 import { AgeGate } from "@/components/site/AgeGate";
@@ -18,30 +21,36 @@ const cormorant = Cormorant_Garamond({
   weight: ["400", "500", "600", "700"],
 });
 
-export const metadata: Metadata = {
+export async function generateMetadata(): Promise<Metadata> {
+  const t = await getSiteText();
+  return {
   title: {
     default: siteConfig.name,
     template: `%s | ${siteConfig.name}`,
   },
-  description: siteConfig.description,
-};
+  description: t(siteConfig.description),
+  };
+}
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const locale = await getLocale();
   return (
     <ClerkProvider>
       <html
-        lang="en"
+        lang={locale}
         className={`${inter.variable} ${cormorant.variable} h-full antialiased`}
       >
         <body className="min-h-full flex flex-col font-sans">
+          <NextIntlClientProvider>
           <AgeGate />
           <AppNavbar />
           {children}
           <AppFooter />
+          </NextIntlClientProvider>
         </body>
       </html>
     </ClerkProvider>

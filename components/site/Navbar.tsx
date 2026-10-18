@@ -1,5 +1,8 @@
 "use client";
+import { useSiteText } from "@/i18n/text";
 
+
+import { LanguageSelector } from "./LanguageSelector";
 import Image from "next/image";
 import Link from "next/link";
 import { Cigarette, MessageCircle } from "lucide-react";
@@ -23,6 +26,7 @@ const publicLinks = [
 ];
 
 export function Navbar() {
+  const t = useSiteText();
   const pathname = usePathname();
   const menuRef = useRef<HTMLDetailsElement | null>(null);
   const [menuRenderKey, setMenuRenderKey] = useState(0);
@@ -102,7 +106,7 @@ export function Navbar() {
         className="group absolute left-[clamp(16px,4vw,48px)] top-5 z-10000 lg:left-[clamp(20px,4vw,48px)] lg:top-8"
       >
         <summary
-          aria-label="Open navigation menu"
+          aria-label={t("Open navigation menu")}
           className="flex h-12 w-12 touch-manipulation cursor-pointer list-none select-none items-center justify-center border border-[#f5cd7a]/40 bg-black/30 text-[#f5cd7a] shadow-[0_0_28px_rgba(0,0,0,0.42)] transition-colors duration-300 hover:border-[#f5cd7a]/80 hover:bg-[#f5cd7a]/10 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-[#f5cd7a]/70 lg:h-11 lg:w-11 [&::-webkit-details-marker]:hidden"
         >
           <span className="relative block h-5 w-5">
@@ -114,8 +118,8 @@ export function Navbar() {
 
         <nav
           key={menuRenderKey}
-          aria-label="Main navigation"
-          className="fixed left-[clamp(16px,4vw,48px)] top-19 z-10000 w-52 border border-[#f5cd7a]/25 bg-black/95 p-2 text-[#f7efe2] shadow-[0_24px_80px_rgba(0,0,0,0.75)] backdrop-blur-xl lg:left-[clamp(20px,4vw,48px)] lg:top-21"
+          aria-label={t("Main navigation")}
+          className="fixed left-[clamp(16px,4vw,48px)] top-19 z-10000 max-h-[calc(100dvh-6rem)] w-64 max-w-[calc(100vw-2rem)] overflow-y-auto border border-[#f5cd7a]/25 bg-black/95 p-2 text-[#f7efe2] shadow-[0_24px_80px_rgba(0,0,0,0.75)] backdrop-blur-xl lg:left-[clamp(20px,4vw,48px)] lg:top-21"
         >
           {publicLinks.map((link) => (
             <Link
@@ -125,9 +129,10 @@ export function Navbar() {
               onClick={handleMenuLinkClick}
               className="block w-full border-b border-[#f5cd7a]/10 px-4 py-4 text-sm uppercase tracking-[0.22em] text-[#cbbba7] transition-colors duration-300 last:border-b-0 hover:bg-[#f5cd7a] hover:text-black focus:bg-transparent focus:text-[#cbbba7] focus:outline-none active:bg-transparent active:text-[#cbbba7] lg:py-3"
             >
-              {link.label}
+              {t(link.label)}
             </Link>
           ))}
+          <LanguageSelector variant="menu" />
         </nav>
       </details>
 
@@ -135,13 +140,13 @@ export function Navbar() {
       <div className="absolute left-1/2 top-5 z-9999 -translate-x-1/2 lg:top-7">
         <Link
           href="/"
-          aria-label="Go to Red Diamond Cigars homepage"
+          aria-label={t("Go to Red Diamond Cigars homepage")}
           onMouseDown={(event) => event.preventDefault()}
           onClick={closeMenu}
         >
           <Image
             src="/images/red-diamond-logo.png"
-            alt="Red Diamond Cigars logo"
+            alt={t("Red Diamond Cigars logo")}
             width={76}
             height={64}
             priority
@@ -154,13 +159,13 @@ export function Navbar() {
       <div className="absolute right-[clamp(16px,4vw,48px)] top-5 z-9999 lg:right-[clamp(20px,4vw,48px)] lg:top-8">
         <Link
           href={rightLink.href}
-          aria-label={rightLink.label}
+          aria-label={t(rightLink.label)}
           onMouseDown={(event) => event.preventDefault()}
           onClick={closeMenu}
           className="inline-flex h-12 w-12 touch-manipulation items-center justify-center border border-[#f5cd7a]/40 bg-black/30 text-[#f5cd7a] no-underline shadow-[0_0_28px_rgba(0,0,0,0.42)] transition-all duration-300 hover:border-[#f5cd7a] hover:bg-[#f5cd7a] hover:text-black hover:shadow-[0_0_38px_rgba(245,205,122,0.2)] focus:outline-none focus-visible:ring-1 focus-visible:ring-[#f5cd7a]/70 lg:h-11 lg:w-auto lg:px-6 lg:text-xs lg:font-medium lg:uppercase lg:tracking-[0.22em] lg:text-[#f7efe2]"
         >
           <RightIcon className="h-5 w-5 lg:hidden" />
-          <span className="hidden lg:inline">{rightLink.label}</span>
+          <span className="hidden lg:inline">{t(rightLink.label)}</span>
         </Link>
       </div>
     </header>

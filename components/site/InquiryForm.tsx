@@ -1,4 +1,6 @@
 "use client";
+import { useSiteText } from "@/i18n/text";
+
 
 import { useState } from "react";
 import { useForm, useWatch } from "react-hook-form";
@@ -17,6 +19,7 @@ type InquiryFormProps = {
 };
 
 export function InquiryForm({ product }: InquiryFormProps) {
+  const t = useSiteText();
   const [submissionMessage, setSubmissionMessage] = useState<string | null>(
     null,
   );
@@ -76,16 +79,12 @@ export function InquiryForm({ product }: InquiryFormProps) {
         aria-live="polite"
         className="border border-[#f5cd7a]/20 bg-black/30 p-6 shadow-[0_30px_90px_rgba(0,0,0,0.35)] backdrop-blur-md"
       >
-        <p className="text-xs font-medium uppercase tracking-[0.38em] text-[#f5cd7a]">
-          Inquiry Received
-        </p>
+        <p className="text-xs font-medium uppercase tracking-[0.38em] text-[#f5cd7a]">{t("Inquiry Received")}</p>
 
-        <h2 className="mt-4 text-2xl font-semibold text-[#f8efe3]">
-          Thank you for your interest.
-        </h2>
+        <h2 className="mt-4 text-2xl font-semibold text-[#f8efe3]">{t("Thank you for your interest.")}</h2>
 
         <p className="mt-3 text-sm leading-6 text-[#b8a99a]">
-          {submissionMessage}
+          {t(submissionMessage)}
         </p>
       </div>
     );
@@ -94,17 +93,12 @@ export function InquiryForm({ product }: InquiryFormProps) {
   return (
     <form onSubmit={form.handleSubmit(onSubmit)}>
       <div className="border-b border-[#f5cd7a]/15 pb-6">
-        <p className="text-xs font-medium uppercase tracking-[0.38em] text-[#f5cd7a]">
-          Inquiry Form
-        </p>
+        <p className="text-xs font-medium uppercase tracking-[0.38em] text-[#f5cd7a]">{t("Inquiry Form")}</p>
 
-        <h2 className="mt-4 text-2xl font-semibold text-[#f8efe3]">
-          Request Availability
-        </h2>
+        <h2 className="mt-4 text-2xl font-semibold text-[#f8efe3]">{t("Request Availability")}</h2>
 
         <p className="mt-3 text-sm leading-6 text-[#b8a99a]">
-          Let us know you are interested in {product.name}. We will get back
-          to you shortly on the cigar&apos;s availability.
+          {t("Let us know you are interested in {name}. We will get back to you shortly on the cigar's availability.", {name: product.name})}
         </p>
       </div>
 
@@ -113,28 +107,24 @@ export function InquiryForm({ product }: InquiryFormProps) {
           <label
             htmlFor="fullName"
             className="text-sm font-medium text-[#f8efe3]"
-          >
-            Full name
-          </label>
+          >{t("Full name")}</label>
 
           <input
             id="fullName"
-            placeholder="Your full name"
+            placeholder={t("Your full name")}
             {...form.register("fullName")}
             className="h-12 border border-[#f5cd7a]/20 bg-black/35 px-4 text-sm text-[#f8efe3] outline-none transition-colors duration-300 placeholder:text-[#8f8174] focus:border-[#f5cd7a]/60"
           />
 
           {form.formState.errors.fullName ? (
             <p className="text-sm leading-6 text-red-300">
-              {form.formState.errors.fullName.message}
+              {t(form.formState.errors.fullName.message ?? "Please check the form and try again.")}
             </p>
           ) : null}
         </div>
 
         <div className="grid gap-2">
-          <label htmlFor="email" className="text-sm font-medium text-[#f8efe3]">
-            Email
-          </label>
+          <label htmlFor="email" className="text-sm font-medium text-[#f8efe3]">{t("Email")}</label>
 
           <input
             id="email"
@@ -146,27 +136,26 @@ export function InquiryForm({ product }: InquiryFormProps) {
 
           {form.formState.errors.email ? (
             <p className="text-sm leading-6 text-red-300">
-              {form.formState.errors.email.message}
+              {t(form.formState.errors.email.message ?? "Please check the form and try again.")}
             </p>
           ) : null}
         </div>
 
         <div className="grid gap-2">
-          <label htmlFor="phone" className="text-sm font-medium text-[#f8efe3]">
-            Phone <span className="text-[#8f8174]">(Optional)</span>
+          <label htmlFor="phone" className="text-sm font-medium text-[#f8efe3]">{t("Phone")}{" "}<span className="text-[#8f8174]">{t("(Optional)")}</span>
           </label>
 
           <input
             id="phone"
             inputMode="tel"
-            placeholder="Phone number"
+            placeholder={t("Phone number")}
             {...form.register("phone")}
             className="h-12 border border-[#f5cd7a]/20 bg-black/35 px-4 text-sm text-[#f8efe3] outline-none transition-colors duration-300 placeholder:text-[#8f8174] focus:border-[#f5cd7a]/60"
           />
 
           {form.formState.errors.phone ? (
             <p className="text-sm leading-6 text-red-300">
-              {form.formState.errors.phone.message}
+              {t(form.formState.errors.phone.message ?? "Please check the form and try again.")}
             </p>
           ) : null}
         </div>
@@ -175,20 +164,18 @@ export function InquiryForm({ product }: InquiryFormProps) {
           <label
             htmlFor="location"
             className="text-sm font-medium text-[#f8efe3]"
-          >
-            Location
-          </label>
+          >{t("Location")}</label>
 
           <input
             id="location"
-            placeholder="City, state, or country"
+            placeholder={t("City, state, or country")}
             {...form.register("location")}
             className="h-12 border border-[#f5cd7a]/20 bg-black/35 px-4 text-sm text-[#f8efe3] outline-none transition-colors duration-300 placeholder:text-[#8f8174] focus:border-[#f5cd7a]/60"
           />
 
           {form.formState.errors.location ? (
             <p className="text-sm leading-6 text-red-300">
-              {form.formState.errors.location.message}
+              {t(form.formState.errors.location.message ?? "Please check the form and try again.")}
             </p>
           ) : null}
         </div>
@@ -197,22 +184,20 @@ export function InquiryForm({ product }: InquiryFormProps) {
           <label
             htmlFor="quantity"
             className="text-sm font-medium text-[#f8efe3]"
-          >
-            Desired quantity
-          </label>
+          >{t("Desired quantity")}</label>
 
           <input
             id="quantity"
             type="number"
             min="1"
-            placeholder="Example: 5"
+            placeholder={t("Example: 5")}
             {...form.register("quantity")}
             className="h-12 border border-[#f5cd7a]/20 bg-black/35 px-4 text-sm text-[#f8efe3] outline-none transition-colors duration-300 placeholder:text-[#8f8174] focus:border-[#f5cd7a]/60"
           />
 
           {form.formState.errors.quantity ? (
             <p className="text-sm leading-6 text-red-300">
-              {form.formState.errors.quantity.message}
+              {t(form.formState.errors.quantity.message ?? "Please check the form and try again.")}
             </p>
           ) : null}
         </div>
@@ -221,13 +206,12 @@ export function InquiryForm({ product }: InquiryFormProps) {
           <label
             htmlFor="message"
             className="text-sm font-medium text-[#f8efe3]"
-          >
-            Message <span className="text-[#8f8174]">(Optional)</span>
+          >{t("Message")}{" "}<span className="text-[#8f8174]">{t("(Optional)")}</span>
           </label>
 
           <textarea
             id="message"
-            placeholder="Ask about availability, pricing, pickup, or contact preference."
+            placeholder={t("Ask about availability, pricing, pickup, or contact preference.")}
             {...form.register("message")}
             rows={4}
             className="min-h-28 resize-y border border-[#f5cd7a]/20 bg-black/35 px-4 py-3 text-sm leading-6 text-[#f8efe3] outline-none transition-colors duration-300 placeholder:text-[#8f8174] focus:border-[#f5cd7a]/60"
@@ -235,7 +219,7 @@ export function InquiryForm({ product }: InquiryFormProps) {
 
           {form.formState.errors.message ? (
             <p className="text-sm leading-6 text-red-300">
-              {form.formState.errors.message.message}
+              {t(form.formState.errors.message.message ?? "Please check the form and try again.")}
             </p>
           ) : null}
         </div>
@@ -257,14 +241,12 @@ export function InquiryForm({ product }: InquiryFormProps) {
               <label
                 htmlFor="confirmed21"
                 className="text-sm leading-6 text-[#f8efe3]"
-              >
-                I confirm that I am 21 years of age or older.
-              </label>
+              >{t("I confirm that I am 21 years of age or older.")}</label>
             </div>
 
             {form.formState.errors.confirmed21 ? (
               <p className="text-sm leading-6 text-red-300">
-                {form.formState.errors.confirmed21.message}
+                {t(form.formState.errors.confirmed21.message ?? "Please check the form and try again.")}
               </p>
             ) : null}
           </div>
@@ -285,15 +267,12 @@ export function InquiryForm({ product }: InquiryFormProps) {
               <label
                 htmlFor="inquiryOnly"
                 className="text-sm leading-6 text-[#f8efe3]"
-              >
-                I understand this is an inquiry only and not a purchase, sale,
-                or shipment agreement.
-              </label>
+              >{t("I understand this is an inquiry only and not a purchase, sale, or shipment agreement.")}</label>
             </div>
 
             {form.formState.errors.inquiryOnly ? (
               <p className="text-sm leading-6 text-red-300">
-                {form.formState.errors.inquiryOnly.message}
+                {t(form.formState.errors.inquiryOnly.message ?? "Please check the form and try again.")}
               </p>
             ) : null}
           </div>
@@ -304,16 +283,16 @@ export function InquiryForm({ product }: InquiryFormProps) {
             role="alert"
             className="border border-red-500/30 bg-red-500/10 px-4 py-3 text-sm leading-6 text-red-300"
           >
-            {form.formState.errors.root.message}
+            {t(form.formState.errors.root.message ?? "Please check the form and try again.")}
           </p>
         ) : null}
 
         <button
           type="submit"
           disabled={form.formState.isSubmitting}
-          className="mt-2 h-12 border border-[#f5cd7a]/40 bg-[#f5cd7a] px-8 text-sm font-semibold text-black shadow-[0_0_35px_rgba(245,205,122,0.16)] transition-all duration-500 hover:bg-[#ffe3a3] hover:shadow-[0_0_55px_rgba(245,205,122,0.26)] disabled:cursor-not-allowed disabled:opacity-60"
+          className="mt-2 min-h-12 py-3 border border-[#f5cd7a]/40 bg-[#f5cd7a] px-8 text-sm font-semibold text-black shadow-[0_0_35px_rgba(245,205,122,0.16)] transition-all duration-500 hover:bg-[#ffe3a3] hover:shadow-[0_0_55px_rgba(245,205,122,0.26)] disabled:cursor-not-allowed disabled:opacity-60"
         >
-          {form.formState.isSubmitting ? "Submitting..." : "Submit Inquiry"}
+          {t(form.formState.isSubmitting ? "Submitting..." : "Submit Inquiry")}
         </button>
       </div>
     </form>

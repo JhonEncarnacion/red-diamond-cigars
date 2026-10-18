@@ -1,3 +1,7 @@
+import { useSiteText } from "@/i18n/text";
+import { getLocale, getFormatter } from "next-intl/server";
+import { localizeProduct } from "@/lib/product-localization";
+import { getSiteText } from "@/i18n/server";
 import { formatProductSize } from "@/lib/product-size";
 import Image from "next/image";
 import { notFound } from "next/navigation";
@@ -14,13 +18,17 @@ type ProductPageProps = {
 };
 
 export default async function ProductPage({ params }: ProductPageProps) {
+  const t = await getSiteText();
+  const format = await getFormatter();
   const { slug } = await params;
 
-  const product = await prisma.product.findUnique({
+  const sourceProduct = await prisma.product.findUnique({
     where: {
       slug,
     },
   });
+
+  const product = sourceProduct ? localizeProduct(sourceProduct, await getLocale()) : null;
 
   if (!product || !product.isActive) {
     notFound();
@@ -55,42 +63,40 @@ export default async function ProductPage({ params }: ProductPageProps) {
 
         {/* Right content */}
         <div>
-          <p className="text-xs font-medium uppercase tracking-[0.5em] text-[#f5cd7a]">
-            Cigar Details
-          </p>
+          <p className="text-xs font-medium uppercase tracking-[0.5em] text-[#f5cd7a]">{t("Cigar Details")}</p>
 
           <h1 className="mt-5 font-serif text-5xl font-semibold leading-tight tracking-[0.04em] text-[#f8efe3] sm:text-6xl">
             {product.name}
           </h1>
 
           <p className="mt-6 max-w-2xl text-base leading-8 text-[#b8a99a]">
-            {product.description}
+            {t(product.description)}
           </p>
 
           <div className="mt-8 border border-[#f5cd7a]/20 bg-black/30 p-6 shadow-[0_30px_90px_rgba(0,0,0,0.35)] backdrop-blur-md">
             <div className="grid gap-x-8 gap-y-6 sm:grid-cols-2">
-              <Detail label="Strength" value={product.strength} />
-              <Detail label="Size" value={formatProductSize(product)} />
-              <Detail label="Wrapper" value={product.wrapper} />
-              <Detail label="Binder" value={product.binder} />
-              <Detail label="Filler" value={product.filler} />
-              <Detail label="Origin" value="Dominican Republic" />
+              <Detail label={t("Strength")} value={product.strength} />
+              <Detail label={t("Size")} value={formatProductSize(sourceProduct!)} />
+              <Detail label={t("Wrapper")} value={product.wrapper} />
+              <Detail label={t("Binder")} value={product.binder} />
+              <Detail label={t("Filler")} value={product.filler} />
+              <Detail label={t("Origin")} value={product.origin} />
             </div>
           </div>
 
           <section
-            aria-labelledby="packaging-heading"
+            aria-label={t("Packaging")}
             className="mt-8"
           >
             <dl className="mt-4 grid grid-cols-3 divide-x divide-[#f5cd7a]/15 border-y border-[#f5cd7a]/25 bg-[#f5cd7a]/[0.05] py-4">
               {[
-                { label: "Single", value: product.singleValue },
-                { label: `${product.packQuantity}-Pack`, value: product.packValue },
-                { label: `Box of ${product.boxQuantity}`, value: product.boxValue },
+                { label: t("Single"), value: product.singleValue },
+                { label: t("{count}-Pack", {count: product.packQuantity}), value: product.packValue },
+                { label: t("Box of {count}", {count: product.boxQuantity}), value: product.boxValue },
               ].map(({ label, value }) => (
                 <div key={label} className="min-w-0 px-3 py-1 sm:px-4">
                   <dt className="break-words text-[10px] font-medium uppercase tracking-[0.14em] text-[#d3b77f] sm:text-xs sm:tracking-[0.18em]">{label}</dt>
-                  <dd className="mt-2 break-words text-lg font-medium leading-tight tabular-nums text-[#f8efe3]">${value}</dd>
+                  <dd className="mt-2 break-words text-lg font-medium leading-tight tabular-nums text-[#f8efe3]">{format.number(value, {style: "currency", currency: "USD", minimumFractionDigits: 0, maximumFractionDigits: 2})}</dd>
                 </div>
               ))}
             </dl>
@@ -108,27 +114,30 @@ export default async function ProductPage({ params }: ProductPageProps) {
 export async function generateMetadata({
   params,
 }: ProductPageProps): Promise<Metadata> {
+  const t = await getSiteText();
   const { slug } = await params;
 
-  const product = await prisma.product.findUnique({
+  const sourceProduct = await prisma.product.findUnique({
     where: {
       slug,
     },
   });
 
+  const product = sourceProduct ? localizeProduct(sourceProduct, await getLocale()) : null;
+
   if (!product || !product.isActive) {
     return {
-      title: "Cigar Not Found",
+      title: (await getSiteText())("Cigar Not Found"),
     };
   }
 
   return {
     title: product.name,
-    description: product.description,
+    description: t(product.description),
 
     openGraph: {
       title: `${product.name} | ${siteConfig.name}`,
-      description: product.description,
+      description: t(product.description),
       url: `${siteConfig.url}/cigars/${product.slug}`,
       images: [getProductImage(product)],
     },
@@ -142,10 +151,11 @@ function Detail({
   label: string;
   value?: string | number | null;
 }) {
+  const t = useSiteText();
   return (
     <div>
       <p className="text-sm leading-6 text-[#b8a99a]">{label}</p>
-      <p className="mt-1 font-medium text-[#f8efe3]">{value ?? "Not listed"}</p>
+      <p className="mt-1 font-medium text-[#f8efe3]">{typeof value === "number" ? value : t(value || "Not listed")}</p>
     </div>
   );
 }
