@@ -200,7 +200,7 @@ export function ProductForm({ product }: ProductFormProps) {
               htmlFor="size"
               className="text-sm font-medium text-[#f8efe3]"
             >
-              Size / Vitola
+              Size
             </label>
 
             <input
@@ -233,7 +233,6 @@ export function ProductForm({ product }: ProductFormProps) {
 
         <fieldset className="grid gap-4 border border-[#f5cd7a]/15 p-4 sm:grid-cols-2">
           <legend className="px-2 text-sm font-medium text-[#f8efe3]">Packaging</legend>
-          <p className="text-sm leading-6 text-[#b8a99a] sm:col-span-2">These numbers appear in the collection and on the cigar details page. Initial values are placeholders; replace them when ready.</p>
           <div className="grid gap-2">
             <label htmlFor="packQuantity" className="text-sm font-medium text-[#f8efe3]">Bundle Size</label>
             <input id="packQuantity" name="packQuantity" type="number" required min={1} max={10000} step="1" defaultValue={product?.packQuantity ?? 5} className="h-12 min-w-0 border border-[#f5cd7a]/20 bg-black/35 px-4 text-sm text-[#f8efe3] outline-none focus:border-[#f5cd7a]/60" />
@@ -243,15 +242,15 @@ export function ProductForm({ product }: ProductFormProps) {
             <input id="boxQuantity" name="boxQuantity" type="number" required min={1} max={10000} step="1" defaultValue={product?.boxQuantity ?? 20} className="h-12 min-w-0 border border-[#f5cd7a]/20 bg-black/35 px-4 text-sm text-[#f8efe3] outline-none focus:border-[#f5cd7a]/60" />
           </div>
           <div className="grid gap-2">
-            <label htmlFor="singleValue" className="text-sm font-medium text-[#f8efe3]">Single P</label>
+            <label htmlFor="singleValue" className="text-sm font-medium text-[#f8efe3]">Single Price</label>
             <input id="singleValue" name="singleValue" type="number" required min={0} max={1000000} step="any" defaultValue={product?.singleValue ?? 10} className="h-12 min-w-0 border border-[#f5cd7a]/20 bg-black/35 px-4 text-sm text-[#f8efe3] outline-none focus:border-[#f5cd7a]/60" />
           </div>
           <div className="grid gap-2">
-            <label htmlFor="packValue" className="text-sm font-medium text-[#f8efe3]">Bundle P</label>
+            <label htmlFor="packValue" className="text-sm font-medium text-[#f8efe3]">Bundle Price</label>
             <input id="packValue" name="packValue" type="number" required min={0} max={1000000} step="any" defaultValue={product?.packValue ?? 45} className="h-12 min-w-0 border border-[#f5cd7a]/20 bg-black/35 px-4 text-sm text-[#f8efe3] outline-none focus:border-[#f5cd7a]/60" />
           </div>
           <div className="grid gap-2">
-            <label htmlFor="boxValue" className="text-sm font-medium text-[#f8efe3]">Box P</label>
+            <label htmlFor="boxValue" className="text-sm font-medium text-[#f8efe3]">Box Price</label>
             <input id="boxValue" name="boxValue" type="number" required min={0} max={1000000} step="any" defaultValue={product?.boxValue ?? 160} className="h-12 min-w-0 border border-[#f5cd7a]/20 bg-black/35 px-4 text-sm text-[#f8efe3] outline-none focus:border-[#f5cd7a]/60" />
           </div>
         </fieldset>
