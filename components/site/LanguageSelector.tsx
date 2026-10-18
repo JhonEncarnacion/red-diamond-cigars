@@ -64,10 +64,13 @@ export function LanguageSelector({ variant = "compact" }: { variant?: "menu" | "
       <label htmlFor={id} className="mb-2 flex items-center gap-2 text-[10px] uppercase tracking-[0.18em] text-[#d3b77f]">
         <Globe aria-hidden="true" className="h-3.5 w-3.5" />{t("Language")}
       </label>
-      <select id={id} value={locale} disabled={pending} onChange={event => changeLanguage(event.target.value)} className="min-h-11 w-full cursor-pointer rounded-none border border-[#f5cd7a]/25 bg-[#100909] px-3 py-2 text-sm text-[#f8efe3] outline-none focus-visible:border-[#f5cd7a] focus-visible:ring-1 focus-visible:ring-[#f5cd7a] disabled:opacity-60">
+      <div className="relative">
+      <select id={id} value={locale} disabled={pending} onChange={event => changeLanguage(event.target.value)} className="min-h-11 w-full appearance-none cursor-pointer rounded-none border border-[#f5cd7a]/25 bg-[#100909] pl-3 pr-10 py-2 text-sm text-[#f8efe3] outline-none focus-visible:border-[#f5cd7a] focus-visible:ring-1 focus-visible:ring-[#f5cd7a] disabled:opacity-60">
         {languages.map(language => <option key={language.code} value={language.code} lang={language.code}>{language.name}</option>)}
         <option value="auto">{t("Use browser language")}</option>
       </select>
+      <ChevronDown aria-hidden="true" className="pointer-events-none absolute right-3 top-1/2 h-4 w-4 -translate-y-1/2 text-[#d3b77f]" />
+      </div>
       {feedback}
     </div>
   );
