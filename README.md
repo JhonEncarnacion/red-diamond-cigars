@@ -100,7 +100,8 @@ cp .env.example .env
 | `NEXT_PUBLIC_SITE_URL` | Public application URL used in links and metadata |
 | `NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY` | Public Clerk application key |
 | `CLERK_SECRET_KEY` | Server-side Clerk secret |
-| `ADMIN_AUTH_EMAIL` | Clerk account email allowed to access the admin workspace |
+| `ADMIN_AUTH_EMAIL` | Existing owner email; remains authorized alongside additional admins |
+| `ADMIN_AUTH_EMAILS` | Additional approved admin emails, separated by commas |
 
 Never commit real credentials. The repository ignores local `.env` files while keeping `.env.example` available as a template.
 
@@ -120,7 +121,7 @@ The seed step is optional; it adds three sample products for local development.
 npm run dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000). The admin workspace is available at `/admin` after signing in with the email configured in `ADMIN_AUTH_EMAIL`.
+Open [http://localhost:3000](http://localhost:3000). The admin workspace is available at `/admin` after signing in with a verified primary email configured in `ADMIN_AUTH_EMAIL` or `ADMIN_AUTH_EMAILS`.
 
 ## Available Scripts
 
@@ -232,3 +233,12 @@ Translations live in `messages/{locale}.json`; `messages/source-keys.json` maps 
 Run `npm run db:add-translations` before deployment, then `npx prisma generate`. This additive, repeatable migration adds a Product JSON translation field without changing original data. The admin product editor has per-language fields for description, strength, wrapper, binder, filler, and origin. Blank entries fall back to the original field; names, sizes, and prices remain shared. Current catalog descriptions and standard strength/country terms also have built-in translations. New custom product descriptions need entries in the editor for each language; they are not machine-translated on demand.
 
 Run `npm run test:i18n` for language negotiation, catalog completeness, interpolation, and product fallback validation. Translation copy should receive fluent-speaker review before publishing.
+
+
+## Adding another admin
+
+Keep `ADMIN_AUTH_EMAIL` unchanged to preserve owner access. Add `ADMIN_AUTH_EMAILS` in Vercel's Production environment with the additional email addresses, separated by commas. Deploy the updated code after saving the setting. Invite each person through the application's **Production → Invitations** page in Clerk; they must register with the approved address as their verified primary email. They can then visit `/admin`.
+
+Both settings are combined. Matching ignores case and surrounding whitespace, but requires an exact email address (no domain-wide access). Missing configuration denies access. All approved admins have the same product and inquiry permissions. Removing an address requires updating the setting and deploying again; remove it from both settings if present in both. For local testing, use the same settings in your ignored `.env` file and restart the dev server.
+
+Run `npm run test:admin-access` to check the authorization rules.

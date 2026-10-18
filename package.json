@@ -19,7 +19,8 @@
     "db:preserve-inquiries": "prisma db execute --file prisma/sql/preserve-product-inquiries.sql",
     "test:deletion": "node --import tsx --test tests/independent-deletion.test.ts",
     "test:i18n": "node --import tsx --test tests/i18n.test.ts",
-    "db:add-translations": "prisma db execute --file prisma/sql/add-product-translations.sql"
+    "db:add-translations": "prisma db execute --file prisma/sql/add-product-translations.sql",
+    "test:admin-access": "node --import tsx --test tests/admin-access.test.ts"
   },
   "dependencies": {
     "@clerk/nextjs": "^7.5.2",
