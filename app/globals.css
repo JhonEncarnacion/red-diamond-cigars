@@ -210,4 +210,4 @@
   display: none;
 }
 /* Chinese text uses natural tracking instead of Latin display letter spacing. */
-html:lang(zh) [class*="tracking-"] { letter-spacing: normal; }
+:lang(zh) [class*="tracking-"] { letter-spacing: normal; }

@@ -1,5 +1,7 @@
 "use client";
 
+import { useSiteText } from "@/i18n/text";
+
 import { useRouter, useSearchParams } from "next/navigation";
 import { useState, useTransition } from "react";
 import { getInquiryStatusFilter } from "@/lib/inquiry-status";
@@ -27,6 +29,7 @@ const archiveOptions = [
 ];
 
 export function InquiryFilters() {
+  const t = useSiteText();
   const router = useRouter();
   const searchParams = useSearchParams();
   const [isPending, startTransition] = useTransition();
@@ -100,15 +103,16 @@ export function InquiryFilters() {
       <div className="flex flex-col gap-4 xl:flex-row xl:items-center">
         <input
           type="search"
+          aria-label={t("Search")}
           value={search}
           onChange={(event) => setSearch(event.target.value)}
-          placeholder="Search name, email, location, or cigar..."
-          className="h-12 flex-1 border border-[#f5cd7a]/20 bg-black/35 px-4 text-sm text-[#f8efe3] outline-none transition-colors duration-300 placeholder:text-[#8f8174] focus:border-[#f5cd7a]/60"
+          placeholder={t("Search name, email, location, or cigar...")}
+          className="h-12 min-h-12 w-full min-w-0 flex-none appearance-none rounded-none xl:flex-1 border border-[#f5cd7a]/20 bg-black/35 px-4 text-sm text-[#f8efe3] outline-none transition-colors duration-300 placeholder:text-[#8f8174] focus:border-[#f5cd7a]/60"
         />
 
         <Select value={status} onValueChange={handleStatusChange}>
           <SelectTrigger className="h-12! min-h-12 w-full rounded-none border-[#f5cd7a]/20 bg-black/35 px-4 text-sm text-[#f8efe3] shadow-none transition-colors duration-300 focus:border-[#f5cd7a]/60 focus:ring-0 focus:ring-offset-0 xl:w-52 [&>svg]:h-4 [&>svg]:w-4 [&>svg]:text-[#f5cd7a]">
-            <SelectValue placeholder="All statuses" />
+            <SelectValue placeholder={t("All statuses")} />
           </SelectTrigger>
 
           <SelectContent className="rounded-none border-[#f5cd7a]/20 bg-black text-[#f8efe3]">
@@ -118,7 +122,7 @@ export function InquiryFilters() {
                 value={option.value}
                 className="rounded-none text-[#d9cbbb] focus:bg-[#f5cd7a] focus:text-black"
               >
-                {option.label}
+                {t(option.label)}
               </SelectItem>
             ))}
           </SelectContent>
@@ -126,7 +130,7 @@ export function InquiryFilters() {
 
         <Select value={archive} onValueChange={handleArchiveChange}>
           <SelectTrigger className="h-12! min-h-12 w-full rounded-none border-[#f5cd7a]/20 bg-black/35 px-4 text-sm text-[#f8efe3] shadow-none transition-colors duration-300 focus:border-[#f5cd7a]/60 focus:ring-0 focus:ring-offset-0 xl:w-56 [&>svg]:h-4 [&>svg]:w-4 [&>svg]:text-[#f5cd7a]">
-            <SelectValue placeholder="Active inquiries" />
+            <SelectValue placeholder={t("Active inquiries")} />
           </SelectTrigger>
 
           <SelectContent className="rounded-none border-[#f5cd7a]/20 bg-black text-[#f8efe3]">
@@ -136,7 +140,7 @@ export function InquiryFilters() {
                 value={option.value}
                 className="rounded-none text-[#d9cbbb] focus:bg-[#f5cd7a] focus:text-black"
               >
-                {option.label}
+                {t(option.label)}
               </SelectItem>
             ))}
           </SelectContent>
@@ -147,7 +151,7 @@ export function InquiryFilters() {
           disabled={isPending}
           className="h-12 w-full border border-[#f5cd7a]/40 bg-[#f5cd7a] px-6 text-xs font-semibold uppercase tracking-[0.22em] text-black shadow-[0_0_35px_rgba(245,205,122,0.16)] transition-all duration-500 hover:bg-[#ffe3a3] hover:shadow-[0_0_55px_rgba(245,205,122,0.26)] disabled:cursor-not-allowed disabled:opacity-60 xl:w-40"
         >
-          {isPending ? "Searching..." : "Search"}
+          {isPending ? t("Searching...") : t("Search")}
         </button>
 
         <button
@@ -156,7 +160,7 @@ export function InquiryFilters() {
           disabled={isPending}
           className="h-12 w-full border border-[#f5cd7a]/25 bg-black/25 px-6 text-xs font-medium uppercase tracking-[0.22em] text-[#f8efe3] transition-all duration-500 hover:border-[#f5cd7a] hover:bg-[#f5cd7a] hover:text-black disabled:cursor-not-allowed disabled:opacity-60 xl:w-40"
         >
-          Clear
+          {t("Clear")}
         </button>
       </div>
     </form>

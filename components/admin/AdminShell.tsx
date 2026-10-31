@@ -1,3 +1,4 @@
+import { getAdminText } from "@/i18n/admin";
 import Link from "next/link";
 import type { ReactNode } from "react";
 
@@ -9,13 +10,14 @@ type AdminShellProps = {
   children: ReactNode;
 };
 
-export function AdminShell({
+export async function AdminShell({
   title,
-  eyebrow = "Admin",
+  eyebrow,
   description,
   actions,
   children,
 }: AdminShellProps) {
+  const t = await getAdminText();
   return (
     <main className="relative min-h-screen overflow-hidden bg-[#050000] text-[#f8efe3]">
       <div className="absolute inset-0 page-bg-luxury" />
@@ -26,7 +28,7 @@ export function AdminShell({
         <div className="mb-10 flex flex-col gap-6 border-b border-[#f5cd7a]/15 pb-8 lg:flex-row lg:items-end lg:justify-between">
           <div>
             <p className="text-xs font-medium uppercase tracking-[0.45em] text-[#f5cd7a]">
-              {eyebrow}
+              {eyebrow ?? t("Admin")}
             </p>
 
             <h1 className="mt-4 font-serif text-5xl font-semibold tracking-[0.04em] text-[#f8efe3]">

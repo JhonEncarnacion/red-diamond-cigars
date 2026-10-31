@@ -1,3 +1,4 @@
+import { getAdminI18n, getAdminText } from "@/i18n/admin";
 import { getInquiryProduct } from "@/lib/inquiry-product";
 import Link from "next/link";
 import { prisma } from "@/lib/prisma";
@@ -10,6 +11,8 @@ import {
 } from "@/components/admin/AdminShell";
 
 export default async function AdminDashboardPage() {
+  const t = await getAdminText();
+  const { locale, timeZone } = await getAdminI18n();
   await requireAdmin();
 
   const [
@@ -63,35 +66,35 @@ export default async function AdminDashboardPage() {
 
   return (
     <AdminShell
-      title="Dashboard"
-      description="Track cigar inquiries, customer interest, and follow-up."
+      title={t("Dashboard")}
+      description={t("Track cigar inquiries, customer interest, and follow-up.")}
       actions={
         <>
           <AdminButtonLink href="/admin/products">
-            View Products
+            {t("View Products")}
           </AdminButtonLink>
 
           <AdminButtonLink href="/admin/inquiries" variant="primary">
-            View Inquiries
+            {t("View Inquiries")}
           </AdminButtonLink>
         </>
       }
     >
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-        <StatCard title="Total inquiries" value={totalInquiries} />
-        <StatCard title="New inquiries" value={newInquiries} />
-        <StatCard title="Contacted" value={contactedInquiries} />
-        <StatCard title="Completed" value={completedInquiries} />
+        <StatCard title={t("Total inquiries")} value={totalInquiries} />
+        <StatCard title={t("New inquiries")} value={newInquiries} />
+        <StatCard title={t("Contacted")} value={contactedInquiries} />
+        <StatCard title={t("Completed")} value={completedInquiries} />
       </div>
 
       <div className="mt-6">
         <AdminCard>
           <p className="text-lg font-semibold text-[#f8efe3]">
-            Recent inquiries
+            {t("Recent inquiries")}
           </p>
 
           {recentInquiries.length === 0 ? (
-            <p className="mt-6 text-sm text-[#b8a99a]">No recent inquiries.</p>
+            <p className="mt-6 text-sm text-[#b8a99a]">{t("No recent inquiries.")}</p>
           ) : (
             <div className="mt-6 grid gap-4">
               {recentInquiries.map((inquiry) => (
@@ -107,17 +110,17 @@ export default async function AdminDashboardPage() {
                       </p>
 
                       <p className="mt-1 text-sm text-[#b8a99a]">
-                        {getInquiryProduct(inquiry).name} · {inquiry.quantity} requested
-                      </p>
+                        {getInquiryProduct(inquiry).name} · {t("{count} requested", { count: inquiry.quantity })}</p>
                     </div>
 
                     <div className="flex items-center gap-3">
                       <Badge className="rounded-none border border-[#f5cd7a]/30 bg-black/30 px-2 py-4 text-xs font-medium uppercase tracking-[0.12em] text-[#f8efe3]">
-                        {formatStatus(inquiry.status)}
+                        {t(formatStatus(inquiry.status))}
                       </Badge>
 
                       <p className="text-sm text-[#b8a99a]">
-                        {new Intl.DateTimeFormat("en", {
+                        {new Intl.DateTimeFormat(locale, {
+        timeZone,
                           month: "short",
                           day: "numeric",
                         }).format(inquiry.createdAt)}
@@ -147,5 +150,6 @@ function StatCard({ title, value }: { title: string; value: number }) {
 }
 
 function formatStatus(status: string) {
-  return status.replaceAll("_", " ").toLowerCase();
+  const label = status.replaceAll("_", " ").toLowerCase();
+  return label.charAt(0).toUpperCase() + label.slice(1);
 }

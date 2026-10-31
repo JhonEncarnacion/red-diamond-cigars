@@ -1,5 +1,7 @@
 "use client";
 
+import { useSiteText } from "@/i18n/text";
+
 import { useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
 import { updateInquiryAdminNotes } from "@/app/actions/inquiries";
@@ -13,6 +15,7 @@ export function InquiryAdminNotesForm({
   inquiryId,
   initialNotes,
 }: InquiryAdminNotesFormProps) {
+  const t = useSiteText();
   const router = useRouter();
   const [notes, setNotes] = useState(initialNotes ?? "");
   const [message, setMessage] = useState<string | null>(null);
@@ -37,7 +40,7 @@ export function InquiryAdminNotesForm({
       } catch {
         setIsError(true);
         setMessage(
-          "We couldn't confirm whether your notes were saved. Your text is still here. Check the inquiry in another tab before saving again.",
+          t("We couldn't confirm whether your notes were saved. Your text is still here. Check the inquiry in another tab before saving again."),
         );
       }
     });
@@ -50,15 +53,15 @@ export function InquiryAdminNotesForm({
     >
       <div className="border-b border-[#f5cd7a]/15 pb-6">
         <p className="text-xs font-medium uppercase tracking-[0.38em] text-[#f5cd7a]">
-          Internal Notes
+          {t("Internal Notes")}
         </p>
 
         <h2 className="mt-4 text-2xl font-semibold text-[#f8efe3]">
-          Admin Notes
+          {t("Admin Notes")}
         </h2>
 
         <p className="mt-3 text-sm leading-6 text-[#b8a99a]">
-          Internal notes for follow-up. Customers cannot see this.
+          {t("Internal notes for follow-up. Customers cannot see this.")}
         </p>
       </div>
 
@@ -68,14 +71,14 @@ export function InquiryAdminNotesForm({
             htmlFor="adminNotes"
             className="text-sm font-medium text-[#f8efe3]"
           >
-            Notes
+            {t("Notes")}
           </label>
 
           <textarea
             id="adminNotes"
             value={notes}
             onChange={(event) => setNotes(event.target.value)}
-            placeholder="Example: Called customer. They want 10 cigars next Friday."
+            placeholder={t("Example: Called customer. They want 10 cigars next Friday.")}
             className="min-h-36 resize-y border border-[#f5cd7a]/20 bg-black/35 px-4 py-3 text-sm leading-6 text-[#f8efe3] outline-none transition-colors duration-300 placeholder:text-[#8f8174] focus:border-[#f5cd7a]/60"
           />
         </div>
@@ -85,7 +88,7 @@ export function InquiryAdminNotesForm({
             role={isError ? "alert" : "status"}
             className="border border-[#f5cd7a]/15 bg-black/25 px-4 py-3 text-sm leading-6 text-[#b8a99a]"
           >
-            {message}
+            {t(message)}
           </p>
         ) : null}
 
@@ -94,7 +97,7 @@ export function InquiryAdminNotesForm({
           disabled={isPending}
           className="h-12 border border-[#f5cd7a]/40 bg-[#f5cd7a] px-8 text-sm font-semibold text-black shadow-[0_0_35px_rgba(245,205,122,0.16)] transition-all duration-500 hover:bg-[#ffe3a3] hover:shadow-[0_0_55px_rgba(245,205,122,0.26)] disabled:cursor-not-allowed disabled:opacity-60"
         >
-          {isPending ? "Saving..." : "Save notes"}
+          {isPending ? t("Saving...") : t("Save notes")}
         </button>
       </div>
     </form>

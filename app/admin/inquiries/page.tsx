@@ -1,3 +1,4 @@
+import { getAdminI18n, getAdminText } from "@/i18n/admin";
 import { getInquiryProduct } from "@/lib/inquiry-product";
 import { InquiryDeleteButton } from "@/components/admin/InquiryDeleteButton";
 import Link from "next/link";
@@ -25,6 +26,8 @@ type AdminInquiriesPageProps = {
 export default async function AdminInquiriesPage({
   searchParams,
 }: AdminInquiriesPageProps) {
+  const t = await getAdminText();
+  const { locale, timeZone } = await getAdminI18n();
   await requireAdmin();
 
   const { status, search, archive } = await searchParams;
@@ -127,18 +130,18 @@ export default async function AdminInquiriesPage({
 
   return (
     <AdminShell
-      title="Inquiries"
-      description="View customer interest requests submitted through the cigar catalog."
+      title={t("Inquiries")}
+      description={t("View customer interest requests submitted through the cigar catalog.")}
       actions={
-        <AdminButtonLink href="/admin">Back to Dashboard</AdminButtonLink>
+        <AdminButtonLink href="/admin">{t("Back to Dashboard")}</AdminButtonLink>
       }
     >
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-5">
-        <StatCard title="Active" value={activeInquiryCount} />
-        <StatCard title="Archived" value={archivedInquiryCount} />
-        <StatCard title="New" value={newInquiryCount} />
-        <StatCard title="Contacted" value={contactedInquiryCount} />
-        <StatCard title="Completed" value={completedInquiryCount} />
+        <StatCard title={t("Active")} value={activeInquiryCount} />
+        <StatCard title={t("Archived")} value={archivedInquiryCount} />
+        <StatCard title={t("New")} value={newInquiryCount} />
+        <StatCard title={t("Contacted")} value={contactedInquiryCount} />
+        <StatCard title={t("Completed")} value={completedInquiryCount} />
       </div>
 
       <div className="mt-6">
@@ -148,16 +151,15 @@ export default async function AdminInquiriesPage({
       <AdminCard className="mt-6">
         <div className="mb-6 flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
           <div>
-            <p className="text-lg font-semibold text-[#f8efe3]">Inquiry List</p>
+            <p className="text-lg font-semibold text-[#f8efe3]">{t("Inquiry List")}</p>
 
             <p className="mt-2 text-sm leading-6 text-[#b8a99a]">
-              Showing {inquiries.length}{" "}
-              {inquiries.length === 1 ? "inquiry" : "inquiries"}.
+              {t("Showing {count} inquiries.", { count: inquiries.length })}
             </p>
           </div>
 
           <p className="text-xs font-medium uppercase tracking-[0.28em] text-[#f5cd7a]">
-            Customer Requests
+            {t("Customer Requests")}
           </p>
         </div>
 
@@ -167,31 +169,31 @@ export default async function AdminInquiriesPage({
               <thead className="bg-black/35">
                 <tr className="border-b border-[#f5cd7a]/15">
                   <th className="px-5 py-4 text-left text-xs font-medium uppercase tracking-[0.22em] text-[#f5cd7a]">
-                    Customer
+                    {t("Customer")}
                   </th>
 
                   <th className="px-5 py-4 text-left text-xs font-medium uppercase tracking-[0.22em] text-[#f5cd7a]">
-                    Cigar
+                    {t("Cigar")}
                   </th>
 
                   <th className="px-5 py-4 text-left text-xs font-medium uppercase tracking-[0.22em] text-[#f5cd7a]">
-                    Qty
+                    {t("Qty")}
                   </th>
 
                   <th className="px-5 py-4 text-left text-xs font-medium uppercase tracking-[0.22em] text-[#f5cd7a]">
-                    Location
+                    {t("Location")}
                   </th>
 
                   <th className="px-5 py-4 text-left text-xs font-medium uppercase tracking-[0.22em] text-[#f5cd7a]">
-                    Status
+                    {t("Status")}
                   </th>
 
                   <th className="px-5 py-4 text-left text-xs font-medium uppercase tracking-[0.22em] text-[#f5cd7a]">
-                    Submitted
+                    {t("Submitted")}
                   </th>
 
                   <th className="px-5 py-4 text-right text-xs font-medium uppercase tracking-[0.22em] text-[#f5cd7a]">
-                    Action
+                    {t("Action")}
                   </th>
                 </tr>
               </thead>
@@ -203,7 +205,7 @@ export default async function AdminInquiriesPage({
                       colSpan={7}
                       className="px-5 py-12 text-center text-sm text-[#b8a99a]"
                     >
-                      No inquiries yet.
+                      {t("No inquiries yet.")}
                     </td>
                   </tr>
                 ) : (
@@ -253,7 +255,8 @@ export default async function AdminInquiriesPage({
                       </td>
 
                       <td className="px-5 py-5 text-sm text-[#d9cbbb]">
-                        {new Intl.DateTimeFormat("en", {
+                        {new Intl.DateTimeFormat(locale, {
+        timeZone,
                           month: "short",
                           day: "numeric",
                           year: "numeric",
@@ -264,8 +267,8 @@ export default async function AdminInquiriesPage({
                         <div className="flex items-center justify-end gap-4">
                           <Link
                             href={`/admin/inquiries/${inquiry.id}`}
-                            aria-label={`View inquiry from ${inquiry.fullName}`}
-                            title={`View inquiry from ${inquiry.fullName}`}
+                            aria-label={t("View inquiry from {name}", { name: inquiry.fullName })}
+                            title={t("View inquiry from {name}", { name: inquiry.fullName })}
                             className="inline-flex h-9 w-9 items-center justify-center border border-[#f5cd7a]/25 bg-black/25 text-[#f8efe3] transition-all duration-300 hover:border-[#f5cd7a] hover:bg-[#f5cd7a] hover:text-black"
                           >
                             <Eye className="h-4 w-4" />

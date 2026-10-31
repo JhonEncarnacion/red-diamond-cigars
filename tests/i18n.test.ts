@@ -28,9 +28,9 @@ test("every language has a complete catalog with valid, matching interpolation",
     const translate = createTranslator({locale:code, messages, onError(error) { throw error; }});
     for (const [key, value] of Object.entries(messages)) {
       assert.ok(value.trim(), `${code}: ${key}`);
-      const variables = (s:string) => [...s.matchAll(/\{(\w+)\}/g)].map(m=>m[1]).sort();
+      const variables = (s:string) => [...s.matchAll(/\{(\w+)(?:\}|,\s*plural,)/g)].map(m=>m[1]).sort();
       assert.deepEqual(variables(value), variables(en[key]), `${code}: ${key}`);
-      assert.ok(translate(key, {count:5,name:"Test cigar"}));
+      assert.ok(translate(key, {count:5,name:"Test cigar",date:"October 31, 2026"}));
     }
   }
 });

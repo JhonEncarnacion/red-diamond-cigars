@@ -1,3 +1,4 @@
+import { getAdminText } from "@/i18n/admin";
 import Image from "next/image";
 import { getProductImage } from "@/lib/product-images";
 import Link from "next/link";
@@ -20,6 +21,7 @@ type EditProductPageProps = {
 export default async function EditProductPage({
   params,
 }: EditProductPageProps) {
+  const t = await getAdminText();
   await requireAdmin();
 
   const { id } = await params;
@@ -37,16 +39,16 @@ export default async function EditProductPage({
   return (
     <AdminShell
       title={product.name}
-      eyebrow="Edit Product"
+      eyebrow={t("Edit Product")}
       description={product.description}
       actions={
         <>
           <AdminButtonLink href="/admin/products">
-            Back to Products
+            {t("Back to Products")}
           </AdminButtonLink>
 
           <AdminButtonLink href={`/cigars/${product.slug}`}>
-            View Public Page
+            {t("View Public Page")}
           </AdminButtonLink>
         </>
       }
@@ -70,7 +72,7 @@ export default async function EditProductPage({
 
             <div className="mt-5 border-t border-[#f5cd7a]/15 pt-5">
               <p className="text-xs font-medium uppercase tracking-[0.32em] text-[#f5cd7a]">
-                Current Product
+                {t("Current Product")}
               </p>
 
               <h2 className="mt-3 font-serif text-3xl font-semibold tracking-[0.04em] text-[#f8efe3]">
@@ -79,24 +81,24 @@ export default async function EditProductPage({
 
               <div className="mt-5 grid gap-4 text-sm">
                 <ProductPreviewDetail
-                  label="Origin"
-                  value={product.origin ?? "Not listed"}
+                  label={t("Origin")}
+                  value={product.origin ?? t("Not listed")}
                 />
 
                 <ProductPreviewDetail
-                  label="Strength"
+                  label={t("Strength")}
                   value={product.strength}
                 />
 
                 <ProductPreviewDetail
-                  label="Size"
-                  value={product.size ?? "Not listed"}
+                  label={t("Size")}
+                  value={product.size ?? t("Not listed")}
                 />
 
 
                 <ProductPreviewDetail
-                  label="Status"
-                  value={product.isActive ? "Active" : "Inactive"}
+                  label={t("Status")}
+                  value={product.isActive ? t("Active") : t("Inactive")}
                 />
               </div>
 
@@ -104,7 +106,7 @@ export default async function EditProductPage({
                 href={`/cigars/${product.slug}`}
                 className="mt-6 inline-flex h-11 w-full items-center justify-center border border-[#f5cd7a]/30 bg-black/25 px-5 text-xs font-medium uppercase tracking-[0.22em] text-[#f8efe3] transition-all duration-500 hover:border-[#f5cd7a] hover:bg-[#f5cd7a] hover:text-black"
               >
-                View Public Page
+                {t("View Public Page")}
               </Link>
             </div>
           </AdminCard>
@@ -113,16 +115,15 @@ export default async function EditProductPage({
         <AdminCard>
           <div className="mb-8 border-b border-[#f5cd7a]/15 pb-6">
             <p className="text-xs font-medium uppercase tracking-[0.38em] text-[#f5cd7a]">
-              Product Details
+              {t("Product Details")}
             </p>
 
             <h2 className="mt-4 text-2xl font-semibold text-[#f8efe3]">
-              Edit Product
+              {t("Edit Product")}
             </h2>
 
             <p className="mt-3 max-w-2xl text-sm leading-6 text-[#b8a99a]">
-              Update the cigar information shown in the public catalog and
-              product inquiry pages.
+              {t("Update the cigar information shown in the public catalog and product inquiry pages.")}
             </p>
           </div>
 

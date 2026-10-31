@@ -1,5 +1,7 @@
 "use client";
 
+import { useSiteText } from "@/i18n/text";
+
 import { languages, type Locale } from "@/i18n/locales";
 import { translatedFields } from "@/lib/product-localization";
 import { useState, useTransition } from "react";
@@ -31,6 +33,7 @@ type ProductFormProps = {
 };
 
 export function ProductForm({ product }: ProductFormProps) {
+  const t = useSiteText();
   const router = useRouter();
   const [translationLocale, setTranslationLocale] = useState<Locale>("en");
   const [translations, setTranslations] = useState<NonNullable<ProductEditorInput["translations"]>>(
@@ -87,7 +90,7 @@ export function ProductForm({ product }: ProductFormProps) {
       } catch {
         setIsError(true);
         setMessage(
-          "We couldn't confirm whether the product was saved. Your entries are still here. Check the product list in another tab before submitting again.",
+          t("We couldn't confirm whether the product was saved. Your entries are still here. Check the product list in another tab before submitting again."),
         );
       }
     });
@@ -102,7 +105,7 @@ export function ProductForm({ product }: ProductFormProps) {
               htmlFor="name"
               className="text-sm font-medium text-[#f8efe3]"
             >
-              Product name
+              {t("Product name")}
             </label>
 
             <input
@@ -120,7 +123,7 @@ export function ProductForm({ product }: ProductFormProps) {
               htmlFor="description"
               className="text-sm font-medium text-[#f8efe3]"
             >
-              Description
+              {t("Description")}
             </label>
 
             <textarea
@@ -140,14 +143,14 @@ export function ProductForm({ product }: ProductFormProps) {
               htmlFor="wrapper"
               className="text-sm font-medium text-[#f8efe3]"
             >
-              Wrapper
+              {t("Wrapper")}
             </label>
 
             <input
               id="wrapper"
               name="wrapper"
               defaultValue={product?.wrapper ?? ""}
-              placeholder="Habano, Maduro, Connecticut..."
+              placeholder={t("Habano, Maduro, Connecticut...")}
               className="h-12 border border-[#f5cd7a]/20 bg-black/35 px-4 text-sm text-[#f8efe3] outline-none transition-colors duration-300 placeholder:text-[#8f8174] focus:border-[#f5cd7a]/60"
             />
           </div>
@@ -157,14 +160,14 @@ export function ProductForm({ product }: ProductFormProps) {
               htmlFor="binder"
               className="text-sm font-medium text-[#f8efe3]"
             >
-              Binder
+              {t("Binder")}
             </label>
 
             <input
               id="binder"
               name="binder"
               defaultValue={product?.binder ?? ""}
-              placeholder="Dominican, Nicaraguan..."
+              placeholder={t("Dominican, Nicaraguan...")}
               className="h-12 border border-[#f5cd7a]/20 bg-black/35 px-4 text-sm text-[#f8efe3] outline-none transition-colors duration-300 placeholder:text-[#8f8174] focus:border-[#f5cd7a]/60"
             />
           </div>
@@ -174,14 +177,14 @@ export function ProductForm({ product }: ProductFormProps) {
               htmlFor="filler"
               className="text-sm font-medium text-[#f8efe3]"
             >
-              Filler
+              {t("Filler")}
             </label>
 
             <input
               id="filler"
               name="filler"
               defaultValue={product?.filler ?? ""}
-              placeholder="Dominican blend..."
+              placeholder={t("Dominican blend...")}
               className="h-12 border border-[#f5cd7a]/20 bg-black/35 px-4 text-sm text-[#f8efe3] outline-none transition-colors duration-300 placeholder:text-[#8f8174] focus:border-[#f5cd7a]/60"
             />
           </div>
@@ -191,14 +194,14 @@ export function ProductForm({ product }: ProductFormProps) {
               htmlFor="origin"
               className="text-sm font-medium text-[#f8efe3]"
             >
-              Origin
+              {t("Origin")}
             </label>
 
             <input
               id="origin"
               name="origin"
               defaultValue={product?.origin ?? "Dominican Republic"}
-              placeholder="Dominican Republic"
+              placeholder={t("Dominican Republic")}
               className="h-12 border border-[#f5cd7a]/20 bg-black/35 px-4 text-sm text-[#f8efe3] outline-none transition-colors duration-300 placeholder:text-[#8f8174] focus:border-[#f5cd7a]/60"
             />
           </div>
@@ -208,14 +211,14 @@ export function ProductForm({ product }: ProductFormProps) {
               htmlFor="size"
               className="text-sm font-medium text-[#f8efe3]"
             >
-              Size
+              {t("Size")}
             </label>
 
             <input
               id="size"
               name="size"
               defaultValue={product?.size ?? ""}
-              placeholder="Toro – 6x56"
+              placeholder={t("Toro – 6x56")}
               className="h-12 border border-[#f5cd7a]/20 bg-black/35 px-4 text-sm text-[#f8efe3] outline-none transition-colors duration-300 placeholder:text-[#8f8174] focus:border-[#f5cd7a]/60"
             />
           </div>
@@ -225,14 +228,14 @@ export function ProductForm({ product }: ProductFormProps) {
               htmlFor="strength"
               className="text-sm font-medium text-[#f8efe3]"
             >
-              Strength
+              {t("Strength")}
             </label>
 
             <input
               id="strength"
               name="strength"
               defaultValue={product?.strength}
-              placeholder="Mild, Medium, Full"
+              placeholder={t("Mild, Medium, Full")}
               required
               className="h-12 border border-[#f5cd7a]/20 bg-black/35 px-4 text-sm text-[#f8efe3] outline-none transition-colors duration-300 placeholder:text-[#8f8174] focus:border-[#f5cd7a]/60"
             />
@@ -240,32 +243,32 @@ export function ProductForm({ product }: ProductFormProps) {
         </div>
 
         <fieldset className="grid gap-4 border border-[#f5cd7a]/15 p-4 sm:grid-cols-2">
-          <legend className="px-2 text-sm font-medium text-[#f8efe3]">Packaging</legend>
+          <legend className="px-2 text-sm font-medium text-[#f8efe3]">{t("Packaging")}</legend>
           <div className="grid gap-2">
-            <label htmlFor="packQuantity" className="text-sm font-medium text-[#f8efe3]">Bundle Size</label>
+            <label htmlFor="packQuantity" className="text-sm font-medium text-[#f8efe3]">{t("Bundle Size")}</label>
             <input id="packQuantity" name="packQuantity" type="number" required min={1} max={10000} step="1" defaultValue={product?.packQuantity ?? 5} className="h-12 min-w-0 border border-[#f5cd7a]/20 bg-black/35 px-4 text-sm text-[#f8efe3] outline-none focus:border-[#f5cd7a]/60" />
           </div>
           <div className="grid gap-2">
-            <label htmlFor="boxQuantity" className="text-sm font-medium text-[#f8efe3]">Box Size</label>
+            <label htmlFor="boxQuantity" className="text-sm font-medium text-[#f8efe3]">{t("Box Size")}</label>
             <input id="boxQuantity" name="boxQuantity" type="number" required min={1} max={10000} step="1" defaultValue={product?.boxQuantity ?? 20} className="h-12 min-w-0 border border-[#f5cd7a]/20 bg-black/35 px-4 text-sm text-[#f8efe3] outline-none focus:border-[#f5cd7a]/60" />
           </div>
           <div className="grid gap-2">
-            <label htmlFor="singleValue" className="text-sm font-medium text-[#f8efe3]">Single Price</label>
+            <label htmlFor="singleValue" className="text-sm font-medium text-[#f8efe3]">{t("Single Price")}</label>
             <input id="singleValue" name="singleValue" type="number" required min={0} max={1000000} step="any" defaultValue={product?.singleValue ?? 10} className="h-12 min-w-0 border border-[#f5cd7a]/20 bg-black/35 px-4 text-sm text-[#f8efe3] outline-none focus:border-[#f5cd7a]/60" />
           </div>
           <div className="grid gap-2">
-            <label htmlFor="packValue" className="text-sm font-medium text-[#f8efe3]">Bundle Price</label>
+            <label htmlFor="packValue" className="text-sm font-medium text-[#f8efe3]">{t("Bundle Price")}</label>
             <input id="packValue" name="packValue" type="number" required min={0} max={1000000} step="any" defaultValue={product?.packValue ?? 45} className="h-12 min-w-0 border border-[#f5cd7a]/20 bg-black/35 px-4 text-sm text-[#f8efe3] outline-none focus:border-[#f5cd7a]/60" />
           </div>
           <div className="grid gap-2">
-            <label htmlFor="boxValue" className="text-sm font-medium text-[#f8efe3]">Box Price</label>
+            <label htmlFor="boxValue" className="text-sm font-medium text-[#f8efe3]">{t("Box Price")}</label>
             <input id="boxValue" name="boxValue" type="number" required min={0} max={1000000} step="any" defaultValue={product?.boxValue ?? 160} className="h-12 min-w-0 border border-[#f5cd7a]/20 bg-black/35 px-4 text-sm text-[#f8efe3] outline-none focus:border-[#f5cd7a]/60" />
           </div>
         </fieldset>
 
         <div className="grid gap-2">
           <label htmlFor="image" className="text-sm font-medium text-[#f8efe3]">
-            Image path
+            {t("Image path")}
           </label>
 
           <input
@@ -277,9 +280,7 @@ export function ProductForm({ product }: ProductFormProps) {
           />
 
           <p className="text-xs leading-5 text-[#8f8174]">
-            Use an existing image in public/images, such as
-            /images/products/toro-habano-corojo-red.webp. Supported formats: PNG,
-            JPG, JPEG, WebP, GIF, and AVIF. Leave blank to use a fallback image.
+            {t("Use an existing image in public/images, such as /images/products/toro-habano-corojo-red.webp. Supported formats: PNG, JPG, JPEG, WebP, GIF, and AVIF. Leave blank to use a fallback image.")}
           </p>
         </div>
 
@@ -297,12 +298,11 @@ export function ProductForm({ product }: ProductFormProps) {
                 htmlFor="isActive"
                 className="text-sm font-medium text-[#f8efe3]"
               >
-                Active product
+                {t("Active product")}
               </label>
 
               <p className="text-sm leading-6 text-[#b8a99a]">
-                Active cigars appear on the public catalog. Inactive cigars are
-                hidden from customers.
+                {t("Active cigars appear on the public catalog. Inactive cigars are hidden from customers.")}
               </p>
             </div>
           </div>
@@ -313,7 +313,7 @@ export function ProductForm({ product }: ProductFormProps) {
             role={isError ? "alert" : "status"}
             className="border border-[#f5cd7a]/15 bg-black/25 px-4 py-3 text-sm leading-6 text-[#b8a99a]"
           >
-            {message}
+            {t(message)}
           </p>
         ) : null}
 
@@ -323,10 +323,10 @@ export function ProductForm({ product }: ProductFormProps) {
           className="h-12 border border-[#f5cd7a]/40 bg-[#f5cd7a] px-8 text-sm font-semibold text-black shadow-[0_0_35px_rgba(245,205,122,0.16)] transition-all duration-500 hover:bg-[#ffe3a3] hover:shadow-[0_0_55px_rgba(245,205,122,0.26)] disabled:cursor-not-allowed disabled:opacity-60"
         >
           {isPending
-            ? "Saving..."
+            ? t("Saving...")
             : product
-              ? "Save product"
-              : "Create product"}
+              ? t("Save product")
+              : t("Create product")}
         </button>
       </div>
     </form>

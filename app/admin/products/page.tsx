@@ -1,3 +1,4 @@
+import { getAdminText } from "@/i18n/admin";
 import { ProductDeleteButton } from "@/components/admin/ProductDeleteButton";
 import Image from "next/image";
 import { getProductImage } from "@/lib/product-images";
@@ -24,6 +25,7 @@ type AdminProductsPageProps = {
 export default async function AdminProductsPage({
   searchParams,
 }: AdminProductsPageProps) {
+  const t = await getAdminText();
   await requireAdmin();
 
   const { search, status } = await searchParams;
@@ -81,14 +83,14 @@ export default async function AdminProductsPage({
 
   return (
     <AdminShell
-      title="Products"
-      description="Manage the cigar catalog and product visibility."
+      title={t("Products")}
+      description={t("Manage the cigar catalog and product visibility.")}
       actions={
         <>
-          <AdminButtonLink href="/admin">Back to Dashboard</AdminButtonLink>
+          <AdminButtonLink href="/admin">{t("Back to Dashboard")}</AdminButtonLink>
 
           <AdminButtonLink href="/admin/products/new" variant="primary">
-            Add Product
+            {t("Add Product")}
           </AdminButtonLink>
         </>
       }
@@ -101,17 +103,16 @@ export default async function AdminProductsPage({
         <div className="mb-6 flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
           <div>
             <p className="text-lg font-semibold text-[#f8efe3]">
-              Product Catalog
+              {t("Product Catalog")}
             </p>
 
             <p className="mt-2 text-sm leading-6 text-[#b8a99a]">
-              Showing {products.length}{" "}
-              {products.length === 1 ? "product" : "products"}.
+              {t("Showing {count} products.", { count: products.length })}
             </p>
           </div>
 
           <p className="text-xs font-medium uppercase tracking-[0.28em] text-[#f5cd7a]">
-            Catalog
+            {t("Catalog")}
           </p>
         </div>
 
@@ -121,24 +122,24 @@ export default async function AdminProductsPage({
               <thead className="bg-black/35">
                 <tr className="border-b border-[#f5cd7a]/15">
                   <th className="px-5 py-4 text-left text-xs font-medium uppercase tracking-[0.22em] text-[#f5cd7a]">
-                    Cigar
+                    {t("Cigar")}
                   </th>
 
                   <th className="px-5 py-4 text-left text-xs font-medium uppercase tracking-[0.22em] text-[#f5cd7a]">
-                    Strength
+                    {t("Strength")}
                   </th>
 
                   <th className="px-5 py-4 text-left text-xs font-medium uppercase tracking-[0.22em] text-[#f5cd7a]">
-                    Size
+                    {t("Size")}
                   </th>
 
 
                   <th className="px-5 py-4 text-left text-xs font-medium uppercase tracking-[0.22em] text-[#f5cd7a]">
-                    Status
+                    {t("Status")}
                   </th>
 
                   <th className="px-5 py-4 text-right text-xs font-medium uppercase tracking-[0.22em] text-[#f5cd7a]">
-                    Action
+                    {t("Action")}
                   </th>
                 </tr>
               </thead>
@@ -150,7 +151,7 @@ export default async function AdminProductsPage({
                       colSpan={5}
                       className="px-5 py-12 text-center text-sm text-[#b8a99a]"
                     >
-                      No products yet.
+                      {t("No products yet.")}
                     </td>
                   </tr>
                 ) : (
@@ -177,7 +178,7 @@ export default async function AdminProductsPage({
                             </p>
 
                             <p className="mt-1 text-sm text-[#b8a99a]">
-                              {product.origin ?? "Origin not listed"}
+                              {product.origin ?? t("Origin not listed")}
                             </p>
                           </div>
                         </div>
@@ -188,7 +189,7 @@ export default async function AdminProductsPage({
                       </td>
 
                       <td className="px-5 py-5 text-sm text-[#d9cbbb]">
-                        {product.size ?? "Not listed"}
+                        {product.size ?? t("Not listed")}
                       </td>
 
 
@@ -201,7 +202,7 @@ export default async function AdminProductsPage({
                               : "rounded-none border border-[#8f8174]/30 bg-[#8f8174]/10 p-3 text-xs font-medium uppercase tracking-[0.14em] text-[#b8a99a]"
                           }
                         >
-                          {product.isActive ? "Active" : "Inactive"}
+                          {product.isActive ? t("Active") : t("Inactive")}
                         </Badge>
                       </td>
 
@@ -209,8 +210,8 @@ export default async function AdminProductsPage({
                         <div className="flex items-center justify-end gap-4">
                           <Link
                             href={`/cigars/${product.slug}`}
-                            aria-label={`View ${product.name}`}
-                            title={`View ${product.name}`}
+                            aria-label={t("View {name}", { name: product.name })}
+                            title={t("View {name}", { name: product.name })}
                             className="inline-flex h-9 w-9 items-center justify-center border border-[#f5cd7a]/25 bg-black/25 text-[#f8efe3] transition-all duration-300 hover:border-[#f5cd7a] hover:bg-[#f5cd7a] hover:text-black"
                           >
                             <Eye className="h-4 w-4" />
@@ -218,8 +219,8 @@ export default async function AdminProductsPage({
 
                           <Link
                             href={`/admin/products/${product.id}/edit`}
-                            aria-label={`Edit ${product.name}`}
-                            title={`Edit ${product.name}`}
+                            aria-label={t("Edit {name}", { name: product.name })}
+                            title={t("Edit {name}", { name: product.name })}
                             className="inline-flex h-9 w-9 items-center justify-center border border-[#f5cd7a]/25 bg-black/25 text-[#f8efe3] transition-all duration-300 hover:border-[#f5cd7a] hover:bg-[#f5cd7a] hover:text-black"
                           >
                             <Pencil className="h-4 w-4" />
