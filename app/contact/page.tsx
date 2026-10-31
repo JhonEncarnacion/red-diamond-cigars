@@ -20,7 +20,7 @@ const contacts = [
   {
     role: "Manager",
     name: "Osvaldina Contreras",
-    email: "more@reddiamondcigar.com",
+    email: "morereddiamondcigars@gmail.com",
     phone: "(347) 981-6331",
   },
   {
